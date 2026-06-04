@@ -693,8 +693,7 @@
             } catch (error) {
                 console.error("搜尋發生錯誤：", error);
             }
-        }
-// 🚀 進階功能：另開視窗顯示近期 20 位客戶資料
+        }// 🚀 進階功能：另開視窗顯示近期 20 位客戶資料
 window.viewRecentRecords = async function() {
     try {
         // 1. 向 Firestore 查詢最新的 20 筆資料 (依據 createdAt 降冪排序，限制 20 筆)
