@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>窗簾數位丈量 APP Pro (含T字圖與密碼鎖)</title>
+    <style>
+        /* 整體風格美化 */
+        body { font-family: 'PingFang TC', 'Helvetica Neue', Arial, sans-serif; background-color: #f0f3f6; margin: 0; padding: 15px; color: #333; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        h1 { text-align: center; color: #2c3e50; font-size: 24px; margin-bottom: 5px; }
+        h2 { color: #34495e; font-size: 18px; margin: 0 0 15px 0; border-bottom: 2px solid #3498db; padding-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+        
+        /* 密碼鎖畫面 */
+        #authOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .auth-box { background: white; padding: 30px; border-radius: 12px; width: 80%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        
+        /* 區塊樣式 */
+        .section { background: #ffffff; border: 1px solid #e1e8ed; padding: 18px; border-radius: 8px; margin-bottom: 20px; }
+        .window-item { border-left: 5px solid #3498db; background: #fbfcfe; }
+        .search-box { background: #f4f9fc; border: 1px solid #d4e6f1; }
+        
+        /* 表單排版 */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 14px; color: #475569; }
+        .form-group input[type="text"], .form-group input[type="tel"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[type="password"] { 
+            width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; transition: border 0.2s;
+        }
+        .form-group input:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 3px rgba(52,152,219,0.1); }
+        
+        /* 🖲️ 數位 T 字圖 / 十字型尺寸輸入架構 */
+        .t-chart-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1.2fr 1fr; 
+            grid-template-rows: auto auto auto; 
+            gap: 8px; 
+            background: #f8fafc; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px dashed #cbd5e1;
+            margin-bottom: 15px;
+        }
+        .t-cell { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .t-cell label { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 2px; }
+        .t-cell input { width: 100% !important; text-align: center; padding: 8px !important; font-size: 14px !important; }
+        /* 核心主尺寸中心點 */
+        .t-center-core { grid-column: 2; grid-row: 2; background: #edf2f7; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; }
+        
+        /* 選項按鈕美化 */
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+        .checkbox-group label { 
+            font-weight: normal; font-size: 14px; background: #f1f5f9; padding: 10px 14px; border-radius: 6px; 
+            display: flex; align-items: center; gap: 6px; cursor: pointer; border: 1px solid #e2e8f0; user-select: none;
+        }
+        
+        /* 按鈕樣式 */
+        .btn { display: block; width: 100%; background: #3498db; color: white; padding: 14px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(52,152,219,0.2); }
+        .btn:hover { background: #2980b9; }
+        .btn-search { background: #2ecc71; margin-top: 5px; }
+        
+        /* 搜尋結果 */
+        .result-item { background: white; border: 1px solid #e2e8f0; padding: 15px; margin-top: 12px; border-radius: 8px; }
+        .result-item h3 { margin: 0 0 8px 0; color: #1e293b; border-bottom: 1px dashed #e2e8f0; padding-bottom: 6px; }
+        .result-item p { margin: 5px 0; font-size: 14px; color: #475569; }
+        .result-sub-title { font-weight: bold; color: #3498db; margin-top: 8px; font-size: 13px; }
+        
+        /* 歷史記錄中的 T 字顯示 */
+        .result-t-display { display: inline-block; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<div id="authOverlay">
+    <div class="auth-box">
+        <h3 style="margin-top:0; color:#2c3e50;">🔒 公司系統安全認證</h3>
+        <p style="font-size:13px; color:#7f8c8d;">請輸入密鑰以解鎖丈量單</p>
+        <div class="form-group">
+            <input type="password" id="systemPassword" placeholder="請輸入公司密碼">
+        </div>
+        <button class="btn" id="loginBtn">登入解鎖</button>
+    </div>
+</div>
+
+<div class="container">
+    <h1>📏 窗簾數位丈量 APP</h1>
+    <p style="text-align:center; color:#7f8c8d; font-size:12px; margin-top:0; margin-bottom:20px;">公司內部專屬行動丈量系統</p>
+    
+    <div class="section">
+        <h2>👤 客戶基本資料</h2>
+        <div class="form-group">
+            <label>客戶姓名 *</label>
+            <input type="text" id="custName" placeholder="請輸入姓名">
+        </div>
+        <div class="form-group">
+            <label>聯絡電話</label>
+            <input type="tel" id="custPhone" placeholder="請輸入電話">
+        </div>
+        <div class="form-group">
+            <label>丈量日期</label>
+            <input type="date" id="measureDate">
+        </div>
+        <div class="form-group">
+            <label>施工地址</label>
+            <input type="text" id="custAddress" placeholder="請輸入完整施工地址">
+        </div>
+    </div>
+
+    <div class="section window-item">
+        <h2>🪟 窗戶 1 丈量項目</h2>
+        
+        <label style="display:block; font-weight:bold; margin-bottom:8px; font-size:14px; color:#475569;">📐 窗體尺寸與 T 字圖延伸 (cm)</label>
+        
+        <div class="t-chart-container">
+            <div class="t-cell" style="grid-column: 2; grid-row: 1;">
+                <label>⬆️ 上/盒深</label>
+                <input type="number" id="winTop" placeholder="0">
+            </div>
+            
+            <div class="t-cell" style="grid-column: 1; grid-row: 2;">
+                <label>⬅️ 左延伸</label>
+                <input type="number" id="winLeft" placeholder="0">
+            </div>
+            
+            <div class="t-cell t-center-core">
+                <label style="color:#2c3e50;">寬度 W</label>
+                <input type="number" id="winWidth" placeholder="寬(W)" style="font-weight:bold; background:#fff;">
+                <div style="margin: 4px 0;"></div>
+                <label style="color:#2c3e50;">高度 H</label>
+                <input type="number" id="winHeight" placeholder="高(H)" style="font-weight:bold; background:#fff;">
+            </div>
+            
+            <div class="t-cell" style="grid-column: 3; grid-row: 2;">
+                <label>右延伸 ➡️</label>
+                <input type="number" id="winRight" placeholder="0">
+            </div>
+            
+            <div class="t-cell" style="grid-column: 2; grid-row: 3;">
+                <label>⬇️ 下延伸</label>
+                <input type="number" id="winBottom" placeholder="0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>成品尺寸 / 備註說明</label>
+            <input type="text" id="boxRemark" placeholder="例如：成品總寬高或特殊狀況說明">
+        </div>
+
+        <div class="form-group">
+            <label>開法選項</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="openType" value="雙開"> 雙開</label>
+                <label><input type="checkbox" name="openType" value="單開"> 單開</label>
+                <label><input type="checkbox" name="openType" value="右拉"> 右拉</label>
+                <label><input type="checkbox" name="openType" value="左拉"> 左拉</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>安裝環境</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="installEnv" value="壁架"> 壁架</label>
+                <label><input type="checkbox" name="installEnv" value="天木"> 天木</label>
+                <label><input type="checkbox" name="installEnv" value="框內"> 框內</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>布料款式 / 型號</label>
+            <input type="text" id="fabricStyle" placeholder="請輸入布號">
+        </div>
+
+        <div class="form-group">
+            <label>窗紗款式 / 備註</label>
+            <input type="text" id="windowGauze" placeholder="請輸入紗號">
+        </div>
+    </div>
+
+    <button class="btn" id="saveBtn">💾 儲存丈量資料到雲端</button>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #cbd5e1;">
+
+    <div class="section search-box">
+        <h2>🔍 歷史資料查詢</h2>
+        <div class="form-group">
+            <label>請輸入客戶姓名搜尋：</label>
+            <input type="text" id="searchName" placeholder="輸入姓名關鍵字...">
+        </div>
+        <button class="btn btn-search" id="searchBtn">🔎 開始查詢</button>
+        
+        <div id="searchResults"></div>
+    </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJSpLXx0Vu6bWi4pwb9v-eIGJU1Dx0wnU",
+    authDomain: "curtain-app-e478f.firebaseapp.com",
+    projectId: "curtain-app-e478f",
+    storageBucket: "curtain-app-e478f.firebasestorage.app",
+    messagingSenderId: "1093582738273",
+    appId: "1:1093582738273:web:bbeabec30beee2f6e06b20",
+    measurementId: "G-G2NGY3173G"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 🔑 簡易密碼鎖驗證邏輯（請在此修改你的公司密碼）
+  const COMPANY_PASSWORD = "0654"; 
+
+  document.getElementById('loginBtn').addEventListener('click', () => {
+      const inputPass = document.getElementById('systemPassword').value;
+      if (inputPass === COMPANY_PASSWORD) {
+          document.getElementById('authOverlay').style.display = 'none'; // 解鎖隱藏
+          alert('🔓 認證成功，歡迎使用系統！');
+      } else {
+          alert('❌ 密碼錯誤，拒絕存取！');
+      }
+  });
+
+  // 1. 【儲存資料】功能
+  document.getElementById('saveBtn').addEventListener('click', async () => {
+      const openTypes = [];
+      document.querySelectorAll('input[name="openType"]:checked').forEach(cb => openTypes.push(cb.value));
+      
+      const envs = [];
+      document.querySelectorAll('input[name="installEnv"]:checked').forEach(cb => envs.push(cb.value));
+
+      const formData = {
+          name: document.getElementById('custName').value.trim(),
+          phone: document.getElementById('custPhone').value.trim(),
+          date: document.getElementById('measureDate').value,
+          address: document.getElementById('custAddress').value.trim(),
+          window1: {
+              width: document.getElementById('winWidth').value || '0',
+              height: document.getElementById('winHeight').value || '0',
+              top: document.getElementById('winTop').value || '0',
+              bottom: document.getElementById('winBottom').value || '0',
+              left: document.getElementById('winLeft').value || '0',
+              right: document.getElementById('winRight').value || '0',
+              openType: openTypes,
+              environment: envs,
+              remark: document.getElementById('boxRemark').value.trim(),
+              fabric: document.getElementById('fabricStyle').value.trim(),
+              gauze: document.getElementById('windowGauze').value.trim()
+          },
+          createdAt: new Date()
+      };
+
+      if (!formData.name) {
+          alert('請至少輸入「客戶姓名」才能儲存！');
+          return;
+      }
+
+      try {
+          await addDoc(collection(db, "measurements"), formData);
+          alert('🎉 資料已成功、安全地儲存到雲端資料庫！');
+          
+          // 表單重設
+          document.getElementById('custName').value = '';
+          document.getElementById('custPhone').value = '';
+          document.getElementById('custAddress').value = '';
+          document.getElementById('measureDate').value = '';
+          document.getElementById('winWidth').value = '';
+          document.getElementById('winHeight').value = '';
+          document.getElementById('winTop').value = '';
+          document.getElementById('winBottom').value = '';
+          document.getElementById('winLeft').value = '';
+          document.getElementById('winRight').value = '';
+          document.getElementById('boxRemark').value = '';
+          document.getElementById('fabricStyle').value = '';
+          document.getElementById('windowGauze').value = '';
+          document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      } catch (error) {
+          console.error("儲存失敗: ", error);
+          alert('儲存失敗，請檢查網路連線。');
+      }
+  });
+
+  // 2. 【尋找資料】功能
+  document.getElementById('searchBtn').addEventListener('click', async () => {
+      const searchName = document.getElementById('searchName').value.trim();
+      const resultsDiv = document.getElementById('searchResults');
+      resultsDiv.innerHTML = '<p style="text-align:center;">查詢中...</p>';
+
+      if (!searchName) {
+          alert('請輸入要搜尋的姓名');
+          return;
+      }
+
+      try {
+          const q = query(collection(db, "measurements"), where("name", "==", searchName));
+          const querySnapshot = await getDocs(q);
+          
+          resultsDiv.innerHTML = '';
+
+          if (querySnapshot.empty) {
+              resultsDiv.innerHTML = '<p style="color:#e74c3c; text-align:center; font-weight:bold;">找不到紀錄。</p>';
+              return;
+          }
+
+          querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              const w1 = data.window1 || {};
+              
+              const itemHtml = `
+                  <div class="result-item">
+                      <h3>👤 客戶：${data.name}</h3>
+                      <p>📆 丈量日期：${data.date || '未填'}</p>
+                      <p>📞 聯絡電話：${data.phone || '未填'}</p>
+                      <p>📍 施工地址：${data.address || '未填'}</p>
+                      
+                      <div class="result-sub-title">🪟 窗戶 1 丈量明細與 T 字數據：</div>
+                      <p>📐 主尺寸：<strong>寬 ${w1.width} cm × 高 ${w1.height} cm</strong></p>
+                      <p>十字延伸 ➡️ <span class="result-t-display">上: ${w1.top} | 下: ${w1.bottom} | 左: ${w1.left} | 右: ${w1.right}</span></p>
+                      <p>🔄 開法：${w1.openType ? w1.openType.join(', ') : '未選'}</p>
+                      <p>🛠️ 安裝：${w1.environment ? w1.environment.join(', ') : '未選'}</p>
+                      <p>🎨 布料：${w1.fabric || '未填'}</p>
+                      <p>🌫️ 窗紗：${w1.gauze || '未填'}</p>
+                      <p>📝 備註：${w1.remark || '無'}</p>
+                  </div>
+              `;
+              resultsDiv.innerHTML += itemHtml;
+          });
+
+      } catch (error) {
+          console.error("讀取失敗: ", error);
+          resultsDiv.innerHTML = '<p style="color:#e74c3c; text-align:center;">查詢失敗。</p>';
+      }
+  });
+</script>
+
+</body>
+</html>
