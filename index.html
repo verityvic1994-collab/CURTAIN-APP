@@ -80,23 +80,47 @@
             font-size: 22px;
         }
 
+        /* 客戶資料大區塊卡片 */
+        .client-info-card {
+            background: #fdfdfd;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .client-info-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 5px;
+        }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        .form-row .form-group {
+            flex: 1;
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
         }
 
-        input[type="text"], input[type="search"] {
+        input[type="text"], input[type="tel"], input[type="number"], input[type="search"] {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 15px;
             background-color: #fff;
         }
 
@@ -121,7 +145,7 @@
         }
 
         .window-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
             color: var(--primary-dark);
         }
@@ -137,18 +161,18 @@
         }
 
         .options-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
         .options-title {
             font-weight: bold;
             margin-bottom: 8px;
-            font-size: 15px;
+            font-size: 14px;
             color: #34495e;
         }
         .checkbox-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
         .checkbox-item {
             display: flex;
@@ -159,7 +183,7 @@
             padding: 8px 12px;
             border-radius: 6px;
             font-size: 14px;
-            flex: 1 1 calc(50% - 6px);
+            flex: 1 1 calc(50% - 5px);
             min-width: 100px;
             border: 1px solid #e2e8f0;
         }
@@ -168,7 +192,7 @@
             height: 18px;
         }
 
-        /* 📱 手機防變形 T 字圖樣式 📱 */
+        /* 手機防變形 T 字圖 */
         .t-chart-container {
             display: flex;
             justify-content: center;
@@ -268,6 +292,16 @@
             margin-top: 10px;
             border: 1px solid #edf2f7;
         }
+        .history-client-details {
+            font-size: 14px;
+            color: #57606f;
+            background: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            margin: 6px 0;
+            border: 1px solid #e2e8f0;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -284,9 +318,52 @@
         <div id="app-content">
             <h1>📋 窗簾現場丈量單</h1>
             
-            <div class="form-group">
-                <label>👤 客戶姓名：</label>
-                <input type="text" id="client-name" placeholder="請輸入客戶姓名">
+            <div class="client-info-card">
+                <div class="client-info-title">👤 客戶基本資料</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>客戶姓名：</label>
+                        <input type="text" id="client-name" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                        <label>聯絡電話：</label>
+                        <input type="tel" id="client-phone" placeholder="電話">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label>施工地址：</label>
+                        <input type="text" id="client-address" placeholder="完整施工地址">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>統一編號：</label>
+                        <input type="number" id="client-taxid" placeholder="無則免填">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>估價金額 (元)：</label>
+                        <input type="number" id="client-price" placeholder="總估價金額">
+                    </div>
+                    <div class="form-group">
+                        <label>收取訂金 (元)：</label>
+                        <input type="number" id="client-deposit" placeholder="已收訂金">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>未稅價 (元)：</label>
+                        <input type="number" id="client-notax" placeholder="輸入未稅自動計稅" oninput="calculateTax(this, 'toTax')">
+                    </div>
+                    <div class="form-group">
+                        <label>含稅價 (元)：</label>
+                        <input type="number" id="client-withtax" placeholder="輸入含稅自動回推" oninput="calculateTax(this, 'toNoTax')">
+                    </div>
+                </div>
             </div>
 
             <div id="window-list">
@@ -329,10 +406,10 @@
                         <div class="t-chart">
                             <div class="t-line-horizontal"></div>
                             <div class="t-line-vertical"></div>
-                            <input type="text" class="t-input t-top" placeholder="總寬(上)">
-                            <input type="text" class="t-input t-left" placeholder="左高">
-                            <input type="text" class="t-input t-right" placeholder="右高">
-                            <input type="text" class="t-input t-bottom" placeholder="總高(下)">
+                            <input type="text" class="t-input t-top" placeholder="高(上)">
+                            <input type="text" class="t-input t-left" placeholder="左寬">
+                            <input type="text" class="t-input t-right" placeholder="右寬">
+                            <input type="text" class="t-input t-bottom" placeholder="高(下)">
                         </div>
                     </div>
 
@@ -382,6 +459,27 @@
                 document.getElementById('app-content').style.display = 'block';
             } else {
                 alert('密碼錯誤，請重新輸入！');
+            }
+        }
+
+        // 稅金即時連動計算功能
+        window.calculateTax = function(element, direction) {
+            const val = parseFloat(element.value);
+            const noTaxInput = document.getElementById('client-notax');
+            const withTaxInput = document.getElementById('client-withtax');
+
+            if (!element.value) {
+                if (direction === 'toTax') withTaxInput.value = '';
+                if (direction === 'toNoTax') noTaxInput.value = '';
+                return;
+            }
+
+            if (direction === 'toTax') {
+                // 未稅轉含稅：未稅 * 1.05 (四捨五入)
+                withTaxInput.value = Math.round(val * 1.05);
+            } else if (direction === 'toNoTax') {
+                // 含稅轉未稅：含稅 / 1.05 (四捨五入)
+                noTaxInput.value = Math.round(val / 1.05);
             }
         }
 
@@ -436,10 +534,10 @@
                     <div class="t-chart">
                         <div class="t-line-horizontal"></div>
                         <div class="t-line-vertical"></div>
-                        <input type="text" class="t-input t-top" placeholder="總寬(上)">
+                        <input type="text" class="t-input t-top" placeholder="高(上)">
                         <input type="text" class="t-input t-left" placeholder="左高">
                         <input type="text" class="t-input t-right" placeholder="右高">
-                        <input type="text" class="t-input t-bottom" placeholder="總高(下)">
+                        <input type="text" class="t-input t-bottom" placeholder="高(下)">
                     </div>
                 </div>
 
@@ -457,6 +555,15 @@
             const clientName = document.getElementById('client-name').value.trim();
             if (!clientName) { alert('請輸入客戶姓名！'); return; }
 
+            // 讀取所有客戶欄位資料
+            const clientPhone = document.getElementById('client-phone').value.trim();
+            const clientAddress = document.getElementById('client-address').value.trim();
+            const clientTaxId = document.getElementById('client-taxid').value.trim();
+            const clientPrice = document.getElementById('client-price').value.trim();
+            const clientDeposit = document.getElementById('client-deposit').value.trim();
+            const clientNoTax = document.getElementById('client-notax').value.trim();
+            const clientWithTax = document.getElementById('client-withtax').value.trim();
+
             const windowCards = document.querySelectorAll('.window-card');
             const windowsData = [];
 
@@ -472,7 +579,7 @@
                     location: card.querySelector('.w-location').value.trim(),
                     types: types,
                     envs: envs,
-                    boxDepth: card.querySelector('.w-depth').value.trim(), // 讀取純文字盒深
+                    boxDepth: card.querySelector('.w-depth').value.trim(),
                     sizeTop: card.querySelector('.t-top').value.trim(),
                     sizeBottom: card.querySelector('.t-bottom').value.trim(),
                     sizeLeft: card.querySelector('.t-left').value.trim(),
@@ -486,12 +593,30 @@
             
             set(newLogRef, {
                 clientName: clientName,
+                clientPhone: clientPhone,
+                clientAddress: clientAddress,
+                clientTaxId: clientTaxId,
+                clientPrice: clientPrice,
+                clientDeposit: clientDeposit,
+                clientNoTax: clientNoTax,
+                clientWithTax: clientWithTax,
                 windows: windowsData,
                 timestamp: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
             })
             .then(() => {
-                alert('🎉 儲存成功！資料已安全同步至雲端！');
+                alert('🎉 儲存成功！完整包含稅務與財務之丈量資料已同步至雲端！');
+                
+                // 清空基本資料
                 document.getElementById('client-name').value = '';
+                document.getElementById('client-phone').value = '';
+                document.getElementById('client-address').value = '';
+                document.getElementById('client-taxid').value = '';
+                document.getElementById('client-price').value = '';
+                document.getElementById('client-deposit').value = '';
+                document.getElementById('client-notax').value = '';
+                document.getElementById('client-withtax').value = '';
+                
+                // 清空並重置窗戶列表
                 document.getElementById('window-list').innerHTML = '';
                 windowCount = 0;
                 addWindowItem();
@@ -524,16 +649,28 @@
                                         <strong>【${w.location || '未填位置'}】(項目 ${w.itemNumber})</strong><br>
                                         開法: ${w.types.join(', ') || '未選'} | 環境: ${w.envs.join(', ') || '未選'}<br>
                                         盒深: <span style="color:#2c3e50; font-weight:bold;">${w.boxDepth ? w.boxDepth + ' cm' : '未填'}</span><br>
-                                        尺寸: 寬${w.sizeTop} / 下${w.sizeBottom} / 左高${w.sizeLeft} / 右高${w.sizeRight}<br>
+                                        尺寸: 寬${w.sizeTop} / 下${w.sizeBottom} / 左寬${w.sizeLeft} / 右寬${w.sizeRight}<br>
                                         備註: ${w.note || '無'}
                                     </div>
                                 `;
                             });
 
+                            // 尾款邏輯：優先使用含稅價作為總價，若無則使用估價金額
+                            const finalTotal = parseInt(record.clientWithTax) || parseInt(record.clientPrice) || 0;
+                            const deposit = parseInt(record.clientDeposit) || 0;
+                            const balance = finalTotal - deposit;
+
                             const item = document.createElement('div');
                             item.className = 'history-item';
                             item.innerHTML = `
-                                <strong>👤 客戶: ${record.clientName}</strong> <small style="color:#95a5a6;">(${record.timestamp})</small>
+                                <strong>👤 客戶姓名: ${record.clientName}</strong> <small style="color:#95a5a6;">(${record.timestamp})</small>
+                                <div class="history-client-details">
+                                    📞 電話：${record.clientPhone || '未填'}<br>
+                                    📍 地址：${record.clientAddress || '未填'}<br>
+                                    🏢 統編：${record.clientTaxId || '未填'}<br>
+                                    💰 財務：估價 $${record.clientPrice || 0} / 未稅 $${record.clientNoTax || 0} / 含稅 $${record.clientWithTax || 0}<br>
+                                    💵 結算：已收訂金 $${deposit} / <span style="color:#e74c3c;font-weight:bold;">應收尾款 $${balance}</span>
+                                </div>
                                 ${windowsHtml}
                             `;
                             resultsDiv.appendChild(item);
