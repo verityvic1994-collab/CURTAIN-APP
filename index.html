@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>專業窗簾丈量系統</title>
     <style>
         :root {
@@ -191,6 +193,29 @@
 
         .pdf-btn { background-color: #e67e22; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .pdf-btn:hover { background-color: #d35400; }
+
+        /* 全螢幕歷史紀錄燈箱彈出視窗 */
+        #history-lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f5f7fa; z-index: 5000; display: none;
+            flex-direction: column; padding: 15px; overflow: hidden;
+        }
+        .lightbox-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 12px; border-bottom: 2px solid var(--primary-color); margin-bottom: 15px;
+        }
+        .lightbox-title { font-size: 18px; font-weight: bold; color: #2c3e50; }
+        .lightbox-close-btn {
+            background: #e74c3c; color: white; border: none; padding: 8px 16px;
+            border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer;
+        }
+        .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 40px; }
+
+        /* 燈箱內小 T 字圖樣式 */
+        .mini-t-container { display: flex; justify-content: center; transform: scale(0.85); margin: -10px 0; }
+        .mini-t-chart { position: relative; width: 320px; height: 230px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; }
+        .mini-t-val { position: absolute; width: 75px; text-align: center; font-size: 12px; background: #f8f9fa; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 0; }
+        .mini-t-val small { font-size: 9px; color: #7f8c8d; display: block; }
     </style>
 </head>
 <body>
@@ -205,7 +230,7 @@
         </div>
 
         <div id="app-content">
-            <h1>📋 窗簾丈量單</h1>
+            <h1>📋 窗簾現場丈量單</h1>
             
             <div class="client-info-card">
                 <div class="client-info-title">👤 客戶基本資料</div>
@@ -315,9 +340,11 @@
                 <button class="action-btn btn-add" onclick="addWindowItem()">➕ 新增下一個窗戶項目</button>
                 <button class="action-btn btn-save" onclick="saveDataToLocalStorage()">💾 儲存全戶資料到手機</button>
             </div>
+            
             <div class="btn-block" style="margin-top: 10px;">
-                <button class="action-btn" style="background-color: #34495e;" onclick="viewRecentRecords()">📋 查看近期 20 筆客戶資料 (另開分頁)</button>
+                <button class="action-btn" style="background-color: #34495e;" onclick="openHistoryLightbox()">📋 查看近期 20 筆客戶資料</button>
             </div>
+
             <div class="search-box">
                 <h2>🔍 查詢歷史紀錄</h2>
                 <input type="search" id="search-input" placeholder="輸入客戶姓名搜尋..." oninput="searchData()">
@@ -326,8 +353,15 @@
         </div>
     </div>
 
+    <div id="history-lightbox">
+        <div class="lightbox-header">
+            <span class="lightbox-title">📋 近期 20 筆本機丈量紀錄</span>
+            <button class="lightbox-close-btn" onclick="closeHistoryLightbox()">❌ 關閉返回</button>
+        </div>
+        <div id="lightbox-list" class="lightbox-content"></div>
+    </div>
+
     <script>
-        // 1. 🔐 密碼驗證功能
         window.checkPassword = function() {
             const pass = document.getElementById('sys-password').value;
             if(pass === "1219") {
@@ -338,7 +372,6 @@
             }
         }
 
-        // 2. 💰 稅金即時連動計算功能
         window.calculateTax = function(element, direction) {
             const val = parseFloat(element.value);
             const noTaxInput = document.getElementById('client-notax');
@@ -359,11 +392,9 @@
 
         let windowCount = 1;
 
-        // 3. 🪟 動態新增窗戶項目
         window.addWindowItem = function() {
             windowCount++;
             const windowList = document.getElementById('window-list');
-            
             const newCard = document.createElement('div');
             newCard.className = 'window-card';
             newCard.setAttribute('data-window-index', windowCount);
@@ -373,12 +404,10 @@
                     <div class="window-title">🪟 窗戶 ${windowCount}</div>
                     <button class="delete-btn" onclick="this.closest('.window-card').remove()">❌ 刪除</button>
                 </div>
-
                 <div class="form-group">
                     <label>📍 丈量位置：</label>
                     <input type="text" class="w-location" placeholder="例如：主臥、客廳、小孩房">
                 </div>
-
                 <div class="options-group">
                     <div class="options-title">開法選項：</div>
                     <div class="checkbox-container">
@@ -388,7 +417,6 @@
                         <label class="checkbox-item"><input type="checkbox" class="w-type" value="左拉"> 左拉</label>
                     </div>
                 </div>
-
                 <div class="options-group">
                     <div class="options-title">安裝環境：</div>
                     <div class="checkbox-container">
@@ -397,12 +425,10 @@
                         <label class="checkbox-item"><input type="checkbox" class="w-env" value="框內"> 框內</label>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>📦 窗簾盒深度 (盒深 cm)：</label>
                     <input type="text" class="w-depth" placeholder="請輸入窗簾盒深度 (例如：15)">
                 </div>
-
                 <div class="options-title">📐 尺寸丈量 (cm)：</div>
                 <div class="t-chart-container">
                     <div class="t-chart">
@@ -416,7 +442,6 @@
                         <input type="text" class="t-input t-out-bottom" placeholder="下框外高">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>📝 窗簾盒備註 / 其他特殊狀況：</label>
                     <input type="text" class="w-note" placeholder="例如：特殊狀況備註">
@@ -431,7 +456,6 @@
             return data ? JSON.parse(data) : [];
         }
 
-        // 4. 💾 儲存資料
         window.saveDataToLocalStorage = function() {
             const clientName = document.getElementById('client-name').value.trim();
             if (!clientName) { alert('請輸入客戶姓名！'); return; }
@@ -506,32 +530,43 @@
             if(document.getElementById('search-input').value) { searchData(); }
         }
 
-        // 5. 🔍 關鍵字查詢
+        function makeWindowDetailHtml(w) {
+            return `
+                <div style="margin-top: 10px; border-left: 4px solid #3498db; padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px;">
+                    <strong>📍 位置：${w.location || '未填'}</strong> (項目 ${w.itemNumber})<br>
+                    開法：${w.types.join(', ') || '未選'} | 安裝環境：${w.envs.join(', ') || '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
+                    
+                    <div class="mini-t-container">
+                        <div class="mini-t-chart">
+                            <div style="position: absolute; top: 95px; left: 35px; width: 250px; height: 2px; background-color: #3498db;"></div>
+                            <div style="position: absolute; top: 35px; left: 158px; width: 2px; height: 160px; background-color: #3498db;"></div>
+                            
+                            <div class="mini-t-val" style="top: 5px; left: 122px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 48px; left: 122px; border-color: #2ecc71;"><small style="color:#27ae60;">本身寬</small><strong style="color:#27ae60;">${w.sizeWindowWidth || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 83px; left: -5px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 83px; left: 250px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 130px; left: 122px; border-color: #2ecc71;"><small style="color:#27ae60;">本身高</small><strong style="color:#27ae60;">${w.sizeWindowHeight || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 178px; left: 122px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div>
+                        </div>
+                    </div>
+                    ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:#7f8c8d; background:#fff9db; padding:4px; border-radius:4px;">📝 備註: ${w.note}</div>` : ''}
+                </div>
+            `;
+        }
+
         window.searchData = function() {
             const queryText = document.getElementById('search-input').value.trim();
             const resultsDiv = document.getElementById('search-results');
             resultsDiv.innerHTML = '';
-            
             if(!queryText) return;
 
             const records = getLocalStorageData();
-            
             records.forEach((record) => {
                 if (record.clientName && record.clientName.includes(queryText)) {
                     let windowsHtml = '';
-                    
                     if (record.windows && Array.isArray(record.windows)) {
-                        record.windows.forEach(w => {
-                            windowsHtml += `
-                                <div style="margin-left: 10px; margin-top: 8px; border-left: 3px solid #3498db; padding-left: 8px; font-size:14px; line-height: 1.6;">
-                                    <strong>【${w.location || '未填位置'}】(項目 ${w.itemNumber})</strong><br>
-                                    開法: ${w.types.join(', ') || '未選'} | 環境: ${w.envs.join(', ') || '未選'} | 盒深: ${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
-                                    <span style="color:#2ecc71; font-weight:bold;">尺寸：寬 ${w.sizeWindowWidth || 0} × 高 ${w.sizeWindowHeight || 0} cm</span>
-                                </div>
-                            `;
-                        });
+                        record.windows.forEach(w => { windowsHtml += makeWindowDetailHtml(w); });
                     }
-
                     const finalTotal = parseInt(record.clientWithTax) || parseInt(record.clientPrice) || 0;
                     const deposit = parseInt(record.clientDeposit) || 0;
                     const balance = finalTotal - deposit;
@@ -556,17 +591,14 @@
             });
         }
 
-        // 6. 📋 查看近期 20 筆資料
-        window.viewRecentRecords = function() {
+        window.openHistoryLightbox = function() {
             const records = getLocalStorageData().slice(0, 20);
+            const listDiv = document.getElementById('lightbox-list');
+            listDiv.innerHTML = '';
+
             if(records.length === 0) { alert("目前本機儲存庫中還沒有任何丈量紀錄喔！"); return; }
 
-            const newWindow = window.open("", "_blank");
-            if (!newWindow) { alert("新分頁被瀏覽器阻擋了，請允許彈出式視窗！"); return; }
-
-            let cardsHtml = "";
             let count = 1;
-
             records.forEach((record) => {
                 const finalTotal = parseInt(record.clientWithTax) || parseInt(record.clientPrice) || 0;
                 const deposit = parseInt(record.clientDeposit) || 0;
@@ -574,62 +606,39 @@
 
                 let windowsDetailHtml = "";
                 if (record.windows && Array.isArray(record.windows)) {
-                    record.windows.forEach(w => {
-                        windowsDetailHtml += `
-                            <div style="margin-top: 10px; border-left: 4px solid #3498db; padding-left: 10px; margin-bottom: 10px;">
-                                <strong>📍 位置：${w.location || '未填'}</strong> (窗戶項目 ${w.itemNumber})<br>
-                                開法：${w.types.join(', ') || '未選'} | 安裝環境：${w.envs.join(', ') || '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
-                                <span style="color:#2ecc71; font-weight:bold;">尺寸：寬 ${w.sizeWindowWidth || 0} × 高 ${w.sizeWindowHeight || 0} cm</span>
-                            </div>
-                        `;
-                    });
+                    record.windows.forEach(w => { windowsDetailHtml += makeWindowDetailHtml(w); });
                 }
 
-                cardsHtml += `
-                    <div style="background: white; border: 1px solid #dcdde1; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 10px;">
-                            <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold;"># ${count++}</span>
-                            <span style="font-size: 18px; font-weight: bold; color: #2c3e50;">👤 客戶：${record.clientName}</span>
-                            <button style="background-color: #e67e22; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size:13px;" onclick="window.opener.exportSinglePDF('${record.id}')">📥 匯出 PDF</button>
-                        </div>
-                        <div style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px; text-align: right;">📅 儲存時間：${record.timestamp || ''}</div>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 14px; line-height: 1.6;">
-                            <tr><td width="50%"><strong>📞 電話：</strong>${record.clientPhone || '未填'}</td><td width="50%"><strong>🏢 統編：</strong>${record.clientTaxId || '未填'}</td></tr>
-                            <tr><td colspan="2"><strong>📍 施工地址：</strong>${record.clientAddress || '未填'}</td></tr>
-                            <tr><td colspan="2"><strong>💵 結算：</strong>含稅 $${record.clientWithTax || 0} / 已收訂金 $${deposit} / <span style="color:#e74c3c;font-weight:bold;">應收尾款 $${balance}</span></td></tr>
-                        </table>
-                        ${windowsDetailHtml}
+                const card = document.createElement('div');
+                card.style.cssText = "background: #f8f9fa; border: 1px solid #dcdde1; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);";
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 10px;">
+                        <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size:13px;"># ${count++}</span>
+                        <span style="font-size: 16px; font-weight: bold; color: #2c3e50;">👤 客戶：${record.clientName}</span>
+                        <button class="pdf-btn" style="padding: 6px 12px;" onclick="exportSinglePDF('${record.id}')">📥 匯出 PDF</button>
                     </div>
+                    <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px; text-align: right;">📅 儲存時間：${record.timestamp || ''}</div>
+                    <div style="background: #fff; padding: 10px; border-radius: 6px; font-size: 14px; line-height: 1.6; border: 1px solid #edf2f7; margin-bottom: 10px;">
+                        📞 電話：${record.clientPhone || '未填'} | 🏢 統編：${record.clientTaxId || '未填'}<br>
+                        📍 地址：${record.clientAddress || '未填'}<br>
+                        💵 結算：含稅 $${record.clientWithTax || 0} / 已收 $${deposit} / <span style="color:#e74c3c;font-weight:bold;">應收尾款 $${balance}</span>
+                    </div>
+                    ${windowsDetailHtml}
                 `;
+                listDiv.appendChild(card);
             });
 
-            newWindow.document.write(`
-                <html>
-                <head>
-                    <title>近期 20 筆丈量紀錄</title>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <style>
-                        body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #2c3e50; padding: 15px; margin: 0; }
-                        .main-title { text-align: center; color: #2980b9; margin-bottom: 20px; font-size: 22px; }
-                        .wrap { max-width: 600px; margin: 0 auto; }
-                    </style>
-                </head>
-                <body>
-                    <div class="wrap">
-                        <h1 class="main-title">📋 近期 20 筆本機丈量紀錄</h1>
-                        ${cardsHtml}
-                    </div>
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
+            document.getElementById('history-lightbox').style.display = 'flex';
         }
 
-        // 7. 📥 獨立單一案件 PDF 匯出列印功能 (全面升級 T字圖圖像化排版)
+        window.closeHistoryLightbox = function() {
+            document.getElementById('history-lightbox').style.display = 'none';
+        }
+
+        // 📥 🌟 修正後的完整 PDF 匯出列印功能 🌟
         window.exportSinglePDF = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
-            
             if(!record) { alert('找不到該筆案件資料！'); return; }
 
             const finalTotal = parseInt(record.clientWithTax) || parseInt(record.clientPrice) || 0;
@@ -645,35 +654,25 @@
                     windowsPrintHtml += `
                         <div class="pdf-window-box">
                             <div class="pdf-window-header">🪟 窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】</div>
-                            
                             <div class="pdf-meta-info">
                                 <span><strong>開法選項：</strong>${w.types.join(', ') || '未選'}</span>
                                 <span><strong>安裝環境：</strong>${w.envs.join(', ') || '未選'}</span>
                                 <span><strong>窗簾盒深：</strong>${w.boxDepth ? w.boxDepth + ' cm' : '未填'}</span>
                             </div>
-                            
                             <div class="pdf-chart-layout">
                                 <div class="pdf-t-chart-container">
                                     <div class="pdf-t-chart">
                                         <div class="pdf-t-line-horizontal"></div>
                                         <div class="pdf-t-line-vertical"></div>
-                                        
-                                        <!-- 上框外高 -->
                                         <div class="pdf-t-value pdf-v-top"><small>上框外高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
-                                        <!-- 窗戶本身寬 -->
                                         <div class="pdf-t-value pdf-v-width"><small>窗本身寬</small><br><span class="highlight-green">${w.sizeWindowWidth || '0'}</span></div>
-                                        <!-- 左牆寬 -->
                                         <div class="pdf-t-value pdf-v-left"><small>左牆寬</small><br><strong>${w.sizeOutLeft || '0'}</strong></div>
-                                        <!-- 右牆寬 -->
                                         <div class="pdf-t-value pdf-v-right"><small>右牆寬</small><br><strong>${w.sizeOutRight || '0'}</strong></div>
-                                        <!-- 窗戶本身高 -->
                                         <div class="pdf-t-value pdf-v-height"><small>窗本身高</small><br><span class="highlight-green">${w.sizeWindowHeight || '0'}</span></div>
-                                        <!-- 下框外高 -->
                                         <div class="pdf-t-value pdf-v-bottom"><small>下框外地</small><br><strong>${w.sizeOutBottom || '0'}</strong></div>
                                     </div>
                                 </div>
                             </div>
-
                             ${w.note ? `<div class="pdf-w-note">📝 <strong>備註狀況：</strong>${w.note}</div>` : ''}
                         </div>
                     `;
@@ -687,54 +686,37 @@
                     <style>
                         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: #2c3e50; padding: 25px; margin: 0; background: #fff; }
                         .pdf-header { text-align: center; border-bottom: 3px double #3498db; padding-bottom: 8px; margin-bottom: 20px; }
-                        .pdf-header h1 { margin: 0; color: #2980b9; font-size: 24px; letter-spacing: 1px; }
+                        .pdf-header h1 { margin: 0; color: #2980b9; font-size: 24px; }
                         .pdf-header p { margin: 5px 0 0 0; color: #7f8c8d; font-size: 12px; }
-                        
-                        .pdf-section-title { font-size: 15px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; border-left: 5px solid #3498db; padding-left: 8px; }
+                        .pdf-section-title { font-size: 15px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; border-left: 5px solid #3498db; padding-left: 8px; margin-top: 20px; }
                         .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
-                        .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; vertical-align: top; }
-                        
-                        /* 窗戶圖像化區塊 */
-                        .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 15px; margin-bottom: 20px; page-break-inside: avoid; background: #fff; }
+                        .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; }
+                        .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 15px; margin-bottom: 20px; page-break-inside: avoid; }
                         .pdf-window-header { font-size: 15px; font-weight: bold; background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; margin-bottom: 10px; }
                         .pdf-meta-info { display: flex; justify-content: space-between; font-size: 14px; padding: 5px 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
-                        .pdf-w-note { margin-top: 10px; font-size: 13px; color: #555; background: #fff9db; padding: 8px; border-radius: 4px; border: 1px solid #ffe066; }
-                        
-                        /* PDF 專用 T 字圖排版架構 */
                         .pdf-chart-layout { display: flex; justify-content: center; align-items: center; padding: 15px 0; background: #fafafa; border-radius: 6px; border: 1px dashed #cbd5e1; }
-                        .pdf-t-chart-container { display: flex; justify-content: center; align-items: center; }
                         .pdf-t-chart { position: relative; width: 320px; height: 240px; }
-                        
-                        .pdf-t-line-horizontal { position: absolute; top: 100px; left: 35px; width: 250px; height: 3px; background-color: #3498db; z-index: 1; }
-                        .pdf-t-line-vertical { position: absolute; top: 35px; left: 158px; width: 3px; height: 170px; background-color: #3498db; z-index: 1; }
-                        
-                        /* 數值區塊排版 */
-                        .pdf-t-value { position: absolute; width: 85px; text-align: center; font-size: 14px; line-height: 1.3; z-index: 2; background: #fff; border: 1px solid #94a3b8; border-radius: 5px; padding: 2px 0; }
-                        .pdf-t-value small { font-size: 10px; color: #64748b; font-weight: normal; }
-                        
-                        .pdf-v-top    { top: 5px;   left: 118px; }
-                        .pdf-v-width  { top: 51px;  left: 118px; border-color: #2ecc71; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-                        .pdf-v-left   { top: 88px;  left: -15px; }
-                        .pdf-v-right  { top: 88px;  left: 250px; }
-                        .pdf-v-height { top: 146px; left: 118px; border-color: #2ecc71; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+                        .pdf-t-line-horizontal { position: absolute; top: 100px; left: 35px; width: 250px; height: 3px; background-color: #3498db; }
+                        .pdf-t-line-vertical { position: absolute; top: 35px; left: 158px; width: 3px; height: 170px; background-color: #3498db; }
+                        .pdf-t-value { position: absolute; width: 85px; text-align: center; font-size: 14px; background: #fff; border: 1px solid #94a3b8; border-radius: 5px; padding: 2px 0; }
+                        .pdf-t-value small { font-size: 10px; color: #64748b; }
+                        .pdf-v-top { top: 5px; left: 118px; }
+                        .pdf-v-width { top: 51px; left: 118px; border-color: #2ecc71; }
+                        .pdf-v-left { top: 88px; left: -15px; }
+                        .pdf-v-right { top: 88px; left: 250px; }
+                        .pdf-v-height { top: 146px; left: 118px; border-color: #2ecc71; }
                         .pdf-v-bottom { top: 198px; left: 118px; }
-                        
-                        .highlight-green { color: #27ae60; font-weight: bold; font-size: 15px; }
+                        .highlight-green { color: #27ae60; font-weight: bold; }
                         .price-alert { color: #c0392b; font-weight: bold; }
-                        
-                        @media print {
-                            body { padding: 0; }
-                            button { display: none; }
-                            .pdf-window-box { page-break-inside: avoid; }
-                        }
+                        .pdf-w-note { margin-top: 10px; font-size: 13px; color: #555; background: #fff9db; padding: 8px; border-radius: 4px; border: 1px solid #ffe066; }
+                        @media print { button { display: none; } }
                     </style>
                 </head>
                 <body>
                     <div style="max-width: 750px; margin: 0 auto;">
                         <div style="text-align: right; margin-bottom: 15px;">
-                            <button onclick="window.print()" style="background: #27ae60; color: white; border: none; padding: 10px 22px; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">🖨 啟動列印 / 儲存 PDF</button>
+                            <button onclick="window.print()" style="background: #27ae60; color: white; border: none; padding: 10px 22px; border-radius: 4px; font-weight: bold; cursor: pointer;">🖨 啟動列印 / 儲存 PDF</button>
                         </div>
-                        
                         <div class="pdf-header">
                             <h1>📋 窗簾現場丈量確認單</h1>
                             <p>紀錄時間：${record.timestamp || ''}</p>
@@ -776,6 +758,5 @@
             printWindow.document.close();
         }
     </script>
-
 </body>
 </html>
