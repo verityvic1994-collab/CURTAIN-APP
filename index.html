@@ -191,8 +191,11 @@
         .history-client-details { font-size: 14px; color: #57606f; background: #fff; padding: 8px; border-radius: 6px; margin: 6px 0; border: 1px solid #e2e8f0; line-height: 1.6; }
         .history-header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px; }
 
+        .btn-group-header { display: flex; gap: 6px; }
         .pdf-btn { background-color: #e67e22; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .pdf-btn:hover { background-color: #d35400; }
+        .row-delete-btn { background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .row-delete-btn:hover { background-color: #c0392b; }
 
         /* 全螢幕歷史紀錄燈箱彈出視窗 */
         #history-lightbox {
@@ -554,6 +557,34 @@
             `;
         }
 
+        // ✨ 核心刪除功能：從 LocalStorage 移除指定 ID 的案件 ✨
+        window.deleteSingleRecord = function(recordId, clientName, elementIdToId) {
+            const doubleCheck = confirm(`⚠️ 確定要永久刪除【 ${clientName} 】的本機丈量紀錄嗎？\n此操作刪除後將無法復原！`);
+            if (!doubleCheck) return;
+
+            // 讀取 -> 過濾 -> 存回
+            let records = getLocalStorageData();
+            records = records.filter(r => r.id !== recordId);
+            localStorage.setItem('curtain_measurements', JSON.stringify(records));
+
+            alert(`🎉 客戶【 ${clientName} 】的丈量紀錄已成功刪除！`);
+
+            // 即時從畫面上移除該節點，不用手動重新整理
+            const targetDom = document.getElementById(elementIdToId);
+            if (targetDom) {
+                targetDom.remove();
+            }
+
+            // 如果是在燈箱內刪除，且刪完後沒資料了，給予貼心提示
+            const listDiv = document.getElementById('lightbox-list');
+            if (listDiv && listDiv.children.length === 0) {
+                listDiv.innerHTML = '<div style="text-align: center; color:#7f8c8d; padding:20px;">📭 目前本機儲存庫中還沒有任何丈量紀錄喔！</div>';
+            }
+            
+            // 同步刷新搜尋結果（如果使用者正在搜尋畫面操作）
+            if (document.getElementById('search-input').value) { searchData(); }
+        }
+
         window.searchData = function() {
             const queryText = document.getElementById('search-input').value.trim();
             const resultsDiv = document.getElementById('search-results');
@@ -571,12 +602,19 @@
                     const deposit = parseInt(record.clientDeposit) || 0;
                     const balance = finalTotal - deposit;
 
+                    // 為搜尋結果的卡片生成唯一 DOM ID
+                    const domId = 'search-item-' + record.id;
+
                     const item = document.createElement('div');
                     item.className = 'history-item';
+                    item.id = domId;
                     item.innerHTML = `
                         <div class="history-header-flex">
                             <strong>👤 客戶姓名: ${record.clientName}</strong>
-                            <button class="pdf-btn" onclick="exportSinglePDF('${record.id}')">📥 匯出 PDF</button>
+                            <div class="btn-group-header">
+                                <button class="pdf-btn" onclick="exportSinglePDF('${record.id}')">📥 匯出 PDF</button>
+                                <button class="row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
+                            </div>
                         </div>
                         <small style="color:#95a5a6;">儲存時間：(${record.timestamp || ''})</small>
                         <div class="history-client-details">
@@ -609,13 +647,20 @@
                     record.windows.forEach(w => { windowsDetailHtml += makeWindowDetailHtml(w); });
                 }
 
+                // 為燈箱內紀錄生成唯一 DOM ID
+                const domId = 'lightbox-item-' + record.id;
+
                 const card = document.createElement('div');
+                card.id = domId;
                 card.style.cssText = "background: #f8f9fa; border: 1px solid #dcdde1; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);";
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 10px;">
                         <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size:13px;"># ${count++}</span>
                         <span style="font-size: 16px; font-weight: bold; color: #2c3e50;">👤 客戶：${record.clientName}</span>
-                        <button class="pdf-btn" style="padding: 6px 12px;" onclick="exportSinglePDF('${record.id}')">📥 匯出 PDF</button>
+                        <div class="btn-group-header">
+                            <button class="pdf-btn" style="padding: 6px 12px;" onclick="exportSinglePDF('${record.id}')">📥 匯出 PDF</button>
+                            <button class="row-delete-btn" style="padding: 6px 12px;" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
+                        </div>
                     </div>
                     <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px; text-align: right;">📅 儲存時間：${record.timestamp || ''}</div>
                     <div style="background: #fff; padding: 10px; border-radius: 6px; font-size: 14px; line-height: 1.6; border: 1px solid #edf2f7; margin-bottom: 10px;">
@@ -635,7 +680,6 @@
             document.getElementById('history-lightbox').style.display = 'none';
         }
 
-        // 📥 🌟 修正後的完整 PDF 匯出列印功能 🌟
         window.exportSinglePDF = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
