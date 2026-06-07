@@ -125,9 +125,15 @@
         /* 搜尋與歷史紀錄 */
         .search-box { margin-top: 30px; border-top: 2px dashed var(--border-color); padding-top: 20px; }
         .history-item { background: #f8f9fa; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px solid #edf2f7; position: relative; }
-        .history-client-details { font-size: 14px; color: #57606f; background: #fff; padding: 8px; border-radius: 6px; margin: 6px 0; border: 1px solid #e2e8f0; line-height: 1.6; }
+        
+        /* 讓詳細資訊區塊預設隱藏 */
+        .history-client-details { display: none; font-size: 14px; color: #57606f; background: #fff; padding: 10px; border-radius: 6px; margin: 6px 0; border: 1px solid #e2e8f0; line-height: 1.6; }
+        
         .history-header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px; }
-        .btn-group-header { display: flex; gap: 6px; }
+        .btn-group-header { display: flex; gap: 6px; align-items: center; }
+        
+        /* 新增的展開/收合按鈕樣式 */
+        .toggle-btn { background-color: #7f8c8d; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; }
         
         .pdf-btn { background-color: #e67e22; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .row-delete-btn { background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
@@ -269,7 +275,6 @@
             newCard.className = 'window-card';
             newCard.setAttribute('data-window-index', windowCount);
             
-            // 如果是第一個窗戶，不顯示「❌ 刪除」按鈕，避免誤刪；第二個窗戶起才顯示刪除按鈕
             const deleteBtnHtml = windowCount === 1 ? '' : `<button class="delete-btn" onclick="removeWindowCard(this)"> ❌  刪除</button>`;
 
             newCard.innerHTML = `
@@ -340,7 +345,6 @@
                 card.setAttribute('data-window-index', windowCount);
                 card.querySelector('.window-title').innerHTML = ` 🪟  窗戶 ${windowCount}`;
                 
-                // 重新調整刪除按鈕邏輯：如果只剩一個，就把刪除鈕拔掉
                 const header = card.querySelector('.window-header');
                 let existingBtn = header.querySelector('.delete-btn');
                 if (windowCount === 1) {
@@ -373,14 +377,14 @@
             document.getElementById('btn-save-main').style.backgroundColor = "#27ae60";
             document.getElementById('btn-cancel-edit').style.display = "block";
 
-            document.getElementById('client-name').value = record.clientName;
-            document.getElementById('client-phone').value = record.clientPhone;
-            document.getElementById('client-address').value = record.clientAddress;
-            document.getElementById('client-taxid').value = record.clientTaxId;
-            document.getElementById('client-price').value = record.clientPrice;
-            document.getElementById('client-deposit').value = record.clientDeposit;
-            document.getElementById('client-notax').value = record.clientNoTax;
-            document.getElementById('client-withtax').value = record.clientWithTax;
+            document.getElementById('client-name').value = record.clientName || '';
+            document.getElementById('client-phone').value = record.clientPhone || '';
+            document.getElementById('client-address').value = record.clientAddress || '';
+            document.getElementById('client-taxid').value = record.clientTaxId || '';
+            document.getElementById('client-price').value = record.clientPrice || '';
+            document.getElementById('client-deposit').value = record.clientDeposit || '';
+            document.getElementById('client-notax').value = record.clientNoTax || '';
+            document.getElementById('client-withtax').value = record.clientWithTax || '';
 
             const windowList = document.getElementById('window-list');
             windowList.innerHTML = '';
@@ -528,6 +532,44 @@
             `;
         }
 
+        // 生成收合區域 HTML 的函式
+        function makeClientDetailsHtml(record, uniqueId) {
+            const price = record.clientPrice || 0;
+            const deposit = record.clientDeposit || 0;
+            const noTax = record.clientNoTax || 0;
+            const withTax = record.clientWithTax || 0;
+            const finalTotal = parseInt(withTax) || parseInt(price) || 0;
+            const balance = finalTotal - deposit;
+
+            return `
+                <div class="history-client-details" id="details-${uniqueId}">
+                    <strong>📞 聯絡電話：</strong>${record.clientPhone || '未填'}<br>
+                    <strong>📍 施工地址：</strong>${record.clientAddress || '未填'}<br>
+                    <strong>🪪 統一編號：</strong>${record.clientTaxId || '未填'}<br>
+                    <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #edf2f7; line-height: 1.5; color: #2c3e50;">
+                        💰 估價金額：$${price} 元 | 💵 收取訂金：$${deposit} 元<br>
+                        📊 未稅價格：$${noTax} 元 | 📈 含稅價格：$${withTax} 元<br>
+                        🚨 <span style="color:#e74c3c; font-weight:bold;">工程尾款結算：$${balance} 元</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 全域控制展開與收合的控制函數
+        window.toggleDetailsSection = function(uniqueId, btn) {
+            const target = document.getElementById('details-' + uniqueId);
+            if (!target) return;
+            if (target.style.display === 'block') {
+                target.style.display = 'none';
+                btn.innerText = '-';
+                btn.style.backgroundColor = '#7f8c8d';
+            } else {
+                target.style.display = 'block';
+                btn.innerText = '🔼';
+                btn.style.backgroundColor = '#34495e';
+            }
+        }
+
         window.deleteSingleRecord = function(recordId, clientName, elementIdToId) {
             const doubleCheck = confirm(` ⚠ ️ 確定要永久刪除【 ${clientName} 】的本機丈量紀錄嗎？\n此操作刪除後將無法復原！`);
             if (!doubleCheck) return;
@@ -551,10 +593,8 @@
                     if (record.windows && Array.isArray(record.windows)) {
                         record.windows.forEach(w => { windowsHtml += makeWindowDetailHtml(w); });
                     }
-                    const finalTotal = parseInt(record.clientWithTax) || parseInt(record.clientPrice) || 0;
-                    const deposit = parseInt(record.clientDeposit) || 0;
-                    const balance = finalTotal - deposit;
                     const domId = 'search-item-' + record.id;
+                    const uniqueId = 'search-' + record.id;
                     const item = document.createElement('div');
                     item.className = 'history-item';
                     item.id = domId;
@@ -562,17 +602,14 @@
                         <div class="history-header-flex">
                             <strong> 👤  客戶: ${record.clientName}</strong>
                             <div class="btn-group-header">
+                                <button class="toggle-btn" onclick="toggleDetailsSection('${uniqueId}', this)">-</button>
                                 <button class="row-edit-btn" onclick="loadRecordForEdit('${record.id}')">✏️ 修改</button>
                                 <button class="pdf-btn" onclick="exportSinglePDF('${record.id}')">📥 PDF</button>
                                 <button class="row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
                             </div>
                         </div>
                         <small style="color:#95a5a6;">${record.timestamp || ''}</small>
-                        <div class="history-client-details">
-                            📞  電話：${record.clientPhone || '未填'}<br>
-                            📍  地址：${record.clientAddress || '未填'}<br>
-                            💰  財務：含稅 $${record.clientWithTax || 0} / 尾款 $${balance}
-                        </div>
+                        ${makeClientDetailsHtml(record, uniqueId)}
                         ${windowsHtml}
                     `;
                     resultsDiv.appendChild(item);
@@ -586,14 +623,12 @@
             listDiv.innerHTML = '';
             if(records.length === 0) { alert("目前沒有丈量紀錄！"); return; }
             records.forEach((record) => {
-                const finalTotal = parseInt(record.clientWithTax) || parseInt(record.clientPrice) || 0;
-                const deposit = parseInt(record.clientDeposit) || 0;
-                const balance = finalTotal - deposit;
                 let windowsDetailHtml = "";
                 if (record.windows && Array.isArray(record.windows)) {
                     record.windows.forEach(w => { windowsDetailHtml += makeWindowDetailHtml(w); });
                 }
                 const domId = 'lightbox-item-' + record.id;
+                const uniqueId = 'lightbox-' + record.id;
                 const card = document.createElement('div');
                 card.id = domId;
                 card.style.cssText = "background: #f8f9fa; border: 1px solid #dcdde1; border-radius: 8px; padding: 15px; margin-bottom: 20px;";
@@ -601,17 +636,14 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 10px;">
                         <span style="font-size: 16px; font-weight: bold; color: #2c3e50;"> 👤  客戶：${record.clientName}</span>
                         <div class="btn-group-header">
+                            <button class="toggle-btn" onclick="toggleDetailsSection('${uniqueId}', this)">-</button>
                             <button class="row-edit-btn" onclick="loadRecordForEdit('${record.id}')">✏️ 修改</button>
                             <button class="pdf-btn" onclick="exportSinglePDF('${record.id}')">📥 PDF</button>
                             <button class="row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
                         </div>
                     </div>
                     <div style="color: #7f8c8d; font-size: 11px; margin-bottom: 10px; text-align: right;">${record.timestamp || ''}</div>
-                    <div style="background: #fff; padding: 10px; border-radius: 6px; font-size: 14px; border: 1px solid #edf2f7; margin-bottom: 10px;">
-                        📞  電話：${record.clientPhone || '未填'}<br>
-                        📍  地址：${record.clientAddress || '未填'}<br>
-                        💵  含稅 $${record.clientWithTax || 0} / <span style="color:#e74c3c;font-weight:bold;">尾款 $${balance}</span>
-                    </div>
+                    ${makeClientDetailsHtml(record, uniqueId)}
                     ${windowsDetailHtml}
                 `;
                 listDiv.appendChild(card);
@@ -627,9 +659,15 @@
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
             if(!record) return;
-            const finalTotal = parseInt(record.clientWithTax) || parseInt(record.clientPrice) || 0;
+            
+            const price = parseInt(record.clientPrice) || 0;
             const deposit = parseInt(record.clientDeposit) || 0;
+            const noTax = parseInt(record.clientNoTax) || 0;
+            const withTax = parseInt(record.clientWithTax) || 0;
+            
+            const finalTotal = withTax || price || 0;
             const balance = finalTotal - deposit;
+            
             const printWindow = window.open("", "_blank");
             
             let windowsPrintHtml = "";
@@ -709,17 +747,33 @@
                     <div style="max-width: 780px; margin: 0 auto;">
                         <div style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #27ae60; color: white; border: none; padding: 10px 22px; border-radius: 4px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button></div>
                         <div class="pdf-header"><h1> 📋 窗簾現場丈量確認單</h1><p>紀錄時間：${record.timestamp || ''}</p></div>
+                        
                         <div class="pdf-section-title"> 👤 客戶基本資料</div>
                         <table class="pdf-table">
                             <tr><td width="50%"><strong>客戶姓名：</strong>${record.clientName}</td><td width="50%"><strong>聯絡電話：</strong>${record.clientPhone || '未填'}</td></tr>
                             <tr><td colspan="2"><strong>施工地址：</strong>${record.clientAddress || '未填'}</td></tr>
+                            <tr><td colspan="2"><strong>統一編號：</strong>${record.clientTaxId || '未填'}</td></tr>
                         </table>
-                        <div class="pdf-section-title"> 💰 財務預算</div>
+                        
+                        <div class="pdf-section-title"> 💰 財務與工程預算</div>
                         <table class="pdf-table">
-                            <tr><td><strong>估價總額：</strong>$${record.clientPrice || 0} 元</td><td><strong>已收訂金：</strong>$${deposit} 元</td><td><strong>尾款結算：</strong><span class="price-alert">$${balance} 元</span></td></tr>
+                            <tr>
+                                <td width="33%"><strong>估價總額：</strong>$${price} 元</td>
+                                <td width="33%"><strong>未稅金額：</strong>$${noTax} 元</td>
+                                <td width="34%"><strong>含稅總額：</strong>$${withTax} 元</td>
+                            </tr>
+                            <tr>
+                                <td><strong>已收訂金：</strong>$${deposit} 元</td>
+                                <td colspan="2"><strong>工程尾款結算：</strong><span class="price-alert">$${balance} 元</span></td>
+                            </tr>
                         </table>
-                        <div class="pdf-section-title"> 📐 現場圖像尺寸 (T-Chart)</div>
+                        
+                        <div class="pdf-section-title"> 📐 全戶各窗現場圖像化尺寸 (T-Chart)</div>
                         ${windowsPrintHtml}
+                        
+                        <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 11px; color: #95a5a6;">
+                            本單據由專業窗簾丈量系統產生，數據均經現場確認無誤。
+                        </div>
                     </div>
                 </body>
                 </html>
@@ -727,7 +781,6 @@
             printWindow.document.close();
         }
 
-        // 網頁完全載入後，自動初始化第一個窗戶項目
         document.addEventListener("DOMContentLoaded", function() {
             resetForm();
         });
