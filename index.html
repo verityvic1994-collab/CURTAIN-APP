@@ -443,6 +443,9 @@
             addWindowItem();
         }
 
+        // 定義全域 GAS 網址
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFSFNctIu8xQ4mMIl0YsXuWN0yj-ocL09-gzZkTBhUfrdhiNLE3X-UPjzcuXSL275R5Q/exec";
+
         window.saveDataToLocalStorage = function() {
             const clientName = document.getElementById('client-name').value.trim();
             if (!clientName) { alert('請輸入客戶姓名！'); return; }
@@ -471,6 +474,7 @@
             });
 
             const records = getLocalStorageData();
+            let currentRecord = null;
             
             if (editingId) {
                 const index = records.findIndex(r => r.id === editingId);
@@ -485,13 +489,14 @@
                     records[index].clientWithTax = document.getElementById('client-withtax').value.trim();
                     records[index].windows = windowsData;
                     records[index].timestamp = "已更新: " + new Date().toLocaleString('zh-TW');
+                    currentRecord = records[index];
                 }
-                alert('🎉 資料已成功更新！');
+                alert('🎉 本機資料已成功更新！');
             } else {
-                const newRecord = {
-                    id: Date.now().toString(),
+                currentRecord = {
+                   id: new Date().toLocaleString('zh-TW', {hour12: false}).replace(/[^0-9]/g, ''),
                     clientName: clientName,
-                    clientPhone: document.getElementById('client-phone').value.trim(),
+                    clientPhone: document.getElementById('client-phone').value.trim(), // ⚙️ 這裡已將原本的等號修正為冒號
                     clientAddress: document.getElementById('client-address').value.trim(),
                     clientTaxId: document.getElementById('client-taxid').value.trim(),
                     clientPrice: document.getElementById('client-price').value.trim(),
@@ -501,11 +506,25 @@
                     windows: windowsData,
                     timestamp: new Date().toLocaleString('zh-TW')
                 };
-                records.unshift(newRecord);
-                alert('🎉 儲存成功！');
+                records.unshift(currentRecord);
+                alert('🎉 本機儲存成功！');
             }
 
+            // 儲存到手機 LocalStorage
             localStorage.setItem('curtain_measurements', JSON.stringify(records));
+            
+            // --- 同步上傳至雲端 Google 試算表 ---
+            if(GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("XXXXX")) {
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(currentRecord)
+                })
+                .then(() => console.log('☁️ 雲端同步成功！'))
+                .catch(err => console.error('❌ 雲端同步失敗：', err));
+            }
+
             resetForm();
             if(document.getElementById('search-input').value) { searchData(); }
         }
