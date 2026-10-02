@@ -95,22 +95,33 @@
         /* 手機主畫面 T 字圖 */
         .t-chart-container {
             display: flex; justify-content: center; align-items: center;
-            margin: 15px 0; padding: 20px 0; background: #fdfdfd; border: 1px dashed #e2e8f0; border-radius: 8px;
+            margin: 15px 0; padding: 25px 0; background: #fdfdfd; border: 1px dashed #e2e8f0; border-radius: 8px;
         }
-        .t-chart { position: relative; width: 320px; height: 240px; }
-        .t-line-horizontal { position: absolute; top: 100px; left: 35px; width: 250px; height: 4px; background-color: var(--primary-color); z-index: 1; }
-        .t-line-vertical { position: absolute; top: 35px; left: 158px; width: 4px; height: 170px; background-color: var(--primary-color); z-index: 1; }
+        .t-chart { position: relative; width: 320px; height: 330px; }
+        .t-line-horizontal { position: absolute; top: 120px; left: 35px; width: 250px; height: 4px; background-color: var(--primary-color); z-index: 1; }
+        .t-line-vertical { position: absolute; top: 55px; left: 158px; width: 4px; height: 215px; background-color: var(--primary-color); z-index: 1; }
         .t-input {
-            position: absolute; width: 85px !important; height: 36px; padding: 0 4px !important;
-            text-align: center; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: white; z-index: 2;
+            position: absolute; width: 85px !important; height: 34px; padding: 0 4px !important;
+            text-align: center; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; background: white; z-index: 2;
         }
         .t-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); }
-        .t-out-top    { top: 5px;   left: 118px; }
-        .t-win-width  { top: 53px;  left: 118px; }
-        .t-out-left   { top: 102px; left: -10px; }
-        .t-out-right  { top: 102px; left: 245px; }
-        .t-win-height { top: 150px; left: 118px; }
-        .t-out-bottom { top: 198px; left: 118px; }
+        
+        /* 原有位置與新增下方格位置 */
+        .t-out-top      { top: 5px;   left: 118px; }
+        .t-out-top-sub  { top: 41px;  left: 118px; border-style: dashed; }
+        .t-win-width    { top: 80px;  left: 118px; }
+        
+        .t-out-left     { top: 105px; left: -10px; }
+        .t-out-left-sub { top: 143px; left: -10px; border-style: dashed; }
+        
+        .t-out-right    { top: 105px; left: 245px; }
+        .t-out-right-sub{ top: 143px; left: 245px; border-style: dashed; }
+        
+        .t-win-height   { top: 185px; left: 118px; }
+        
+        .t-out-bottom   { top: 245px; left: 118px; }
+        .t-out-bottom-sub { top: 283px; left: 118px; border-style: dashed; }
+
         /* 功能按鈕 */
         .btn-block { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         button.action-btn {
@@ -126,15 +137,12 @@
         .search-box { margin-top: 30px; border-top: 2px dashed var(--border-color); padding-top: 20px; }
         .history-item { background: #f8f9fa; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px solid #edf2f7; position: relative; }
         
-        /* 讓詳細資訊區塊預設隱藏 */
         .history-client-details { display: none; font-size: 14px; color: #57606f; background: #fff; padding: 10px; border-radius: 6px; margin: 6px 0; border: 1px solid #e2e8f0; line-height: 1.6; }
         
         .history-header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px; }
         .btn-group-header { display: flex; gap: 6px; align-items: center; }
         
-        /* 新增的展開/收合按鈕樣式 */
         .toggle-btn { background-color: #7f8c8d; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; }
-        
         .pdf-btn { background-color: #e67e22; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .row-delete-btn { background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .row-edit-btn { background-color: #27ae60; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
@@ -149,9 +157,9 @@
         .lightbox-close-btn { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; }
         .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 40px; }
         /* 燈箱內小 T 字圖樣式 */
-        .mini-t-container { display: flex; justify-content: center; transform: scale(0.85); margin: -10px 0; }
-        .mini-t-chart { position: relative; width: 320px; height: 230px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; }
-        .mini-t-val { position: absolute; width: 75px; text-align: center; font-size: 12px; background: #f8f9fa; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 0; }
+        .mini-t-container { display: flex; justify-content: center; transform: scale(0.85); margin: 0; }
+        .mini-t-chart { position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; }
+        .mini-t-val { position: absolute; width: 75px; text-align: center; font-size: 11px; background: #f8f9fa; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 0; }
         .mini-t-val small { font-size: 9px; color: #7f8c8d; display: block; }
     </style>
 </head>
@@ -312,12 +320,27 @@
                     <div class="t-chart">
                         <div class="t-line-horizontal"></div>
                         <div class="t-line-vertical"></div>
+                        <!-- 上方兩格 -->
                         <input type="text" class="t-input t-out-top" placeholder="上框外高">
+                        <input type="text" class="t-input t-out-top-sub" placeholder="上框(下)">
+                        
+                        <!-- 寬度 -->
                         <input type="text" class="t-input t-win-width" placeholder="窗戶本身寬" style="border-color: #3498db; font-weight: bold;">
+                        
+                        <!-- 左方兩格 -->
                         <input type="text" class="t-input t-out-left" placeholder="左牆寬">
+                        <input type="text" class="t-input t-out-left-sub" placeholder="左牆(下)">
+                        
+                        <!-- 右方兩格 -->
                         <input type="text" class="t-input t-out-right" placeholder="右牆寬">
+                        <input type="text" class="t-input t-out-right-sub" placeholder="右牆(下)">
+                        
+                        <!-- 高度 -->
                         <input type="text" class="t-input t-win-height" placeholder="窗戶本身高" style="border-color: #3498db; font-weight: bold;">
+                        
+                        <!-- 下方兩格 -->
                         <input type="text" class="t-input t-out-bottom" placeholder="下框外高">
+                        <input type="text" class="t-input t-out-bottom-sub" placeholder="下框(下)">
                     </div>
                 </div>
                 <div class="form-group">
@@ -392,25 +415,33 @@
 
             record.windows.forEach((w) => {
                 const card = addWindowItem();
-                card.querySelector('.w-location').value = w.location;
-                card.querySelector('.w-depth').value = w.boxDepth;
-                card.querySelector('.w-note').value = w.note;
+                card.querySelector('.w-location').value = w.location || '';
+                card.querySelector('.w-depth').value = w.boxDepth || '';
+                card.querySelector('.w-note').value = w.note || '';
                 
-                card.querySelector('.t-out-top').value = w.sizeOutTop;
-                card.querySelector('.t-out-bottom').value = w.sizeOutBottom;
-                card.querySelector('.t-out-left').value = w.sizeOutLeft;
-                card.querySelector('.t-out-right').value = w.sizeOutRight;
-                card.querySelector('.t-win-width').value = w.sizeWindowWidth;
-                card.querySelector('.t-win-height').value = w.sizeWindowHeight;
+                card.querySelector('.t-out-top').value = w.sizeOutTop || '';
+                card.querySelector('.t-out-top-sub').value = w.sizeOutTopSub || '';
+                card.querySelector('.t-out-bottom').value = w.sizeOutBottom || '';
+                card.querySelector('.t-out-bottom-sub').value = w.sizeOutBottomSub || '';
+                card.querySelector('.t-out-left').value = w.sizeOutLeft || '';
+                card.querySelector('.t-out-left-sub').value = w.sizeOutLeftSub || '';
+                card.querySelector('.t-out-right').value = w.sizeOutRight || '';
+                card.querySelector('.t-out-right-sub').value = w.sizeOutRightSub || '';
+                card.querySelector('.t-win-width').value = w.sizeWindowWidth || '';
+                card.querySelector('.t-win-height').value = w.sizeWindowHeight || '';
 
-                w.types.forEach(val => {
-                    const cb = card.querySelector(`.w-type[value="${val}"]`);
-                    if(cb) cb.checked = true;
-                });
-                w.envs.forEach(val => {
-                    const cb = card.querySelector(`.w-env[value="${val}"]`);
-                    if(cb) cb.checked = true;
-                });
+                if (w.types) {
+                    w.types.forEach(val => {
+                        const cb = card.querySelector(`.w-type[value="${val}"]`);
+                        if(cb) cb.checked = true;
+                    });
+                }
+                if (w.envs) {
+                    w.envs.forEach(val => {
+                        const cb = card.querySelector(`.w-env[value="${val}"]`);
+                        if(cb) cb.checked = true;
+                    });
+                }
             });
 
             closeHistoryLightbox();
@@ -464,9 +495,13 @@
                     envs: envs,
                     boxDepth: card.querySelector('.w-depth').value.trim(),
                     sizeOutTop: card.querySelector('.t-out-top').value.trim(),
+                    sizeOutTopSub: card.querySelector('.t-out-top-sub').value.trim(),
                     sizeOutBottom: card.querySelector('.t-out-bottom').value.trim(),
+                    sizeOutBottomSub: card.querySelector('.t-out-bottom-sub').value.trim(),
                     sizeOutLeft: card.querySelector('.t-out-left').value.trim(),
+                    sizeOutLeftSub: card.querySelector('.t-out-left-sub').value.trim(),
                     sizeOutRight: card.querySelector('.t-out-right').value.trim(),
+                    sizeOutRightSub: card.querySelector('.t-out-right-sub').value.trim(),
                     sizeWindowWidth: card.querySelector('.t-win-width').value.trim(),
                     sizeWindowHeight: card.querySelector('.t-win-height').value.trim(),
                     note: card.querySelector('.w-note').value.trim()
@@ -494,9 +529,9 @@
                 alert('🎉 本機資料已成功更新！');
             } else {
                 currentRecord = {
-                   id: new Date().toLocaleString('zh-TW', {hour12: false}).replace(/[^0-9]/g, ''),
+                    id: new Date().toLocaleString('zh-TW', {hour12: false}).replace(/[^0-9]/g, ''),
                     clientName: clientName,
-                    clientPhone: document.getElementById('client-phone').value.trim(), // ⚙️ 這裡已將原本的等號修正為冒號
+                    clientPhone: document.getElementById('client-phone').value.trim(),
                     clientAddress: document.getElementById('client-address').value.trim(),
                     clientTaxId: document.getElementById('client-taxid').value.trim(),
                     clientPrice: document.getElementById('client-price').value.trim(),
@@ -533,17 +568,27 @@
             return `
                 <div style="margin-top: 10px; border-left: 4px solid #3498db; padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px;">
                     <strong> 📍  位置：${w.location || '未填'}</strong> (項目 ${w.itemNumber})<br>
-                    開法：${w.types.join(', ') || '未選'} | 安裝環境：${w.envs.join(', ') || '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
+                    開法：${w.types ? w.types.join(', ') : '未選'} | 安裝環境：${w.envs ? w.envs.join(', ') : '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
                     <div class="mini-t-container">
                         <div class="mini-t-chart">
-                            <div style="position: absolute; top: 95px; left: 35px; width: 250px; height: 2px; background-color: #3498db;"></div>
-                            <div style="position: absolute; top: 35px; left: 158px; width: 2px; height: 160px; background-color: #3498db;"></div>
-                            <div class="mini-t-val" style="top: 5px; left: 122px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 48px; left: 122px; border-color: #3498db;"><small style="color:#2980b9;">本身寬</small><strong style="color:#2980b9;">${w.sizeWindowWidth || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 83px; left: -5px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 83px; left: 250px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 130px; left: 122px; border-color: #3498db;"><small style="color:#2980b9;">本身高</small><strong style="color:#2980b9;">${w.sizeWindowHeight || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 178px; left: 122px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div>
+                            <div style="position: absolute; top: 110px; left: 35px; width: 260px; height: 2px; background-color: #3498db;"></div>
+                            <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: #3498db;"></div>
+                            
+                            <div class="mini-t-val" style="top: 5px; left: 127px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 36px; left: 127px; border-style:dashed;"><small>上框(下)</small><strong>${w.sizeOutTopSub || '0'}</strong></div>
+                            
+                            <div class="mini-t-val" style="top: 72px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身寬</small><strong style="color:#2980b9;">${w.sizeWindowWidth || '0'}</strong></div>
+                            
+                            <div class="mini-t-val" style="top: 90px; left: -5px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 122px; left: -5px; border-style:dashed;"><small>左牆(下)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div>
+                            
+                            <div class="mini-t-val" style="top: 90px; left: 255px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 122px; left: 255px; border-style:dashed;"><small>右牆(下)</small><strong>${w.sizeOutRightSub || '0'}</strong></div>
+                            
+                            <div class="mini-t-val" style="top: 165px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身高</small><strong style="color:#2980b9;">${w.sizeWindowHeight || '0'}</strong></div>
+                            
+                            <div class="mini-t-val" style="top: 220px; left: 127px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 252px; left: 127px; border-style:dashed;"><small>下框(下)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
                         </div>
                     </div>
                     ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:#7f8c8d; background:#fff9db; padding:4px; border-radius:4px;"> 📝  備註: ${w.note}</div>` : ''}
@@ -692,10 +737,10 @@
             let windowsPrintHtml = "";
             if (record.windows && Array.isArray(record.windows)) {
                 record.windows.forEach(w => {
-                    const typeStr = w.types.join(', ').trim();
+                    const typeStr = (w.types || []).join(', ').trim();
                     const typeValue = typeStr !== "" ? typeStr : "未選";
                     const typeClass = typeValue === "未選" ? 'class="unfilled-alert"' : '';
-                    const envStr = w.envs.join(', ').trim();
+                    const envStr = (w.envs || []).join(', ').trim();
                     const envValue = envStr !== "" ? envStr : "未選";
                     const envClass = envValue === "未選" ? 'class="unfilled-alert"' : '';
                     const depthStr = w.boxDepth ? w.boxDepth.trim() : "";
@@ -710,12 +755,22 @@
                                     <div class="pdf-t-chart">
                                         <div class="pdf-t-line-horizontal"></div>
                                         <div class="pdf-t-line-vertical"></div>
-                                        <div class="pdf-t-value pdf-v-top"><small>上框外高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
+                                        
+                                        <div class="pdf-t-value pdf-v-top"><small>上框高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-top-sub"><small>上框(下)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div>
+                                        
                                         <div class="pdf-t-value pdf-v-width" style="border-color: #3498db;"><small>窗本身寬</small><br><span class="highlight-blue">${w.sizeWindowWidth || '0'}</span></div>
+                                        
                                         <div class="pdf-t-value pdf-v-left"><small>左牆寬</small><br><strong>${w.sizeOutLeft || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-left-sub"><small>左牆(下)</small><br><strong>${w.sizeOutLeftSub || '0'}</strong></div>
+                                        
                                         <div class="pdf-t-value pdf-v-right"><small>右牆寬</small><br><strong>${w.sizeOutRight || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-right-sub"><small>右牆(下)</small><br><strong>${w.sizeOutRightSub || '0'}</strong></div>
+                                        
                                         <div class="pdf-t-value pdf-v-height" style="border-color: #3498db;"><small>窗本身高</small><br><span class="highlight-blue">${w.sizeWindowHeight || '0'}</span></div>
-                                        <div class="pdf-t-value pdf-v-bottom"><small>下框外地</small><br><strong>${w.sizeOutBottom || '0'}</strong></div>
+                                        
+                                        <div class="pdf-t-value pdf-v-bottom"><small>下框地</small><br><strong>${w.sizeOutBottom || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-bottom-sub"><small>下框(下)</small><br><strong>${w.sizeOutBottomSub || '0'}</strong></div>
                                     </div>
                                 </div>
                                 <div class="pdf-meta-info-right-panel">
@@ -745,13 +800,28 @@
                         .pdf-window-header { font-size: 15px; font-weight: bold; background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; margin-bottom: 15px; }
                         .pdf-main-layout { display: flex; gap: 15px; align-items: stretch; }
                         .pdf-chart-layout { flex: 1; display: flex; justify-content: center; align-items: center; padding: 15px 0; background: #fafafa; border-radius: 6px; border: 1px solid #cbd5e1; }
-                        .pdf-t-chart { position: relative; width: 360px; height: 280px; }
-                        .pdf-t-line-horizontal { position: absolute; top: 120px; left: 25px; width: 310px; height: 4px; background-color: #3498db; }
-                        .pdf-t-line-vertical { position: absolute; top: 30px; left: 178px; width: 4px; height: 210px; background-color: #3498db; }
-                        .pdf-t-value { position: absolute; width: 105px; text-align: center; background: #fff; border: 2px solid #64748b; border-radius: 6px; padding: 4px 0; }
-                        .pdf-t-value small { font-size: 11px; font-weight: bold; color: #475569; display: inline-block; }
-                        .pdf-t-value strong, .pdf-t-value .highlight-blue { font-size: 17px; font-weight: 900; }
-                        .pdf-v-top { top: 5px; left: 128px; } .pdf-v-width { top: 62px; left: 128px; } .pdf-v-left { top: 102px; left: -20px; } .pdf-v-right { top: 102px; left: 275px; } .pdf-v-height { top: 154px; left: 128px; } .pdf-v-bottom { top: 215px; left: 128px; }
+                        .pdf-t-chart { position: relative; width: 380px; height: 360px; }
+                        .pdf-t-line-horizontal { position: absolute; top: 135px; left: 25px; width: 330px; height: 4px; background-color: #3498db; }
+                        .pdf-t-line-vertical { position: absolute; top: 30px; left: 188px; width: 4px; height: 285px; background-color: #3498db; }
+                        .pdf-t-value { position: absolute; width: 95px; text-align: center; background: #fff; border: 1.5px solid #64748b; border-radius: 6px; padding: 2px 0; }
+                        .pdf-t-value small { font-size: 10px; font-weight: bold; color: #475569; display: inline-block; }
+                        .pdf-t-value strong, .pdf-t-value .highlight-blue { font-size: 15px; font-weight: 900; }
+                        
+                        .pdf-v-top        { top: 5px;   left: 142px; }
+                        .pdf-v-top-sub    { top: 48px;  left: 142px; border-style: dashed; }
+                        .pdf-v-width      { top: 92px;  left: 142px; }
+                        
+                        .pdf-v-left       { top: 115px; left: -15px; }
+                        .pdf-v-left-sub   { top: 160px; left: -15px; border-style: dashed; }
+                        
+                        .pdf-v-right      { top: 115px; left: 295px; }
+                        .pdf-v-right-sub  { top: 160px; left: 295px; border-style: dashed; }
+                        
+                        .pdf-v-height     { top: 205px; left: 142px; }
+                        
+                        .pdf-v-bottom     { top: 268px; left: 142px; }
+                        .pdf-v-bottom-sub { top: 312px; left: 142px; border-style: dashed; }
+
                         .pdf-meta-info-right-panel { width: 180px; display: flex; flex-direction: column; gap: 10px; }
                         .meta-row-column { flex: 1; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 16px; font-weight: bold; }
                         .meta-column-title { font-weight: bold; color: #7f8c8d; font-size: 12px; margin-bottom: 4px; border-bottom: 1px dashed #e2e8f0; width: 100%; }
