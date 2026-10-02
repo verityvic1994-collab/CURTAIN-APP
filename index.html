@@ -915,8 +915,8 @@
             document.getElementById('history-lightbox').style.display = 'none';
         }
 
-        // ==========================================
-        // 📄 PDF 匯出 1：包含 T-Chart 圖的完整估價報價單
+         // ==========================================
+        // 📄 PDF 匯出 1：包含 T-Chart 圖的完整估價報價單 (已更新排版與金額顯示)
         // ==========================================
         window.exportPDFWithTChart = function(recordId) {
             const records = getLocalStorageData();
@@ -944,12 +944,13 @@
                     const envValue = envStr !== "" ? envStr : "未選";
                     const depthStr = w.boxDepth ? w.boxDepth.trim() : "";
                     const depthValue = (depthStr !== "" && depthStr !== "未填") ? depthStr + ' cm' : "未填";
+                    const itemPriceDisplay = w.itemPrice ? `$${w.itemPrice} 元` : (price ? '包含於總額' : '未估價');
 
                     windowsPrintHtml += `
                         <div class="pdf-window-box">
                             <div class="pdf-window-header">
-                                🪟 窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】
-                                ${w.itemPrice ? `<span style="float:right; font-weight:normal;">單窗報價：$${w.itemPrice} 元</span>` : ''}
+                                <span>🪟 窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】</span>
+                                <span class="header-price-tag">本窗金額：${itemPriceDisplay}</span>
                             </div>
                             <div class="pdf-main-layout">
                                 <div class="pdf-chart-layout">
@@ -975,12 +976,16 @@
                                     </div>
                                 </div>
                                 <div class="pdf-meta-info-right-panel">
-                                    <div class="meta-row-column"><div class="meta-column-title">開法選項</div><div>${typeValue}</div></div>
-                                    <div class="meta-row-column"><div class="meta-column-title">安裝環境</div><div>${envValue}</div></div>
-                                    <div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div>${depthValue}</div></div>
+                                    <div class="meta-row-column price-card">
+                                        <div class="meta-column-title">項目估價金額</div>
+                                        <div class="meta-price-val">${itemPriceDisplay}</div>
+                                    </div>
+                                    <div class="meta-row-column"><div class="meta-column-title">開法選項</div><div class="meta-column-val">${typeValue}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">安裝環境</div><div class="meta-column-val">${envValue}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div class="meta-column-val">${depthValue}</div></div>
                                 </div>
                             </div>
-                            ${w.itemStyleNote ? `<div style="margin-top:8px; font-size:14px; color:#2980b9;">🎨 <strong>款式規劃：</strong>${w.itemStyleNote}</div>` : ''}
+                            ${w.itemStyleNote ? `<div style="margin-top:8px; font-size:13px; color:#2980b9;">🎨 <strong>款式規劃：</strong>${w.itemStyleNote}</div>` : ''}
                             ${w.note ? `<div class="pdf-w-note"> 📝  <strong>丈量備註：</strong>${w.note}</div>` : ''}
                         </div>
                     `;
@@ -990,7 +995,7 @@
             printWindow.document.write(`
                 <html>
                 <head>
-                    <title>窗簾估價單(含T圖)_${record.clientName}</title>
+                    <title>窗簾估價單_${record.clientName}</title>
                     <style>
                         body { font-family: -apple-system, sans-serif; color: #2c3e50; padding: 25px; background: #fff; }
                         .pdf-header { text-align: center; border-bottom: 3px double #3498db; padding-bottom: 8px; margin-bottom: 20px; }
@@ -998,11 +1003,12 @@
                         .pdf-section-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #3498db; padding-left: 8px; margin-top: 20px; }
                         .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
                         .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; }
-                        .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 15px; margin-bottom: 20px; page-break-inside: avoid; }
-                        .pdf-window-header { font-size: 15px; font-weight: bold; background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; margin-bottom: 15px; }
-                        .pdf-main-layout { display: flex; gap: 15px; align-items: stretch; }
-                        .pdf-chart-layout { flex: 1; display: flex; justify-content: center; align-items: center; padding: 15px 0; background: #fafafa; border-radius: 6px; border: 1px solid #cbd5e1; }
-                        .pdf-t-chart { position: relative; width: 380px; height: 360px; }
+                        .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; margin-bottom: 18px; page-break-inside: avoid; }
+                        .pdf-window-header { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; margin-bottom: 12px; }
+                        .header-price-tag { background: #ffffff; color: #2980b9; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; }
+                        .pdf-main-layout { display: flex; gap: 12px; align-items: stretch; }
+                        .pdf-chart-layout { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 0; background: #fafafa; border-radius: 6px; border: 1px solid #cbd5e1; }
+                        .pdf-t-chart { position: relative; width: 380px; height: 350px; }
                         .pdf-t-line-horizontal { position: absolute; top: 135px; left: 25px; width: 330px; height: 4px; background-color: #3498db; }
                         .pdf-t-line-vertical { position: absolute; top: 30px; left: 188px; width: 4px; height: 285px; background-color: #3498db; }
                         .pdf-t-value { position: absolute; width: 95px; text-align: center; background: #fff; border: 1.5px solid #64748b; border-radius: 6px; padding: 2px 0; }
@@ -1020,19 +1026,24 @@
                         .pdf-v-bottom     { top: 268px; left: 142px; }
                         .pdf-v-bottom-sub { top: 312px; left: 142px; border-style: dashed; }
 
-                        .pdf-meta-info-right-panel { width: 180px; display: flex; flex-direction: column; gap: 10px; }
-                        .meta-row-column { flex: 1; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 16px; font-weight: bold; }
-                        .meta-column-title { font-weight: bold; color: #7f8c8d; font-size: 12px; margin-bottom: 4px; border-bottom: 1px dashed #e2e8f0; width: 100%; }
+                        /* 縮小精簡右側欄位 */
+                        .pdf-meta-info-right-panel { width: 140px; display: flex; flex-direction: column; gap: 6px; }
+                        .meta-row-column { flex: 1; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 5px; padding: 6px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+                        .price-card { background: #f0f7fb; border-color: #3498db; }
+                        .meta-column-title { font-weight: bold; color: #7f8c8d; font-size: 11px; margin-bottom: 2px; border-bottom: 1px dashed #e2e8f0; width: 100%; }
+                        .meta-column-val { font-size: 13px; font-weight: bold; color: #2c3e50; }
+                        .meta-price-val { font-size: 14px; font-weight: 900; color: #e67e22; }
+
                         .highlight-blue { color: #1b6ca8; font-weight: 900; }
                         .price-alert { color: #c0392b; font-weight: bold; }
-                        .pdf-w-note { margin-top: 10px; font-size: 14px; background: #fff9db; padding: 8px; border-radius: 4px; border: 1px solid #ffeaa7; }
+                        .pdf-w-note { margin-top: 8px; font-size: 13px; background: #fff9db; padding: 6px 8px; border-radius: 4px; border: 1px solid #ffeaa7; }
                         @media print { button { display: none; } }
                     </style>
                 </head>
                 <body>
                     <div style="max-width: 780px; margin: 0 auto;">
                         <div style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #27ae60; color: white; border: none; padding: 10px 22px; border-radius: 4px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button></div>
-                        <div class="pdf-header"><h1> 📋 窗簾現場丈量與估價確認單 (含T圖)</h1><p>紀錄時間：${record.timestamp || ''}</p></div>
+                        <div class="pdf-header"><h1> 📋 窗簾現場丈量與估價確認單</h1><p>紀錄時間：${record.timestamp || ''}</p></div>
                         
                         <div class="pdf-section-title"> 👤 客戶基本資料</div>
                         <table class="pdf-table">
@@ -1054,7 +1065,8 @@
                             </tr>
                         </table>
                         
-                        <div class="pdf-section-title"> 📐 各窗詳細尺寸與圖示 (T-Chart)</div>
+                        <!-- 依需求修改為：各窗詳細資訊 -->
+                        <div class="pdf-section-title"> 📐 各窗詳細資訊</div>
                         ${windowsPrintHtml}
                     </div>
                 </body>
@@ -1063,8 +1075,10 @@
             printWindow.document.close();
         }
 
+  
+
         // ==========================================
-        // 📄 PDF 匯出 2：單純顯示各窗估價金額 (無任何尺寸)
+        // 📄 PDF 匯出 2：單純顯示各窗估價金額
         // ==========================================
         window.exportPDFPriceOnly = function(recordId) {
             const records = getLocalStorageData();
@@ -1137,7 +1151,7 @@
                             <tr><td colspan="2"><strong>統一編號：</strong>${record.clientTaxId || '無'}</td></tr>
                         </table>
                         
-                        <div class="pdf-section-title"> 🪟 各窗施作項目與估價明細 (無尺寸)</div>
+                        <div class="pdf-section-title"> 🪟 各窗施作項目與估價明細</div>
                         <table class="pdf-table">
                             <thead>
                                 <tr>
