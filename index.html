@@ -322,25 +322,25 @@
                         <div class="t-line-vertical"></div>
                         <!-- 上方兩格 -->
                         <input type="text" class="t-input t-out-top" placeholder="上框外高">
-                        <input type="text" class="t-input t-out-top-sub" placeholder="上框(下)">
+                        <input type="text" class="t-input t-out-top-sub" placeholder="上框(註)">
                         
                         <!-- 寬度 -->
                         <input type="text" class="t-input t-win-width" placeholder="窗戶本身寬" style="border-color: #3498db; font-weight: bold;">
                         
                         <!-- 左方兩格 -->
                         <input type="text" class="t-input t-out-left" placeholder="左牆寬">
-                        <input type="text" class="t-input t-out-left-sub" placeholder="左牆(下)">
+                        <input type="text" class="t-input t-out-left-sub" placeholder="左牆(註)">
                         
                         <!-- 右方兩格 -->
                         <input type="text" class="t-input t-out-right" placeholder="右牆寬">
-                        <input type="text" class="t-input t-out-right-sub" placeholder="右牆(下)">
+                        <input type="text" class="t-input t-out-right-sub" placeholder="右牆(註)">
                         
                         <!-- 高度 -->
                         <input type="text" class="t-input t-win-height" placeholder="窗戶本身高" style="border-color: #3498db; font-weight: bold;">
                         
                         <!-- 下方兩格 -->
                         <input type="text" class="t-input t-out-bottom" placeholder="下框外高">
-                        <input type="text" class="t-input t-out-bottom-sub" placeholder="下框(下)">
+                        <input type="text" class="t-input t-out-bottom-sub" placeholder="下框(註)">
                     </div>
                 </div>
                 <div class="form-group">
@@ -575,20 +575,20 @@
                             <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: #3498db;"></div>
                             
                             <div class="mini-t-val" style="top: 5px; left: 127px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 36px; left: 127px; border-style:dashed;"><small>上框(下)</small><strong>${w.sizeOutTopSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 36px; left: 127px; border-style:dashed;"><small>上框(註)</small><strong>${w.sizeOutTopSub || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 72px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身寬</small><strong style="color:#2980b9;">${w.sizeWindowWidth || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 90px; left: -5px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 122px; left: -5px; border-style:dashed;"><small>左牆(下)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 122px; left: -5px; border-style:dashed;"><small>左牆(註)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 90px; left: 255px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 122px; left: 255px; border-style:dashed;"><small>右牆(下)</small><strong>${w.sizeOutRightSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 122px; left: 255px; border-style:dashed;"><small>右牆(註)</small><strong>${w.sizeOutRightSub || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 165px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身高</small><strong style="color:#2980b9;">${w.sizeWindowHeight || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 220px; left: 127px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 252px; left: 127px; border-style:dashed;"><small>下框(下)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 252px; left: 127px; border-style:dashed;"><small>下框(註)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
                         </div>
                     </div>
                     ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:#7f8c8d; background:#fff9db; padding:4px; border-radius:4px;"> 📝  備註: ${w.note}</div>` : ''}
@@ -757,20 +757,20 @@
                                         <div class="pdf-t-line-vertical"></div>
                                         
                                         <div class="pdf-t-value pdf-v-top"><small>上框高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-top-sub"><small>上框(下)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-top-sub"><small>上框(註)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div>
                                         
                                         <div class="pdf-t-value pdf-v-width" style="border-color: #3498db;"><small>窗本身寬</small><br><span class="highlight-blue">${w.sizeWindowWidth || '0'}</span></div>
                                         
                                         <div class="pdf-t-value pdf-v-left"><small>左牆寬</small><br><strong>${w.sizeOutLeft || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-left-sub"><small>左牆(下)</small><br><strong>${w.sizeOutLeftSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-left-sub"><small>左牆(註)</small><br><strong>${w.sizeOutLeftSub || '0'}</strong></div>
                                         
                                         <div class="pdf-t-value pdf-v-right"><small>右牆寬</small><br><strong>${w.sizeOutRight || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-right-sub"><small>右牆(下)</small><br><strong>${w.sizeOutRightSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-right-sub"><small>右牆(註)</small><br><strong>${w.sizeOutRightSub || '0'}</strong></div>
                                         
                                         <div class="pdf-t-value pdf-v-height" style="border-color: #3498db;"><small>窗本身高</small><br><span class="highlight-blue">${w.sizeWindowHeight || '0'}</span></div>
                                         
                                         <div class="pdf-t-value pdf-v-bottom"><small>下框地</small><br><strong>${w.sizeOutBottom || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-bottom-sub"><small>下框(下)</small><br><strong>${w.sizeOutBottomSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-bottom-sub"><small>下框(註)</small><br><strong>${w.sizeOutBottomSub || '0'}</strong></div>
                                     </div>
                                 </div>
                                 <div class="pdf-meta-info-right-panel">
@@ -861,7 +861,7 @@
                         ${windowsPrintHtml}
                         
                         <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 11px; color: #95a5a6;">
-                            本單據由專業窗簾丈量系統產生，數據均經現場確認無誤。
+                            本單據由專業窗簾丈量系統產生，數據均經現場丈量確認無誤。
                         </div>
                     </div>
                 </body>
