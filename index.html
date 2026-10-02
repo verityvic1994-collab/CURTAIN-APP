@@ -106,7 +106,6 @@
         }
         .t-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); }
         
-        /* 原有位置與新增下方格位置 */
         .t-out-top      { top: 5px;   left: 118px; }
         .t-out-top-sub  { top: 41px;  left: 118px; border-style: dashed; }
         .t-win-width    { top: 80px;  left: 118px; }
@@ -136,26 +135,36 @@
         /* 搜尋與歷史紀錄 */
         .search-box { margin-top: 30px; border-top: 2px dashed var(--border-color); padding-top: 20px; }
         .history-item { background: #f8f9fa; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px solid #edf2f7; position: relative; }
-        
         .history-client-details { display: none; font-size: 14px; color: #57606f; background: #fff; padding: 10px; border-radius: 6px; margin: 6px 0; border: 1px solid #e2e8f0; line-height: 1.6; }
+        .history-header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .btn-group-header { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
         
-        .history-header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px; }
-        .btn-group-header { display: flex; gap: 6px; align-items: center; }
-        
-        .toggle-btn { background-color: #7f8c8d; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; }
-        .pdf-btn { background-color: #e67e22; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .row-delete-btn { background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .row-edit-btn { background-color: #27ae60; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .toggle-btn { background-color: #7f8c8d; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .estimate-btn { background-color: #8e44ad; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .pdf-btn { background-color: #e67e22; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .pdf-price-only-btn { background-color: #d35400; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .row-delete-btn { background-color: #e74c3c; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .row-edit-btn { background-color: #27ae60; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
 
-        /* 全螢幕歷史紀錄燈箱彈出視窗 */
-        #history-lightbox {
+        /* 全螢幕燈箱樣式 (歷史紀錄 & 估價頁面) */
+        #history-lightbox, #estimate-lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #f5f7fa; z-index: 5000; display: none; flex-direction: column; padding: 15px; overflow: hidden;
         }
         .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--primary-color); margin-bottom: 15px; }
         .lightbox-title { font-size: 18px; font-weight: bold; color: #2c3e50; }
-        .lightbox-close-btn { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .lightbox-close-btn { background: #e74c3c; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .lightbox-save-btn { background: #27ae60; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
         .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 40px; }
+
+        /* 估價試算頁面的排版樣式 */
+        .est-card { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .est-card-title { font-size: 16px; font-weight: bold; color: #2980b9; margin-bottom: 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 6px; }
+        .est-dim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-bottom: 12px; background: #f8fafc; padding: 10px; border-radius: 6px; }
+        .est-dim-item { display: flex; flex-direction: column; gap: 3px; }
+        .est-dim-item label { font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 0; }
+        .est-dim-item input { font-size: 14px; padding: 6px 8px; }
+
         /* 燈箱內小 T 字圖樣式 */
         .mini-t-container { display: flex; justify-content: center; transform: scale(0.85); margin: 0; }
         .mini-t-chart { position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; }
@@ -165,6 +174,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- 密碼鎖畫面 -->
         <div id="auth-overlay">
             <div class="auth-box">
                 <h2> 🔒  丈量系統</h2>
@@ -172,8 +182,10 @@
                 <button onclick="window.checkPassword()">登入系統</button>
             </div>
         </div>
+
+        <!-- 主程式內容 -->
         <div id="app-content">
-            <h1 id="main-header"> 📋  窗簾現場丈量單</h1>
+            <h1 id="main-header"> 📋  窗簾現場丈量單 (尺寸輸入)</h1>
             
             <div class="client-info-card">
                 <div class="client-info-title"> 👤  客戶基本資料</div>
@@ -197,33 +209,13 @@
                         <input type="number" id="client-taxid" placeholder="無則免填">
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>估價金額 (元)：</label>
-                        <input type="number" id="client-price" placeholder="總估價金額">
-                    </div>
-                    <div class="form-group">
-                        <label>收取訂金 (元)：</label>
-                        <input type="number" id="client-deposit" placeholder="已收訂金">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>未稅價 (元)：</label>
-                        <input type="number" id="client-notax" placeholder="輸入未稅自動計稅" oninput="calculateTax(this, 'toTax')">
-                    </div>
-                    <div class="form-group">
-                        <label>含稅價 (元)：</label>
-                        <input type="number" id="client-withtax" placeholder="輸入含稅自動回推" oninput="calculateTax(this, 'toNoTax')">
-                    </div>
-                </div>
             </div>
 
             <div id="window-list"></div>
 
             <div class="btn-block">
                 <button class="action-btn btn-add" id="btn-add-window" onclick="addWindowItem()"> ➕  新增下一個窗戶項目</button>
-                <button class="action-btn btn-save" id="btn-save-main" onclick="saveDataToLocalStorage()"> 💾  儲存全戶資料到手機</button>
+                <button class="action-btn btn-save" id="btn-save-main" onclick="saveDataToLocalStorage()"> 💾  儲存全戶尺寸到手機</button>
                 <button class="action-btn btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"> ✕  取消修改 (不儲存)</button>
             </div>
             <div class="btn-block" style="margin-top: 10px;">
@@ -238,6 +230,7 @@
         </div>
     </div>
 
+    <!-- 近期歷史紀錄燈箱 -->
     <div id="history-lightbox">
         <div class="lightbox-header">
             <span class="lightbox-title"> 📋  近期 20 筆本機丈量紀錄</span>
@@ -246,9 +239,22 @@
         <div id="lightbox-list" class="lightbox-content"></div>
     </div>
 
+    <!-- 獨立估價試算頁面燈箱 -->
+    <div id="estimate-lightbox">
+        <div class="lightbox-header">
+            <span class="lightbox-title" id="est-lightbox-title"> 💰  客戶估價試算</span>
+            <div style="display: flex; gap: 8px;">
+                <button class="lightbox-save-btn" onclick="saveEstimateAndClose()"> 💾  儲存並返回</button>
+                <button class="lightbox-close-btn" onclick="closeEstimateLightbox()"> ✕  關閉</button>
+            </div>
+        </div>
+        <div class="lightbox-content" id="estimate-lightbox-content"></div>
+    </div>
+
     <script>
         let editingId = null;
         let windowCount = 0;
+        let currentEstimatingRecordId = null;
 
         window.checkPassword = function() {
             const pass = document.getElementById('sys-password').value;
@@ -257,22 +263,6 @@
                 document.getElementById('app-content').style.display = 'block';
             } else {
                 alert('密碼錯誤，請重新輸入！');
-            }
-        }
-
-        window.calculateTax = function(element, direction) {
-            const val = parseFloat(element.value);
-            const noTaxInput = document.getElementById('client-notax');
-            const withTaxInput = document.getElementById('client-withtax');
-            if (!element.value) {
-                if (direction === 'toTax') withTaxInput.value = '';
-                if (direction === 'toNoTax') noTaxInput.value = '';
-                return;
-            }
-            if (direction === 'toTax') {
-                withTaxInput.value = Math.round(val * 1.05);
-            } else if (direction === 'toNoTax') {
-                noTaxInput.value = Math.round(val / 1.05);
             }
         }
 
@@ -395,8 +385,8 @@
             if (!record) return;
 
             editingId = recordId;
-            document.getElementById('main-header').innerText = "✏️ 正在修改案件資料";
-            document.getElementById('btn-save-main').innerText = "✅ 更新並覆蓋資料";
+            document.getElementById('main-header').innerText = "✏️ 正在修改丈量尺寸資料";
+            document.getElementById('btn-save-main').innerText = "✅ 更新並覆蓋尺寸資料";
             document.getElementById('btn-save-main').style.backgroundColor = "#27ae60";
             document.getElementById('btn-cancel-edit').style.display = "block";
 
@@ -404,10 +394,6 @@
             document.getElementById('client-phone').value = record.clientPhone || '';
             document.getElementById('client-address').value = record.clientAddress || '';
             document.getElementById('client-taxid').value = record.clientTaxId || '';
-            document.getElementById('client-price').value = record.clientPrice || '';
-            document.getElementById('client-deposit').value = record.clientDeposit || '';
-            document.getElementById('client-notax').value = record.clientNoTax || '';
-            document.getElementById('client-withtax').value = record.clientWithTax || '';
 
             const windowList = document.getElementById('window-list');
             windowList.innerHTML = '';
@@ -455,8 +441,8 @@
 
         function resetForm() {
             editingId = null;
-            document.getElementById('main-header').innerText = "📋 窗簾現場丈量單";
-            document.getElementById('btn-save-main').innerText = "💾 儲存全戶資料到手機";
+            document.getElementById('main-header').innerText = "📋 窗簾現場丈量單 (尺寸輸入)";
+            document.getElementById('btn-save-main').innerText = "💾 儲存全戶尺寸到手機";
             document.getElementById('btn-save-main').style.backgroundColor = "#3498db";
             document.getElementById('btn-cancel-edit').style.display = "none";
 
@@ -464,17 +450,12 @@
             document.getElementById('client-phone').value = '';
             document.getElementById('client-address').value = '';
             document.getElementById('client-taxid').value = '';
-            document.getElementById('client-price').value = '';
-            document.getElementById('client-deposit').value = '';
-            document.getElementById('client-notax').value = '';
-            document.getElementById('client-withtax').value = '';
             
             document.getElementById('window-list').innerHTML = '';
             windowCount = 0;
             addWindowItem();
         }
 
-        // 定義全域 GAS 網址
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFSFNctIu8xQ4mMIl0YsXuWN0yj-ocL09-gzZkTBhUfrdhiNLE3X-UPjzcuXSL275R5Q/exec";
 
         window.saveDataToLocalStorage = function() {
@@ -518,15 +499,11 @@
                     records[index].clientPhone = document.getElementById('client-phone').value.trim();
                     records[index].clientAddress = document.getElementById('client-address').value.trim();
                     records[index].clientTaxId = document.getElementById('client-taxid').value.trim();
-                    records[index].clientPrice = document.getElementById('client-price').value.trim();
-                    records[index].clientDeposit = document.getElementById('client-deposit').value.trim();
-                    records[index].clientNoTax = document.getElementById('client-notax').value.trim();
-                    records[index].clientWithTax = document.getElementById('client-withtax').value.trim();
                     records[index].windows = windowsData;
                     records[index].timestamp = "已更新: " + new Date().toLocaleString('zh-TW');
                     currentRecord = records[index];
                 }
-                alert('🎉 本機資料已成功更新！');
+                alert('🎉 本機丈量尺寸已更新！');
             } else {
                 currentRecord = {
                     id: new Date().toLocaleString('zh-TW', {hour12: false}).replace(/[^0-9]/g, ''),
@@ -534,21 +511,15 @@
                     clientPhone: document.getElementById('client-phone').value.trim(),
                     clientAddress: document.getElementById('client-address').value.trim(),
                     clientTaxId: document.getElementById('client-taxid').value.trim(),
-                    clientPrice: document.getElementById('client-price').value.trim(),
-                    clientDeposit: document.getElementById('client-deposit').value.trim(),
-                    clientNoTax: document.getElementById('client-notax').value.trim(),
-                    clientWithTax: document.getElementById('client-withtax').value.trim(),
                     windows: windowsData,
                     timestamp: new Date().toLocaleString('zh-TW')
                 };
                 records.unshift(currentRecord);
-                alert('🎉 本機儲存成功！');
+                alert('🎉 丈量尺寸儲存成功！請至歷史紀錄點擊【估價】進行報價試算。');
             }
 
-            // 儲存到手機 LocalStorage
             localStorage.setItem('curtain_measurements', JSON.stringify(records));
             
-            // --- 同步上傳至雲端 Google 試算表 ---
             if(GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("XXXXX")) {
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
@@ -564,6 +535,228 @@
             if(document.getElementById('search-input').value) { searchData(); }
         }
 
+        // ==========================================
+        // 💰 估價試算模組 (獨立頁面與獨立數據存取)
+        // ==========================================
+        window.openEstimateModal = function(recordId) {
+            const records = getLocalStorageData();
+            const record = records.find(r => r.id === recordId);
+            if (!record) return;
+
+            currentEstimatingRecordId = recordId;
+            document.getElementById('est-lightbox-title').innerText = `💰 【${record.clientName}】估價試算頁面`;
+
+            // 如果該客戶已有估價紀錄則帶出，否則以原始丈量各窗為基準建立獨立估價副本
+            const quoteWindows = (record.quoteData && record.quoteData.windows) ? record.quoteData.windows : record.windows.map(w => ({
+                itemNumber: w.itemNumber,
+                location: w.location,
+                types: [...(w.types || [])],
+                envs: [...(w.envs || [])],
+                boxDepth: w.boxDepth,
+                sizeOutTop: w.sizeOutTop,
+                sizeOutTopSub: w.sizeOutTopSub,
+                sizeOutBottom: w.sizeOutBottom,
+                sizeOutBottomSub: w.sizeOutBottomSub,
+                sizeOutLeft: w.sizeOutLeft,
+                sizeOutLeftSub: w.sizeOutLeftSub,
+                sizeOutRight: w.sizeOutRight,
+                sizeOutRightSub: w.sizeOutRightSub,
+                sizeWindowWidth: w.sizeWindowWidth,
+                sizeWindowHeight: w.sizeWindowHeight,
+                itemPrice: '',
+                itemStyleNote: ''
+            }));
+
+            const qGeneral = record.quoteData || {};
+            const totalPrice = qGeneral.totalPrice || '';
+            const deposit = qGeneral.deposit || '';
+            const noTax = qGeneral.noTax || '';
+            const withTax = qGeneral.withTax || '';
+
+            let windowsRowsHtml = '';
+            quoteWindows.forEach((w, idx) => {
+                windowsRowsHtml += `
+                    <div class="est-card" data-idx="${idx}">
+                        <div class="est-card-title">🪟 項目 ${w.itemNumber}：${w.location || '未填位置'}</div>
+                        <div style="font-size: 13px; color: #64748b; margin-bottom: 8px;">
+                            開法：${(w.types || []).join(', ') || '無'} | 環境：${(w.envs || []).join(', ') || '無'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '無'}
+                        </div>
+                        
+                        <!-- 尺寸以列與網格方框呈現，完全不鎖死 -->
+                        <div style="font-size: 13px; font-weight: bold; margin-bottom: 4px; color:#2c3e50;">📐 估價尺寸明細 (可直接修改，不影響原丈量圖)：</div>
+                        <div class="est-dim-grid">
+                            <div class="est-dim-item"><label>上框高</label><input type="text" class="eq-top" value="${w.sizeOutTop || ''}"></div>
+                            <div class="est-dim-item"><label>上框(下)</label><input type="text" class="eq-top-sub" value="${w.sizeOutTopSub || ''}"></div>
+                            <div class="est-dim-item"><label>窗本身寬</label><input type="text" class="eq-width" value="${w.sizeWindowWidth || ''}" style="border-color:#3498db; font-weight:bold;"></div>
+                            <div class="est-dim-item"><label>窗本身高</label><input type="text" class="eq-height" value="${w.sizeWindowHeight || ''}" style="border-color:#3498db; font-weight:bold;"></div>
+                            <div class="est-dim-item"><label>左牆寬</label><input type="text" class="eq-left" value="${w.sizeOutLeft || ''}"></div>
+                            <div class="est-dim-item"><label>左牆(註)</label><input type="text" class="eq-left-sub" value="${w.sizeOutLeftSub || ''}"></div>
+                            <div class="est-dim-item"><label>右牆寬</label><input type="text" class="eq-right" value="${w.sizeOutRight || ''}"></div>
+                            <div class="est-dim-item"><label>右牆(註)</label><input type="text" class="eq-right-sub" value="${w.sizeOutRightSub || ''}"></div>
+                            <div class="est-dim-item"><label>下框地</label><input type="text" class="eq-bottom" value="${w.sizeOutBottom || ''}"></div>
+                            <div class="est-dim-item"><label>下框(註)</label><input type="text" class="eq-bottom-sub" value="${w.sizeOutBottomSub || ''}"></div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 2;">
+                                <label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label>
+                                <input type="text" class="eq-note" value="${w.itemStyleNote || ''}" placeholder="例如：一布一紗、蛇行簾遮光布號A-01">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label style="font-size: 13px; color:#e67e22;">💵 此窗金額 (元)：</label>
+                                <input type="number" class="eq-price" value="${w.itemPrice || ''}" placeholder="單窗金額" oninput="autoSumEstimateTotal()">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const contentDiv = document.getElementById('estimate-lightbox-content');
+            contentDiv.innerHTML = `
+                ${windowsRowsHtml}
+                
+                <div class="client-info-card" style="background:#fff; margin-top:20px;">
+                    <div class="client-info-title"> 💰  總工程報價與結算試算</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>總估價金額 (元)：</label>
+                            <input type="number" id="est-total-price" value="${totalPrice}" placeholder="自動加總或自行輸入" oninput="calcEstimateTax(this, 'toTax')">
+                        </div>
+                        <div class="form-group">
+                            <label>收取訂金 (元)：</label>
+                            <input type="number" id="est-deposit" value="${deposit}" placeholder="已收訂金" oninput="updateEstimateBalance()">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>未稅金額 (元)：</label>
+                            <input type="number" id="est-notax" value="${noTax}" placeholder="未稅價" oninput="calcEstimateTax(this, 'toTax')">
+                        </div>
+                        <div class="form-group">
+                            <label>含稅金額 (元)：</label>
+                            <input type="number" id="est-withtax" value="${withTax}" placeholder="含稅價" oninput="calcEstimateTax(this, 'toNoTax')">
+                        </div>
+                    </div>
+                    <div style="font-size: 15px; font-weight: bold; color: #e74c3c; margin-top: 10px; text-align: right;" id="est-balance-display">
+                        工程尾款預估：$0 元
+                    </div>
+                </div>
+            `;
+
+            updateEstimateBalance();
+            document.getElementById('estimate-lightbox').style.display = 'flex';
+        }
+
+        window.autoSumEstimateTotal = function() {
+            const priceInputs = document.querySelectorAll('#estimate-lightbox-content .eq-price');
+            let sum = 0;
+            let hasVal = false;
+            priceInputs.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val)) {
+                    sum += val;
+                    hasVal = true;
+                }
+            });
+            if (hasVal) {
+                const totalInput = document.getElementById('est-total-price');
+                totalInput.value = sum;
+                calcEstimateTax(totalInput, 'toTax');
+            }
+            updateEstimateBalance();
+        }
+
+        window.calcEstimateTax = function(element, direction) {
+            const val = parseFloat(element.value);
+            const noTaxInput = document.getElementById('est-notax');
+            const withTaxInput = document.getElementById('est-withtax');
+            if (!element.value || isNaN(val)) {
+                if (direction === 'toTax') withTaxInput.value = '';
+                if (direction === 'toNoTax') noTaxInput.value = '';
+                updateEstimateBalance();
+                return;
+            }
+            if (direction === 'toTax') {
+                withTaxInput.value = Math.round(val * 1.05);
+                if(element.id === 'est-total-price') noTaxInput.value = val;
+            } else if (direction === 'toNoTax') {
+                noTaxInput.value = Math.round(val / 1.05);
+            }
+            updateEstimateBalance();
+        }
+
+        window.updateEstimateBalance = function() {
+            const withTax = parseFloat(document.getElementById('est-withtax').value) || 0;
+            const totalPrice = parseFloat(document.getElementById('est-total-price').value) || 0;
+            const deposit = parseFloat(document.getElementById('est-deposit').value) || 0;
+            const finalTotal = withTax || totalPrice || 0;
+            const balance = finalTotal - deposit;
+            const disp = document.getElementById('est-balance-display');
+            if (disp) {
+                disp.innerText = `工程尾款預估：$${balance} 元`;
+            }
+        }
+
+        window.saveEstimateAndClose = function() {
+            if (!currentEstimatingRecordId) return;
+            const records = getLocalStorageData();
+            const index = records.findIndex(r => r.id === currentEstimatingRecordId);
+            if (index === -1) return;
+
+            const cards = document.querySelectorAll('#estimate-lightbox-content .est-card');
+            const quoteWindows = [];
+            cards.forEach(card => {
+                const idx = parseInt(card.getAttribute('data-idx'));
+                const originalWindow = records[index].windows[idx] || {};
+                quoteWindows.push({
+                    itemNumber: originalWindow.itemNumber || (idx + 1),
+                    location: originalWindow.location || '',
+                    types: originalWindow.types || [],
+                    envs: originalWindow.envs || [],
+                    boxDepth: originalWindow.boxDepth || '',
+                    sizeOutTop: card.querySelector('.eq-top').value.trim(),
+                    sizeOutTopSub: card.querySelector('.eq-top-sub').value.trim(),
+                    sizeOutBottom: card.querySelector('.eq-bottom').value.trim(),
+                    sizeOutBottomSub: card.querySelector('.eq-bottom-sub').value.trim(),
+                    sizeOutLeft: card.querySelector('.eq-left').value.trim(),
+                    sizeOutLeftSub: card.querySelector('.eq-left-sub').value.trim(),
+                    sizeOutRight: card.querySelector('.eq-right').value.trim(),
+                    sizeOutRightSub: card.querySelector('.eq-right-sub').value.trim(),
+                    sizeWindowWidth: card.querySelector('.eq-width').value.trim(),
+                    sizeWindowHeight: card.querySelector('.eq-height').value.trim(),
+                    itemStyleNote: card.querySelector('.eq-note').value.trim(),
+                    itemPrice: card.querySelector('.eq-price').value.trim()
+                });
+            });
+
+            records[index].quoteData = {
+                windows: quoteWindows,
+                totalPrice: document.getElementById('est-total-price').value.trim(),
+                deposit: document.getElementById('est-deposit').value.trim(),
+                noTax: document.getElementById('est-notax').value.trim(),
+                withTax: document.getElementById('est-withtax').value.trim(),
+                savedAt: new Date().toLocaleString('zh-TW')
+            };
+
+            localStorage.setItem('curtain_measurements', JSON.stringify(records));
+            alert('🎉 估價試算資料已儲存完畢！原尺寸保持不變。');
+            closeEstimateLightbox();
+            if(document.getElementById('history-lightbox').style.display === 'flex') {
+                openHistoryLightbox();
+            }
+            if(document.getElementById('search-input').value) {
+                searchData();
+            }
+        }
+
+        window.closeEstimateLightbox = function() {
+            document.getElementById('estimate-lightbox').style.display = 'none';
+            currentEstimatingRecordId = null;
+        }
+
+        // ==========================================
+        // 歷史紀錄展示與收合
+        // ==========================================
         function makeWindowDetailHtml(w) {
             return `
                 <div style="margin-top: 10px; border-left: 4px solid #3498db; padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px;">
@@ -575,20 +768,20 @@
                             <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: #3498db;"></div>
                             
                             <div class="mini-t-val" style="top: 5px; left: 127px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 36px; left: 127px; border-style:dashed;"><small>上框(註)</small><strong>${w.sizeOutTopSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 36px; left: 127px; border-style:dashed;"><small>上框(下)</small><strong>${w.sizeOutTopSub || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 72px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身寬</small><strong style="color:#2980b9;">${w.sizeWindowWidth || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 90px; left: -5px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 122px; left: -5px; border-style:dashed;"><small>左牆(註)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 122px; left: -5px; border-style:dashed;"><small>左牆(下)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 90px; left: 255px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 122px; left: 255px; border-style:dashed;"><small>右牆(註)</small><strong>${w.sizeOutRightSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 122px; left: 255px; border-style:dashed;"><small>右牆(下)</small><strong>${w.sizeOutRightSub || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 165px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身高</small><strong style="color:#2980b9;">${w.sizeWindowHeight || '0'}</strong></div>
                             
                             <div class="mini-t-val" style="top: 220px; left: 127px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 252px; left: 127px; border-style:dashed;"><small>下框(註)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 252px; left: 127px; border-style:dashed;"><small>下框(下)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
                         </div>
                     </div>
                     ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:#7f8c8d; background:#fff9db; padding:4px; border-radius:4px;"> 📝  備註: ${w.note}</div>` : ''}
@@ -596,12 +789,12 @@
             `;
         }
 
-        // 生成收合區域 HTML 的函式
         function makeClientDetailsHtml(record, uniqueId) {
-            const price = record.clientPrice || 0;
-            const deposit = record.clientDeposit || 0;
-            const noTax = record.clientNoTax || 0;
-            const withTax = record.clientWithTax || 0;
+            const q = record.quoteData || {};
+            const price = q.totalPrice || 0;
+            const deposit = q.deposit || 0;
+            const noTax = q.noTax || 0;
+            const withTax = q.withTax || 0;
             const finalTotal = parseInt(withTax) || parseInt(price) || 0;
             const balance = finalTotal - deposit;
 
@@ -614,12 +807,12 @@
                         💰 估價金額：$${price} 元 | 💵 收取訂金：$${deposit} 元<br>
                         📊 未稅價格：$${noTax} 元 | 📈 含稅價格：$${withTax} 元<br>
                         🚨 <span style="color:#e74c3c; font-weight:bold;">工程尾款結算：$${balance} 元</span>
+                        ${q.savedAt ? `<div style="font-size:11px; color:#8e44ad;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#e67e22;">⚠️ 尚未建立詳細估價試算</div>'}
                     </div>
                 </div>
             `;
         }
 
-        // 全域控制展開與收合的控制函數
         window.toggleDetailsSection = function(uniqueId, btn) {
             const target = document.getElementById('details-' + uniqueId);
             if (!target) return;
@@ -645,6 +838,19 @@
             if (editingId === recordId) resetForm();
         }
 
+        function createActionButtonsHtml(record, domId, uniqueId) {
+            return `
+                <div class="btn-group-header">
+                    <button class="toggle-btn" onclick="toggleDetailsSection('${uniqueId}', this)">-</button>
+                    <button class="estimate-btn" onclick="openEstimateModal('${record.id}')">💰 估價</button>
+                    <button class="row-edit-btn" onclick="loadRecordForEdit('${record.id}')">✏️ 尺寸</button>
+                    <button class="pdf-btn" title="含T-Chart與尺寸" onclick="exportPDFWithTChart('${record.id}')">📥 完整報價(含T圖)</button>
+                    <button class="pdf-price-only-btn" title="純金額無任何尺寸" onclick="exportPDFPriceOnly('${record.id}')">📄 純金額報價(無尺寸)</button>
+                    <button class="row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
+                </div>
+            `;
+        }
+
         window.searchData = function() {
             const queryText = document.getElementById('search-input').value.trim();
             const resultsDiv = document.getElementById('search-results');
@@ -665,12 +871,7 @@
                     item.innerHTML = `
                         <div class="history-header-flex">
                             <strong> 👤  客戶: ${record.clientName}</strong>
-                            <div class="btn-group-header">
-                                <button class="toggle-btn" onclick="toggleDetailsSection('${uniqueId}', this)">-</button>
-                                <button class="row-edit-btn" onclick="loadRecordForEdit('${record.id}')">✏️ 修改</button>
-                                <button class="pdf-btn" onclick="exportSinglePDF('${record.id}')">📥 PDF</button>
-                                <button class="row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
-                            </div>
+                            ${createActionButtonsHtml(record, domId, uniqueId)}
                         </div>
                         <small style="color:#95a5a6;">${record.timestamp || ''}</small>
                         ${makeClientDetailsHtml(record, uniqueId)}
@@ -697,14 +898,9 @@
                 card.id = domId;
                 card.style.cssText = "background: #f8f9fa; border: 1px solid #dcdde1; border-radius: 8px; padding: 15px; margin-bottom: 20px;";
                 card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
                         <span style="font-size: 16px; font-weight: bold; color: #2c3e50;"> 👤  客戶：${record.clientName}</span>
-                        <div class="btn-group-header">
-                            <button class="toggle-btn" onclick="toggleDetailsSection('${uniqueId}', this)">-</button>
-                            <button class="row-edit-btn" onclick="loadRecordForEdit('${record.id}')">✏️ 修改</button>
-                            <button class="pdf-btn" onclick="exportSinglePDF('${record.id}')">📥 PDF</button>
-                            <button class="row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
-                        </div>
+                        ${createActionButtonsHtml(record, domId, uniqueId)}
                     </div>
                     <div style="color: #7f8c8d; font-size: 11px; margin-bottom: 10px; text-align: right;">${record.timestamp || ''}</div>
                     ${makeClientDetailsHtml(record, uniqueId)}
@@ -719,37 +915,42 @@
             document.getElementById('history-lightbox').style.display = 'none';
         }
 
-        window.exportSinglePDF = function(recordId) {
+        // ==========================================
+        // 📄 PDF 匯出 1：包含 T-Chart 圖的完整估價報價單
+        // ==========================================
+        window.exportPDFWithTChart = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
             if(!record) return;
-            
-            const price = parseInt(record.clientPrice) || 0;
-            const deposit = parseInt(record.clientDeposit) || 0;
-            const noTax = parseInt(record.clientNoTax) || 0;
-            const withTax = parseInt(record.clientWithTax) || 0;
-            
+
+            const q = record.quoteData || {};
+            const price = parseInt(q.totalPrice) || 0;
+            const deposit = parseInt(q.deposit) || 0;
+            const noTax = parseInt(q.noTax) || 0;
+            const withTax = parseInt(q.withTax) || 0;
             const finalTotal = withTax || price || 0;
             const balance = finalTotal - deposit;
             
             const printWindow = window.open("", "_blank");
             
             let windowsPrintHtml = "";
-            if (record.windows && Array.isArray(record.windows)) {
-                record.windows.forEach(w => {
+            const windowsToRender = (q.windows && q.windows.length) ? q.windows : record.windows;
+
+            if (windowsToRender && Array.isArray(windowsToRender)) {
+                windowsToRender.forEach(w => {
                     const typeStr = (w.types || []).join(', ').trim();
                     const typeValue = typeStr !== "" ? typeStr : "未選";
-                    const typeClass = typeValue === "未選" ? 'class="unfilled-alert"' : '';
                     const envStr = (w.envs || []).join(', ').trim();
                     const envValue = envStr !== "" ? envStr : "未選";
-                    const envClass = envValue === "未選" ? 'class="unfilled-alert"' : '';
                     const depthStr = w.boxDepth ? w.boxDepth.trim() : "";
                     const depthValue = (depthStr !== "" && depthStr !== "未填") ? depthStr + ' cm' : "未填";
-                    const depthClass = depthValue === "未填" ? 'class="unfilled-alert"' : '';
 
                     windowsPrintHtml += `
                         <div class="pdf-window-box">
-                            <div class="pdf-window-header"> 🪟  窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】</div>
+                            <div class="pdf-window-header">
+                                🪟 窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】
+                                ${w.itemPrice ? `<span style="float:right; font-weight:normal;">單窗報價：$${w.itemPrice} 元</span>` : ''}
+                            </div>
                             <div class="pdf-main-layout">
                                 <div class="pdf-chart-layout">
                                     <div class="pdf-t-chart">
@@ -774,12 +975,13 @@
                                     </div>
                                 </div>
                                 <div class="pdf-meta-info-right-panel">
-                                    <div class="meta-row-column"><div class="meta-column-title">開法選項</div><div ${typeClass}>${typeValue}</div></div>
-                                    <div class="meta-row-column"><div class="meta-column-title">安裝環境</div><div ${envClass}>${envValue}</div></div>
-                                    <div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div ${depthClass}>${depthValue}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">開法選項</div><div>${typeValue}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">安裝環境</div><div>${envValue}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div>${depthValue}</div></div>
                                 </div>
                             </div>
-                            ${w.note ? `<div class="pdf-w-note"> 📝  <strong>備註狀況：</strong>${w.note}</div>` : ''}
+                            ${w.itemStyleNote ? `<div style="margin-top:8px; font-size:14px; color:#2980b9;">🎨 <strong>款式規劃：</strong>${w.itemStyleNote}</div>` : ''}
+                            ${w.note ? `<div class="pdf-w-note"> 📝  <strong>丈量備註：</strong>${w.note}</div>` : ''}
                         </div>
                     `;
                 });
@@ -788,7 +990,7 @@
             printWindow.document.write(`
                 <html>
                 <head>
-                    <title>窗簾丈量單_${record.clientName}</title>
+                    <title>窗簾估價單(含T圖)_${record.clientName}</title>
                     <style>
                         body { font-family: -apple-system, sans-serif; color: #2c3e50; padding: 25px; background: #fff; }
                         .pdf-header { text-align: center; border-bottom: 3px double #3498db; padding-bottom: 8px; margin-bottom: 20px; }
@@ -810,32 +1012,27 @@
                         .pdf-v-top        { top: 5px;   left: 142px; }
                         .pdf-v-top-sub    { top: 48px;  left: 142px; border-style: dashed; }
                         .pdf-v-width      { top: 92px;  left: 142px; }
-                        
                         .pdf-v-left       { top: 115px; left: -15px; }
                         .pdf-v-left-sub   { top: 160px; left: -15px; border-style: dashed; }
-                        
                         .pdf-v-right      { top: 115px; left: 295px; }
                         .pdf-v-right-sub  { top: 160px; left: 295px; border-style: dashed; }
-                        
                         .pdf-v-height     { top: 205px; left: 142px; }
-                        
                         .pdf-v-bottom     { top: 268px; left: 142px; }
                         .pdf-v-bottom-sub { top: 312px; left: 142px; border-style: dashed; }
 
                         .pdf-meta-info-right-panel { width: 180px; display: flex; flex-direction: column; gap: 10px; }
                         .meta-row-column { flex: 1; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 16px; font-weight: bold; }
                         .meta-column-title { font-weight: bold; color: #7f8c8d; font-size: 12px; margin-bottom: 4px; border-bottom: 1px dashed #e2e8f0; width: 100%; }
-                        .unfilled-alert { color: #e74c3c; font-weight: 900; }
                         .highlight-blue { color: #1b6ca8; font-weight: 900; }
                         .price-alert { color: #c0392b; font-weight: bold; }
-                        .pdf-w-note { margin-top: 10px; font-size: 16px; background: #f5abae; padding: 8px; border-radius: 4px; border: 1px solid #f0adb0; }
+                        .pdf-w-note { margin-top: 10px; font-size: 14px; background: #fff9db; padding: 8px; border-radius: 4px; border: 1px solid #ffeaa7; }
                         @media print { button { display: none; } }
                     </style>
                 </head>
                 <body>
                     <div style="max-width: 780px; margin: 0 auto;">
                         <div style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #27ae60; color: white; border: none; padding: 10px 22px; border-radius: 4px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button></div>
-                        <div class="pdf-header"><h1> 📋 窗簾現場丈量確認單</h1><p>紀錄時間：${record.timestamp || ''}</p></div>
+                        <div class="pdf-header"><h1> 📋 窗簾現場丈量與估價確認單 (含T圖)</h1><p>紀錄時間：${record.timestamp || ''}</p></div>
                         
                         <div class="pdf-section-title"> 👤 客戶基本資料</div>
                         <table class="pdf-table">
@@ -844,7 +1041,7 @@
                             <tr><td colspan="2"><strong>統一編號：</strong>${record.clientTaxId || '未填'}</td></tr>
                         </table>
                         
-                        <div class="pdf-section-title"> 💰 財務與工程預算</div>
+                        <div class="pdf-section-title"> 💰 財務與工程總覽</div>
                         <table class="pdf-table">
                             <tr>
                                 <td width="33%"><strong>估價總額：</strong>$${price} 元</td>
@@ -857,11 +1054,123 @@
                             </tr>
                         </table>
                         
-                        <div class="pdf-section-title"> 📐 全戶各窗現場圖像化尺寸 (T-Chart)</div>
+                        <div class="pdf-section-title"> 📐 各窗詳細尺寸與圖示 (T-Chart)</div>
                         ${windowsPrintHtml}
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        // ==========================================
+        // 📄 PDF 匯出 2：單純顯示各窗估價金額 (無任何尺寸)
+        // ==========================================
+        window.exportPDFPriceOnly = function(recordId) {
+            const records = getLocalStorageData();
+            const record = records.find(r => r.id === recordId);
+            if(!record) return;
+
+            const q = record.quoteData || {};
+            const price = parseInt(q.totalPrice) || 0;
+            const deposit = parseInt(q.deposit) || 0;
+            const noTax = parseInt(q.noTax) || 0;
+            const withTax = parseInt(q.withTax) || 0;
+            const finalTotal = withTax || price || 0;
+            const balance = finalTotal - deposit;
+            
+            const printWindow = window.open("", "_blank");
+            
+            let tableRowsHtml = "";
+            const windowsToRender = (q.windows && q.windows.length) ? q.windows : record.windows;
+
+            if (windowsToRender && Array.isArray(windowsToRender)) {
+                windowsToRender.forEach((w, i) => {
+                    const itemPrice = w.itemPrice ? `$${w.itemPrice} 元` : '包含於總價';
+                    const styleNote = w.itemStyleNote || '依現場約定規劃';
+                    const typeStr = (w.types || []).join(', ') || '依標準規格';
+                    const envStr = (w.envs || []).join(', ') || '依現場結構';
+
+                    tableRowsHtml += `
+                        <tr>
+                            <td style="text-align: center; font-weight: bold;">${w.itemNumber || (i + 1)}</td>
+                            <td><strong>${w.location || '窗戶項目'}</strong></td>
+                            <td>${styleNote}</td>
+                            <td>${typeStr} / ${envStr}</td>
+                            <td style="text-align: right; font-weight: bold; color: #2980b9;">${itemPrice}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>工程估價報價單_${record.clientName}</title>
+                    <style>
+                        body { font-family: -apple-system, sans-serif; color: #2c3e50; padding: 30px; background: #fff; }
+                        .pdf-header { text-align: center; border-bottom: 3px double #3498db; padding-bottom: 10px; margin-bottom: 25px; }
+                        .pdf-header h1 { margin: 0; color: #2980b9; font-size: 26px; }
+                        .pdf-section-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #3498db; padding-left: 10px; margin-top: 25px; }
+                        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+                        .pdf-table th { background: #f1f5f9; padding: 10px; border: 1px solid #cbd5e1; text-align: left; }
+                        .pdf-table td { padding: 10px 12px; border: 1px solid #cbd5e1; }
+                        .price-alert { color: #c0392b; font-weight: bold; font-size: 16px; }
+                        .terms-box { margin-top: 30px; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 15px; font-size: 13px; line-height: 1.8; color: #57606f; }
+                        @media print { button { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <div style="text-align: right; margin-bottom: 15px;">
+                            <button onclick="window.print()" style="background: #27ae60; color: white; border: none; padding: 10px 22px; border-radius: 4px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button>
+                        </div>
+                        <div class="pdf-header">
+                            <h1> 📋 窗簾工程估價報價單</h1>
+                            <p style="color:#7f8c8d; font-size:13px;">報價日期：${q.savedAt || record.timestamp || ''}</p>
+                        </div>
                         
-                        <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 11px; color: #95a5a6;">
-                            本單據由專業窗簾丈量系統產生，數據均經現場丈量確認無誤。
+                        <div class="pdf-section-title"> 👤 客戶與施工資訊</div>
+                        <table class="pdf-table">
+                            <tr><td width="50%"><strong>客戶姓名：</strong>${record.clientName}</td><td width="50%"><strong>聯絡電話：</strong>${record.clientPhone || '未填'}</td></tr>
+                            <tr><td colspan="2"><strong>施工地址：</strong>${record.clientAddress || '未填'}</td></tr>
+                            <tr><td colspan="2"><strong>統一編號：</strong>${record.clientTaxId || '無'}</td></tr>
+                        </table>
+                        
+                        <div class="pdf-section-title"> 🪟 各窗施作項目與估價明細 (無尺寸)</div>
+                        <table class="pdf-table">
+                            <thead>
+                                <tr>
+                                    <th width="8%" style="text-align: center;">項次</th>
+                                    <th width="20%">施作空間位置</th>
+                                    <th width="37%">規劃款式型號 / 布號</th>
+                                    <th width="20%">開法與環境</th>
+                                    <th width="15%" style="text-align: right;">報價金額</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tableRowsHtml}
+                            </tbody>
+                        </table>
+
+                        <div class="pdf-section-title"> 💰 工程總計結算</div>
+                        <table class="pdf-table">
+                            <tr>
+                                <td width="33%"><strong>估價總額：</strong>$${price} 元</td>
+                                <td width="33%"><strong>未稅金額：</strong>$${noTax} 元</td>
+                                <td width="34%"><strong>含稅總額：</strong>$${withTax} 元</td>
+                            </tr>
+                            <tr>
+                                <td><strong>已付定金：</strong>$${deposit} 元</td>
+                                <td colspan="2"><strong>完工尾款：</strong><span class="price-alert">$${balance} 元</span></td>
+                            </tr>
+                        </table>
+
+                        <div class="terms-box">
+                            <strong>備註說明：</strong><br>
+                            1. 本報價單所列各項產品規格、布料花色均經現場溝通確認。<br>
+                            2. 訂單確認後敬請支付訂金，尾款於安裝完工驗收無誤後當日結清。<br>
+                            3. 如有任何規格疑問或變更需求，請隨時與丈量設計專員聯繫。
                         </div>
                     </div>
                 </body>
