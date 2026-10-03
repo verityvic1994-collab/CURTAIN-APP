@@ -541,7 +541,7 @@
         }
 
         // ==========================================
-        // 💰 估價試算模組 (支援一布一紗多項目列)
+        // 💰 估價試算模組 (含可修改車工費用與多列款式)
         // ==========================================
         window.openEstimateModal = function(recordId) {
             const records = getLocalStorageData();
@@ -562,6 +562,7 @@
                 const calcType = savedQ.calcType || 'traditional';
                 const pleatRate = savedQ.pleatRate !== undefined ? savedQ.pleatRate : '2';
                 const fabricWidth = savedQ.fabricWidth !== undefined ? savedQ.fabricWidth : '110';
+                const sewingPrice = savedQ.sewingPrice !== undefined ? savedQ.sewingPrice : '180';
                 const unitPrice = savedQ.unitPrice || '';
                 const hasTrack = savedQ.hasTrack !== undefined ? savedQ.hasTrack : true;
 
@@ -649,6 +650,10 @@
                                 <div class="f-fab-width">
                                     <label>布幅寬 (cm)：</label>
                                     <input type="number" class="c-fabwidth" value="${fabricWidth}" placeholder="常見110或150" oninput="runWindowFormula(${idx})">
+                                </div>
+                                <div class="f-sewing">
+                                    <label>車工單價 (元/幅)：</label>
+                                    <input type="number" class="c-sewingprice" value="${sewingPrice}" placeholder="預設180" oninput="runWindowFormula(${idx})">
                                 </div>
                                 <div>
                                     <label class="c-price-label">單價 (元/尺 或 元/才)：</label>
@@ -776,28 +781,33 @@
             const type = panel.querySelector('.c-type').value;
             const pleatDiv = panel.querySelector('.f-pleat');
             const fabWidthDiv = panel.querySelector('.f-fab-width');
+            const sewingDiv = panel.querySelector('.f-sewing');
             const trackDiv = panel.querySelector('.f-track');
             const priceLabel = panel.querySelector('.c-price-label');
 
             if(type === 'traditional') {
-                pleatDiv.style.display = 'block';
-                fabWidthDiv.style.display = 'block';
-                trackDiv.style.display = 'flex';
+                if(pleatDiv) pleatDiv.style.display = 'block';
+                if(fabWidthDiv) fabWidthDiv.style.display = 'block';
+                if(sewingDiv) sewingDiv.style.display = 'block';
+                if(trackDiv) trackDiv.style.display = 'flex';
                 priceLabel.innerText = '布料單價 (元/尺)：';
             } else if(type === 'seamless') {
-                pleatDiv.style.display = 'none';
-                fabWidthDiv.style.display = 'none';
-                trackDiv.style.display = 'flex';
+                if(pleatDiv) pleatDiv.style.display = 'none';
+                if(fabWidthDiv) fabWidthDiv.style.display = 'none';
+                if(sewingDiv) sewingDiv.style.display = 'none';
+                if(trackDiv) trackDiv.style.display = 'flex';
                 priceLabel.innerText = '無接縫布單價 (元/尺)：';
             } else if(type === 'roller') {
-                pleatDiv.style.display = 'none';
-                fabWidthDiv.style.display = 'none';
-                trackDiv.style.display = 'none';
+                if(pleatDiv) pleatDiv.style.display = 'none';
+                if(fabWidthDiv) fabWidthDiv.style.display = 'none';
+                if(sewingDiv) sewingDiv.style.display = 'none';
+                if(trackDiv) trackDiv.style.display = 'none';
                 priceLabel.innerText = '每才單價 (元/才)：';
             } else {
-                pleatDiv.style.display = 'none';
-                fabWidthDiv.style.display = 'none';
-                trackDiv.style.display = 'none';
+                if(pleatDiv) pleatDiv.style.display = 'none';
+                if(fabWidthDiv) fabWidthDiv.style.display = 'none';
+                if(sewingDiv) sewingDiv.style.display = 'none';
+                if(trackDiv) trackDiv.style.display = 'none';
                 priceLabel.innerText = '單價：';
             }
         }
@@ -811,8 +821,9 @@
             const type = panel.querySelector('.c-type').value;
             const pleat = parseFloat(panel.querySelector('.c-pleat').value) || 2;
             const fabWidth = parseFloat(panel.querySelector('.c-fabwidth').value) || 110;
+            const sewingPrice = parseFloat(panel.querySelector('.c-sewingprice').value) || 0;
             const unitPrice = parseFloat(panel.querySelector('.c-unitprice').value) || 0;
-            const hasTrack = panel.querySelector('.c-track').checked;
+            const hasTrack = panel.querySelector('.c-track') ? panel.querySelector('.c-track').checked : false;
             const resultBox = document.getElementById(`calc-result-${idx}`);
             const firstPriceInput = panel.querySelector('.c-itemprice');
 
@@ -830,13 +841,21 @@
             let finalPrice = 0;
 
             if (type === 'traditional') {
+                // 1. 幅數 = 寬度 × 打摺倍數 ÷ 布寬 (無條件進位)
                 const panels = Math.ceil((width * pleat) / fabWidth);
+                
+                // 5. 車工費用：幅數 X 車工單價 (預設180)
+                const sewingFee = panels * sewingPrice;
+
+                // 4. 一般軌道 = 寬度(台尺)無條件進位 x 90
                 const trackFeet = Math.ceil(width / 30.3);
                 const trackFee = hasTrack ? (trackFeet * 90) : 0;
-                const sewingFee = panels * 180;
+
+                // 6. 車縫所需高度與布量
                 const sewingHeightFeet = (height + 30.3) / 30.3;
                 const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6);
                 const fabricCost = totalFabricFeet * unitPrice;
+
                 finalPrice = fabricCost + sewingFee + trackFee;
 
                 html = `
@@ -845,11 +864,12 @@
                     • 車縫高度：(${height} cm + 30.3 cm) ÷ 30.3 = <strong>${sewingHeightFeet.toFixed(2)} 尺</strong><br>
                     • 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>
                     • 布料費用：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
-                    • 總車工費：${panels} 幅 × $180 = <strong>$${sewingFee} 元</strong><br>
+                    • 總車工費用：${panels} 幅 × $${sewingPrice} = <strong>$${sewingFee} 元</strong><br>
                     ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
                     ➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
             } else if (type === 'seamless') {
+                // 7. 無接縫布費用：總寬度(台尺) x 2.3倍摺數 + 0.6尺窗帶量 (差距<=0.01不進位)
                 const widthInFeet = width / 30.3;
                 const rawFeet = (widthInFeet * 2.3) + 0.6;
                 const ceilFeet = Math.ceil(rawFeet);
@@ -869,6 +889,7 @@
                     ➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
             } else if (type === 'roller') {
+                // 3. 才數計算：寬度(台尺) x 高度(台尺)
                 const widthFeet = width / 30.3;
                 const heightFeet = height / 30.3;
                 const totalCai = Math.round((widthFeet * heightFeet) * 10) / 10;
@@ -967,6 +988,7 @@
                     calcType: panel.querySelector('.c-type').value,
                     pleatRate: panel.querySelector('.c-pleat').value.trim(),
                     fabricWidth: panel.querySelector('.c-fabwidth').value.trim(),
+                    sewingPrice: panel.querySelector('.c-sewingprice') ? panel.querySelector('.c-sewingprice').value.trim() : '180',
                     unitPrice: panel.querySelector('.c-unitprice').value.trim(),
                     hasTrack: panel.querySelector('.c-track').checked,
                     fabricItems: fabricItems,
