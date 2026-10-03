@@ -829,32 +829,24 @@
 
             if (type === 'manual') {
                 resultBox.innerHTML = `✏️ <strong>純手動計價模式</strong>：請於下方直接輸入金額。`;
-                resultBox.setAttribute('data-formula-text', '純手動輸入金額');
+                resultBox.setAttribute('data-formula-html', '');
                 return;
             }
 
             if (width <= 0 || height <= 0) {
                 resultBox.innerHTML = `⚠️ 請輸入有效的寬度與高度以進行換算。`;
-                resultBox.setAttribute('data-formula-text', '');
+                resultBox.setAttribute('data-formula-html', '');
                 return;
             }
 
             let html = '';
-            let formulaPlain = '';
             let finalPrice = 0;
 
             if (type === 'traditional') {
-                // 1. 幅數 = 寬度 × 打摺倍數 ÷ 布寬 (無條件進位)
                 const panels = Math.ceil((width * pleat) / fabWidth);
-                
-                // 5. 車工費用：幅數 X 車工單價 (預設180)
                 const sewingFee = panels * sewingPrice;
-
-                // 4. 一般軌道 = 寬度(台尺)無條件進位 x 90
                 const trackFeet = Math.ceil(width / 30.3);
                 const trackFee = hasTrack ? (trackFeet * 90) : 0;
-
-                // 6. 車縫所需高度與耗布量
                 const sewingHeightFeet = (height + 30.3) / 30.3;
                 const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6);
                 const fabricCost = totalFabricFeet * unitPrice;
@@ -862,7 +854,7 @@
                 finalPrice = fabricCost + sewingFee + trackFee;
 
                 html = `
-                    <strong>【傳統窗簾布算式拆解】</strong><br>
+                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【傳統窗簾布算式拆解】</div>
                     • 幅數計算：${width} cm × ${pleat}倍 ÷ ${fabWidth} cm = <strong>${panels} 幅</strong><br>
                     • 車縫高度：(${height} cm + 30.3 cm) ÷ 30.3 = <strong>${sewingHeightFeet.toFixed(2)} 尺</strong><br>
                     • 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>
@@ -871,9 +863,7 @@
                     ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
                     ➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
-                formulaPlain = `幅數: ${panels}幅 | 車縫高度: ${sewingHeightFeet.toFixed(2)}尺 | 總耗布: ${totalFabricFeet}尺($${fabricCost}) | 車工: $${sewingFee}${hasTrack ? ` | 軌道: $${trackFee}` : ''} | 試算小計: $${finalPrice}元`;
             } else if (type === 'seamless') {
-                // 7. 無接縫布費用：總寬度(台尺) x 2.3倍摺數 + 0.6尺窗帶量 (差距<=0.01不進位)
                 const widthInFeet = width / 30.3;
                 const rawFeet = (widthInFeet * 2.3) + 0.6;
                 const ceilFeet = Math.ceil(rawFeet);
@@ -885,31 +875,28 @@
                 finalPrice = fabricCost + trackFee;
 
                 html = `
-                    <strong>【無接縫布算式拆解】</strong><br>
+                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【無接縫布算式拆解】</div>
                     • 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>
                     • 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong> (未進位原始值: ${rawFeet.toFixed(3)})<br>
                     • 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
                     ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
                     ➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
-                formulaPlain = `窗寬: ${widthInFeet.toFixed(2)}尺 | 耗布: ${totalFabricFeet}尺($${fabricCost})${hasTrack ? ` | 軌道: $${trackFee}` : ''} | 試算小計: $${finalPrice}元`;
             } else if (type === 'roller') {
-                // 3. 才數計算：寬度(台尺) x 高度(台尺)
                 const widthFeet = width / 30.3;
                 const heightFeet = height / 30.3;
                 const totalCai = Math.round((widthFeet * heightFeet) * 10) / 10;
                 finalPrice = Math.round(totalCai * unitPrice);
 
                 html = `
-                    <strong>【才數算式拆解 (捲簾/百葉/調光)】</strong><br>
+                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【才數算式拆解 (捲簾/百葉/調光)】</div>
                     • 面積換算：(${width} ÷ 30.3) 尺 × (${height} ÷ 30.3) 尺 = <strong>${totalCai} 才</strong><br>
                     • 金額總計：${totalCai} 才 × $${unitPrice} = <strong>$${finalPrice} 元</strong>
                 `;
-                formulaPlain = `面積: ${totalCai}才 × $${unitPrice} = $${finalPrice}元`;
             }
 
             resultBox.innerHTML = html;
-            resultBox.setAttribute('data-formula-text', formulaPlain);
+            resultBox.setAttribute('data-formula-html', html);
 
             if (firstPriceInput && (firstPriceInput.value === '' || firstPriceInput.getAttribute('data-auto') === 'true')) {
                 firstPriceInput.value = finalPrice;
@@ -986,7 +973,7 @@
                 });
 
                 const resBox = document.getElementById(`calc-result-${idx}`);
-                const formulaText = resBox ? resBox.getAttribute('data-formula-text') : '';
+                const formulaHtml = resBox ? (resBox.getAttribute('data-formula-html') || resBox.innerHTML) : '';
 
                 quoteWindows.push({
                     itemNumber: originalWindow.itemNumber || (idx + 1),
@@ -1003,7 +990,7 @@
                     unitPrice: panel.querySelector('.c-unitprice').value.trim(),
                     hasTrack: panel.querySelector('.c-track').checked,
                     fabricItems: fabricItems,
-                    formulaText: formulaText,
+                    formulaHtml: formulaHtml,
                     itemPrice: windowSum
                 });
             });
@@ -1190,7 +1177,7 @@
         }
 
         // ==========================================
-        // 📄 PDF 匯出 1：包含 T-Chart 圖 + 底部算式拆解
+        // 📄 PDF 匯出 1：包含 T-Chart 圖 + 底部算式拆解 (保證完整呈現)
         // ==========================================
         window.exportPDFWithTChart = function(recordId) {
             const records = getLocalStorageData();
@@ -1216,33 +1203,97 @@
                     const depthStr = w.boxDepth ? w.boxDepth.trim() + ' cm' : '未填';
                     const itemPriceDisplay = qItem.itemPrice ? `$${qItem.itemPrice} 元` : (price ? '包含於總額' : '未估價');
 
-                    // 處理各項目（如：項目一主布、項目二紗簾）
-                    let itemsHtml = '';
-                    const items = qItem.fabricItems || (qItem.itemStyleNote ? [{ note: qItem.itemStyleNote, price: qItem.itemPrice }] : []);
-                    
-                    if (items.length > 0) {
-                        itemsHtml += '<div style="margin-top:12px; border-top:1px dashed #cbd5e1; padding-top:10px;">';
-                        items.forEach((it, i) => {
-                            const rowPrice = it.price ? `$${it.price} 元` : '包含於總額';
-                            itemsHtml += `
-                                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px; padding:6px 10px; margin-bottom:6px;">
-                                    <span style="font-size:13px; color:#2c3e50;">🎨 <strong>項目 ${i + 1}：</strong>${it.note || '標準款式規劃'}</span>
-                                    <span style="font-size:13px; font-weight:bold; color:#e67e22;">此項金額：${rowPrice}</span>
-                                </div>
-                            `;
-                        });
-                        itemsHtml += '</div>';
+                    // 動態取得算式拆解文字 (若已有儲存直接取用，否則根據該窗參數即時現算)
+                    let formulaHtml = qItem.formulaHtml || '';
+                    if (!formulaHtml || formulaHtml.trim() === '') {
+                        const width = parseFloat(qItem.calcWidth || w.sizeWindowWidth) || 0;
+                        const height = parseFloat(qItem.calcHeight || w.sizeWindowHeight) || 0;
+                        const pleat = parseFloat(qItem.pleatRate) || 2;
+                        const fabWidth = parseFloat(qItem.fabricWidth) || 110;
+                        const sewingPrice = parseFloat(qItem.sewingPrice) || 180;
+                        const unitPrice = parseFloat(qItem.unitPrice) || 0;
+                        const hasTrack = qItem.hasTrack !== undefined ? qItem.hasTrack : true;
+                        const cType = qItem.calcType || 'traditional';
+
+                        if (width > 0 && height > 0) {
+                            if (cType === 'traditional') {
+                                const panels = Math.ceil((width * pleat) / fabWidth);
+                                const sewingFee = panels * sewingPrice;
+                                const trackFeet = Math.ceil(width / 30.3);
+                                const trackFee = hasTrack ? (trackFeet * 90) : 0;
+                                const sewingHeightFeet = (height + 30.3) / 30.3;
+                                const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6);
+                                const fabricCost = totalFabricFeet * unitPrice;
+                                const subTotal = fabricCost + sewingFee + trackFee;
+                                formulaHtml = `
+                                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【傳統窗簾布算式拆解】</div>
+                                    • 幅數計算：${width} cm × ${pleat}倍 ÷ ${fabWidth} cm = <strong>${panels} 幅</strong><br>
+                                    • 車縫高度：(${height} cm + 30.3 cm) ÷ 30.3 = <strong>${sewingHeightFeet.toFixed(2)} 尺</strong><br>
+                                    • 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>
+                                    • 布料費用：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
+                                    • 總車工費用：${panels} 幅 × $${sewingPrice} = <strong>$${sewingFee} 元</strong><br>
+                                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                                    ➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${subTotal} 元</strong>
+                                `;
+                            } else if (cType === 'seamless') {
+                                const widthInFeet = width / 30.3;
+                                const rawFeet = (widthInFeet * 2.3) + 0.6;
+                                const ceilFeet = Math.ceil(rawFeet);
+                                const diff = ceilFeet - rawFeet;
+                                const totalFabricFeet = (diff > 0 && diff <= 0.01) ? Math.floor(rawFeet) : ceilFeet;
+                                const fabricCost = totalFabricFeet * unitPrice;
+                                const trackFeet = Math.ceil(width / 30.3);
+                                const trackFee = hasTrack ? (trackFeet * 90) : 0;
+                                const subTotal = fabricCost + trackFee;
+                                formulaHtml = `
+                                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【無接縫布算式拆解】</div>
+                                    • 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>
+                                    • 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong><br>
+                                    • 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
+                                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                                    ➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${subTotal} 元</strong>
+                                `;
+                            } else if (cType === 'roller') {
+                                const widthFeet = width / 30.3;
+                                const heightFeet = height / 30.3;
+                                const totalCai = Math.round((widthFeet * heightFeet) * 10) / 10;
+                                const subTotal = Math.round(totalCai * unitPrice);
+                                formulaHtml = `
+                                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【才數算式拆解 (捲簾/百葉/調光)】</div>
+                                    • 面積換算：(${width} ÷ 30.3) 尺 × (${height} ÷ 30.3) 尺 = <strong>${totalCai} 才</strong><br>
+                                    • 金額總計：${totalCai} 才 × $${unitPrice} = <strong>$${subTotal} 元</strong>
+                                `;
+                            }
+                        }
                     }
 
-                    // 項目底部：顯示該窗的算式拆解明細
-                    let formulaHtml = '';
-                    if (qItem.formulaText) {
-                        formulaHtml = `
-                            <div style="margin-top:8px; font-size:12px; color:#4c1d95; background:#f5f3ff; border:1px solid #ddd6fe; border-left:4px solid #8e44ad; padding:6px 10px; border-radius:4px; line-height:1.6;">
-                                🧮 <strong>算式拆解：</strong>${qItem.formulaText}
+                    // 處理項目一、項目二列表 (若沒有填寫布號則預設出項目一)
+                    let items = qItem.fabricItems;
+                    if (!items || !Array.isArray(items) || items.length === 0) {
+                        items = [{
+                            note: qItem.itemStyleNote || '依現場約定規劃',
+                            price: qItem.itemPrice || ''
+                        }];
+                    }
+
+                    let itemsHtml = '<div style="margin-top:14px; border-top:1px dashed #cbd5e1; padding-top:10px;">';
+                    items.forEach((it, i) => {
+                        const rowPrice = it.price ? `$${it.price} 元` : itemPriceDisplay;
+                        itemsHtml += `
+                            <div style="margin-bottom:10px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px;">
+                                    <span style="font-size:14px; color:#2c3e50; font-weight:bold;">🎨 項目 ${i + 1}：${it.note || '標準規劃'}</span>
+                                    <span style="font-size:14px; font-weight:bold; color:#e67e22;">此項金額：${rowPrice}</span>
+                                </div>
+                                ${ (i === 0 && formulaHtml) ? `
+                                    <div style="margin-top:6px; font-size:12px; color:#4c1d95; background:#f5f3ff; border:1px solid #ddd6fe; border-left:4px solid #8e44ad; padding:10px 14px; border-radius:6px; line-height:1.7;">
+                                        ${formulaHtml}
+                                    </div>
+                                ` : '' }
                             </div>
                         `;
-                    }
+                    });
+                    itemsHtml += '</div>';
 
                     windowsPrintHtml += `
                         <div class="pdf-window-box">
@@ -1278,8 +1329,10 @@
                                     <div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div class="meta-column-val">${depthStr}</div></div>
                                 </div>
                             </div>
+                            
+                            <!-- 項目一、項目二與下方算式拆解 -->
                             ${itemsHtml}
-                            ${formulaHtml}
+                            
                             ${w.note ? `<div class="pdf-w-note"> 📝  <strong>丈量備註：</strong>${w.note}</div>` : ''}
                         </div>
                     `;
@@ -1297,8 +1350,8 @@
                         .pdf-section-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #3498db; padding-left: 8px; margin-top: 20px; }
                         .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
                         .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; }
-                        .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; margin-bottom: 18px; page-break-inside: avoid; }
-                        .pdf-window-header { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; margin-bottom: 12px; }
+                        .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 14px; margin-bottom: 22px; page-break-inside: avoid; }
+                        .pdf-window-header { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: bold; background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; margin-bottom: 12px; }
                         .header-price-tag { background: #ffffff; color: #2980b9; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; }
                         .pdf-main-layout { display: flex; gap: 12px; align-items: stretch; }
                         .pdf-chart-layout { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 0; background: #fafafa; border-radius: 6px; border: 1px solid #cbd5e1; }
