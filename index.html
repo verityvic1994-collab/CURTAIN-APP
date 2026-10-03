@@ -171,21 +171,15 @@
         }
         .calc-title { font-size: 15px; font-weight: bold; color: #8e44ad; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         .calc-sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 12px; }
-        
-        /* 算式拆解區塊 */
         .calc-formula-result-box {
-            background: #f8f5ff; border: 1px solid #d8b4fe; border-radius: 6px; padding: 10px; margin-top: 8px; font-size: 13px; line-height: 1.6; color: #4c1d95;
+            background: #f3f0ff; border: 1px solid #d8b4fe; border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 13px; line-height: 1.6; color: #4c1d95;
         }
 
-        /* 一布一紗項目卡片區塊 */
+        /* 一布一紗多項目列樣式 */
         .fabric-items-container { margin-top: 14px; border-top: 1px dashed #cbd5e1; padding-top: 10px; }
-        .fabric-card-item {
-            background: #ffffff; border: 1px solid #cbd5e1; border-left: 4px solid #8e44ad;
-            border-radius: 6px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-        }
-        .fabric-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; color: #2c3e50; font-size: 14px; }
-        .btn-add-item-row { background: #34495e; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
-        .btn-remove-item-row { background: #e74c3c; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .fabric-item-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 8px; background: #fdfdfd; }
+        .btn-add-item-row { background: #34495e; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; margin-bottom: 6px; }
+        .btn-remove-item-row { background: #e74c3c; color: #fff; border: none; padding: 10px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
 
         /* 燈箱內小 T 字圖樣式 */
         .mini-t-container { display: flex; justify-content: center; transform: scale(0.85); margin: 0; }
@@ -547,7 +541,7 @@
         }
 
         // ==========================================
-        // 💰 估價試算模組 (多項目獨立算式支援)
+        // 💰 估價試算模組 (維持原本操作直覺)
         // ==========================================
         window.openEstimateModal = function(recordId) {
             const records = getLocalStorageData();
@@ -560,34 +554,46 @@
             const quoteWindows = (record.quoteData && record.quoteData.windows) ? record.quoteData.windows : [];
             let windowsSectionsHtml = '';
 
-            record.windows.forEach((origW, wIdx) => {
-                const savedQ = quoteWindows[wIdx] || {};
+            record.windows.forEach((origW, idx) => {
+                const savedQ = quoteWindows[idx] || {};
                 
                 const currentCalcWidth = savedQ.calcWidth !== undefined ? savedQ.calcWidth : (origW.sizeWindowWidth || '');
                 const currentCalcHeight = savedQ.calcHeight !== undefined ? savedQ.calcHeight : (origW.sizeWindowHeight || '');
+                const calcType = savedQ.calcType || 'traditional';
+                const pleatRate = savedQ.pleatRate !== undefined ? savedQ.pleatRate : '2';
+                const fabricWidth = savedQ.fabricWidth !== undefined ? savedQ.fabricWidth : '110';
+                const sewingPrice = savedQ.sewingPrice !== undefined ? savedQ.sewingPrice : '180';
+                const unitPrice = savedQ.unitPrice || '';
+                const hasTrack = savedQ.hasTrack !== undefined ? savedQ.hasTrack : true;
 
                 let fabricItems = savedQ.fabricItems;
                 if (!fabricItems || !Array.isArray(fabricItems) || fabricItems.length === 0) {
                     fabricItems = [{
                         note: savedQ.itemStyleNote || '',
-                        price: savedQ.itemPrice || '',
-                        calcType: savedQ.calcType || 'traditional',
-                        pleatRate: savedQ.pleatRate !== undefined ? savedQ.pleatRate : '2',
-                        fabricWidth: savedQ.fabricWidth !== undefined ? savedQ.fabricWidth : '110',
-                        sewingPrice: savedQ.sewingPrice !== undefined ? savedQ.sewingPrice : '180',
-                        unitPrice: savedQ.unitPrice || '',
-                        hasTrack: savedQ.hasTrack !== undefined ? savedQ.hasTrack : true,
-                        formulaText: ''
+                        price: savedQ.itemPrice || ''
                     }];
                 }
 
                 let itemsRowsHtml = '';
-                fabricItems.forEach((item, itIdx) => {
-                    itemsRowsHtml += makeFabricItemCardHtml(wIdx, itIdx, item);
+                fabricItems.forEach((item, itemIdx) => {
+                    const deleteBtn = itemIdx === 0 ? '' : `<button type="button" class="btn-remove-item-row" onclick="removeFabricRow(this, ${idx})">❌</button>`;
+                    itemsRowsHtml += `
+                        <div class="fabric-item-row" data-item-idx="${itemIdx}">
+                            <div class="form-group" style="flex: 2; margin-bottom: 0;">
+                                <label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label>
+                                <input type="text" class="c-note" value="${item.note || ''}" placeholder="例如：主布 ef40444、或紗簾">
+                            </div>
+                            <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                                <label style="font-size: 13px; color: #e67e22;">💵 此項金額 (元)：</label>
+                                <input type="number" class="c-itemprice" value="${item.price || ''}" placeholder="金額" oninput="updateWindowTotal(${idx})">
+                            </div>
+                            ${deleteBtn}
+                        </div>
+                    `;
                 });
 
                 windowsSectionsHtml += `
-                    <div class="est-window-panel" data-widx="${wIdx}">
+                    <div class="est-window-panel" data-idx="${idx}">
                         <div class="est-panel-header">🪟 窗戶項目 ${origW.itemNumber}：${origW.location || '未填位置'}</div>
                         
                         <!-- 🔒 原始丈量 T-Chart (唯讀鎖定) -->
@@ -611,31 +617,71 @@
                             </div>
                         </div>
 
-                        <!-- 🧮 估價共用寬高 -->
+                        <!-- 🧮 估價算式與尺寸試算區 -->
                         <div class="calc-form-container">
-                            <div class="calc-title">📐 估價尺寸設定 (此處修改不會變動上方原丈量圖)</div>
+                            <div class="calc-title">📐 估價尺寸與金額試算</div>
+                            
                             <div class="calc-sub-grid">
                                 <div>
                                     <label>估價寬度 (cm)：</label>
-                                    <input type="number" class="c-width" value="${currentCalcWidth}" placeholder="寬度" oninput="runAllItemsInWindow(${wIdx})">
+                                    <input type="number" class="c-width" value="${currentCalcWidth}" placeholder="寬度" oninput="runWindowFormula(${idx})">
                                 </div>
                                 <div>
                                     <label>估價高度 (cm)：</label>
-                                    <input type="number" class="c-height" value="${currentCalcHeight}" placeholder="高度" oninput="runAllItemsInWindow(${wIdx})">
+                                    <input type="number" class="c-height" value="${currentCalcHeight}" placeholder="高度" oninput="runWindowFormula(${idx})">
+                                </div>
+                                <div>
+                                    <label>計算模式：</label>
+                                    <select class="c-type" onchange="toggleCalcFields(${idx}); runWindowFormula(${idx});">
+                                        <option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布 (標準幅寬)</option>
+                                        <option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布 (定高買寬)</option>
+                                        <option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數計算 (捲簾/百葉/調光)</option>
+                                        <option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動輸入金額</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <!-- 一布一紗項目獨立算式區 -->
-                            <div class="fabric-items-container">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                                    <span style="font-size:14px; font-weight:bold; color:#2c3e50;">施作項目算式列表 (一布一紗個別算式)：</span>
-                                    <button type="button" class="btn-add-item-row" onclick="addFabricCard(${wIdx})">➕ 新增項目 (如：加紗簾)</button>
+                            <!-- 動態算式參數 -->
+                            <div class="calc-sub-grid dynamic-fields" id="dynamic-fields-${idx}">
+                                <div class="f-pleat">
+                                    <label>摺數倍率：</label>
+                                    <input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runWindowFormula(${idx})">
                                 </div>
-                                <div class="fabric-cards-wrapper" id="fabric-cards-${wIdx}">
+                                <div class="f-fab-width">
+                                    <label>布幅寬 (cm)：</label>
+                                    <input type="number" class="c-fabwidth" value="${fabricWidth}" placeholder="常見110或150" oninput="runWindowFormula(${idx})">
+                                </div>
+                                <div class="f-sewing">
+                                    <label>車工單價 (元/幅)：</label>
+                                    <input type="number" class="c-sewingprice" value="${sewingPrice}" placeholder="預設180" oninput="runWindowFormula(${idx})">
+                                </div>
+                                <div>
+                                    <label class="c-price-label">單價 (元/尺 或 元/才)：</label>
+                                    <input type="number" class="c-unitprice" value="${unitPrice}" placeholder="單價" oninput="runWindowFormula(${idx})">
+                                </div>
+                                <div class="f-track" style="display:flex; align-items:center; gap:8px; padding-top:22px;">
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:6px;">
+                                        <input type="checkbox" class="c-track" ${hasTrack ? 'checked' : ''} onchange="runWindowFormula(${idx})" style="width:18px; height:18px;">
+                                        含一般軌 ($90/尺)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="calc-formula-result-box" id="calc-result-${idx}">
+                                正在計算中...
+                            </div>
+
+                            <!-- 一布一紗多列款式與金額清單 -->
+                            <div class="fabric-items-container">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                    <span style="font-size:13px; font-weight:bold; color:#2c3e50;">布料與紗簾清單 (可新增一布一紗)：</span>
+                                    <button type="button" class="btn-add-item-row" onclick="addFabricRow(${idx})">➕ 新增款式/布號列</button>
+                                </div>
+                                <div class="fabric-rows-wrapper" id="fabric-rows-${idx}">
                                     ${itemsRowsHtml}
                                 </div>
-                                <div style="text-align: right; font-size: 15px; font-weight: bold; color: #2980b9; margin-top: 10px; border-top: 1px dashed #cbd5e1; padding-top: 8px;">
-                                    本窗總估價金額：$<span class="window-sum-display" id="window-sum-${wIdx}">0</span> 元
+                                <div style="text-align: right; font-size: 14px; font-weight: bold; color: #2980b9; margin-top: 6px;">
+                                    本窗總估價金額：$<span class="window-sum-display" id="window-sum-${idx}">0</span> 元
                                 </div>
                             </div>
                         </div>
@@ -681,130 +727,63 @@
                 </div>
             `;
 
-            record.windows.forEach((_, wIdx) => {
-                runAllItemsInWindow(wIdx);
+            record.windows.forEach((_, idx) => {
+                toggleCalcFields(idx);
+                runWindowFormula(idx);
+                updateWindowTotal(idx);
             });
 
             updateEstimateBalance();
             document.getElementById('estimate-lightbox').style.display = 'flex';
         }
 
-        // 生成單個項目(如布或紗)的專屬卡片 HTML
-        function makeFabricItemCardHtml(wIdx, itIdx, item) {
-            const deleteBtn = itIdx === 0 ? '' : `<button type="button" class="btn-remove-item-row" onclick="removeFabricCard(this, ${wIdx})">❌ 刪除此項</button>`;
-            const calcType = item.calcType || 'traditional';
-            const pleatRate = item.pleatRate !== undefined ? item.pleatRate : '2';
-            const fabricWidth = item.fabricWidth !== undefined ? item.fabricWidth : '110';
-            const sewingPrice = item.sewingPrice !== undefined ? item.sewingPrice : '180';
-            const unitPrice = item.unitPrice || '';
-            const hasTrack = item.hasTrack !== undefined ? item.hasTrack : (itIdx === 0);
-
-            return `
-                <div class="fabric-card-item" data-itidx="${itIdx}">
-                    <div class="fabric-card-header">
-                        <span>📦 施作項目 ${itIdx + 1}</span>
-                        ${deleteBtn}
-                    </div>
-                    
-                    <div class="form-row" style="margin-bottom:8px;">
-                        <div class="form-group" style="flex: 2; margin-bottom: 0;">
-                            <label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label>
-                            <input type="text" class="c-note" value="${item.note || ''}" placeholder="例如：主布 ef40444、或白紗">
-                        </div>
-                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                            <label style="font-size: 13px; color: #e67e22;">💵 此項金額 (元)：</label>
-                            <input type="number" class="c-itemprice" value="${item.price || ''}" placeholder="金額" oninput="updateWindowTotal(${wIdx})">
-                        </div>
-                    </div>
-
-                    <div class="calc-sub-grid" style="margin-top:8px;">
-                        <div>
-                            <label style="font-size: 12px;">計算模式：</label>
-                            <select class="c-type" onchange="toggleItemCalcFields(${wIdx}, ${itIdx}); runSingleItemFormula(${wIdx}, ${itIdx});">
-                                <option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布 (標準幅寬)</option>
-                                <option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布 (定高買寬)</option>
-                                <option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數計算 (捲簾/百葉/調光)</option>
-                                <option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動輸入金額</option>
-                            </select>
-                        </div>
-                        <div class="f-pleat">
-                            <label style="font-size: 12px;">摺數倍率：</label>
-                            <input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runSingleItemFormula(${wIdx}, ${itIdx})">
-                        </div>
-                        <div class="f-fab-width">
-                            <label style="font-size: 12px;">布幅寬 (cm)：</label>
-                            <input type="number" class="c-fabwidth" value="${fabricWidth}" placeholder="110" oninput="runSingleItemFormula(${wIdx}, ${itIdx})">
-                        </div>
-                        <div class="f-sewing">
-                            <label style="font-size: 12px;">車工單價 (元/幅)：</label>
-                            <input type="number" class="c-sewingprice" value="${sewingPrice}" placeholder="180" oninput="runSingleItemFormula(${wIdx}, ${itIdx})">
-                        </div>
-                        <div>
-                            <label style="font-size: 12px;" class="c-price-label">單價 (元/尺或才)：</label>
-                            <input type="number" class="c-unitprice" value="${unitPrice}" placeholder="單價" oninput="runSingleItemFormula(${wIdx}, ${itIdx})">
-                        </div>
-                        <div class="f-track" style="display:flex; align-items:center; padding-top:20px;">
-                            <label style="cursor:pointer; display:flex; align-items:center; gap:5px; font-size:12px;">
-                                <input type="checkbox" class="c-track" ${hasTrack ? 'checked' : ''} onchange="runSingleItemFormula(${wIdx}, ${itIdx})" style="width:16px; height:16px;">
-                                含軌道 ($90/尺)
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 項目專屬算式結果 -->
-                    <div class="calc-formula-result-box" id="calc-result-${wIdx}-${itIdx}">
-                        計算中...
-                    </div>
+        window.addFabricRow = function(windowIdx) {
+            const wrapper = document.getElementById(`fabric-rows-${windowIdx}`);
+            const newRow = document.createElement('div');
+            newRow.className = 'fabric-item-row';
+            newRow.innerHTML = `
+                <div class="form-group" style="flex: 2; margin-bottom: 0;">
+                    <label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label>
+                    <input type="text" class="c-note" placeholder="例如：紗簾布號或加購項">
                 </div>
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <label style="font-size: 13px; color: #e67e22;">💵 此項金額 (元)：</label>
+                    <input type="number" class="c-itemprice" placeholder="金額" oninput="updateWindowTotal(${windowIdx})">
+                </div>
+                <button type="button" class="btn-remove-item-row" onclick="removeFabricRow(this, ${windowIdx})">❌</button>
             `;
+            wrapper.appendChild(newRow);
+            updateWindowTotal(windowIdx);
         }
 
-        window.addFabricCard = function(wIdx) {
-            const wrapper = document.getElementById(`fabric-cards-${wIdx}`);
-            const currentCards = wrapper.querySelectorAll('.fabric-card-item');
-            const newItIdx = currentCards.length;
-            const newItem = {
-                note: '',
-                price: '',
-                calcType: 'traditional',
-                pleatRate: '2',
-                fabricWidth: '110',
-                sewingPrice: '180',
-                unitPrice: '',
-                hasTrack: false, // 第二項預設不重複算軌道
-                formulaText: ''
-            };
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = makeFabricItemCardHtml(wIdx, newItIdx, newItem);
-            const cardEl = tempDiv.firstElementChild;
-            wrapper.appendChild(cardEl);
-            toggleItemCalcFields(wIdx, newItIdx);
-            runSingleItemFormula(wIdx, newItIdx);
+        window.removeFabricRow = function(btn, windowIdx) {
+            btn.closest('.fabric-item-row').remove();
+            updateWindowTotal(windowIdx);
         }
 
-        window.removeFabricCard = function(btn, wIdx) {
-            btn.closest('.fabric-card-item').remove();
-            // 重新排列索引
-            const wrapper = document.getElementById(`fabric-cards-${wIdx}`);
-            const cards = wrapper.querySelectorAll('.fabric-card-item');
-            cards.forEach((card, idx) => {
-                card.setAttribute('data-itidx', idx);
-                card.querySelector('.fabric-card-header span').innerText = `📦 施作項目 ${idx + 1}`;
-                const resBox = card.querySelector('.calc-formula-result-box');
-                resBox.id = `calc-result-${wIdx}-${idx}`;
+        window.updateWindowTotal = function(windowIdx) {
+            const wrapper = document.getElementById(`fabric-rows-${windowIdx}`);
+            if(!wrapper) return;
+            const priceInputs = wrapper.querySelectorAll('.c-itemprice');
+            let total = 0;
+            priceInputs.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val)) total += val;
             });
-            updateWindowTotal(wIdx);
+            const sumDisplay = document.getElementById(`window-sum-${windowIdx}`);
+            if (sumDisplay) sumDisplay.innerText = total;
+            sumTotalFromWindows();
         }
 
-        window.toggleItemCalcFields = function(wIdx, itIdx) {
-            const card = document.querySelector(`.est-window-panel[data-widx="${wIdx}"] .fabric-card-item[data-itidx="${itIdx}"]`);
-            if(!card) return;
-            const type = card.querySelector('.c-type').value;
-            const pleatDiv = card.querySelector('.f-pleat');
-            const fabWidthDiv = card.querySelector('.f-fab-width');
-            const sewingDiv = card.querySelector('.f-sewing');
-            const trackDiv = card.querySelector('.f-track');
-            const priceLabel = card.querySelector('.c-price-label');
+        window.toggleCalcFields = function(idx) {
+            const panel = document.querySelector(`.est-window-panel[data-idx="${idx}"]`);
+            if(!panel) return;
+            const type = panel.querySelector('.c-type').value;
+            const pleatDiv = panel.querySelector('.f-pleat');
+            const fabWidthDiv = panel.querySelector('.f-fab-width');
+            const sewingDiv = panel.querySelector('.f-sewing');
+            const trackDiv = panel.querySelector('.f-track');
+            const priceLabel = panel.querySelector('.c-price-label');
 
             if(type === 'traditional') {
                 if(pleatDiv) pleatDiv.style.display = 'block';
@@ -833,32 +812,29 @@
             }
         }
 
-        window.runSingleItemFormula = function(wIdx, itIdx) {
-            const panel = document.querySelector(`.est-window-panel[data-widx="${wIdx}"]`);
+        window.runWindowFormula = function(idx) {
+            const panel = document.querySelector(`.est-window-panel[data-idx="${idx}"]`);
             if(!panel) return;
-            const card = panel.querySelector(`.fabric-card-item[data-itidx="${itIdx}"]`);
-            if(!card) return;
 
             const width = parseFloat(panel.querySelector('.c-width').value) || 0;
             const height = parseFloat(panel.querySelector('.c-height').value) || 0;
-            const type = card.querySelector('.c-type').value;
-            const pleat = parseFloat(card.querySelector('.c-pleat').value) || 2;
-            const fabWidth = parseFloat(card.querySelector('.c-fabwidth').value) || 110;
-            const sewingPrice = parseFloat(card.querySelector('.c-sewingprice').value) || 0;
-            const unitPrice = parseFloat(card.querySelector('.c-unitprice').value) || 0;
-            const hasTrack = card.querySelector('.c-track') ? card.querySelector('.c-track').checked : false;
-            const resultBox = document.getElementById(`calc-result-${wIdx}-${itIdx}`);
-            const priceInput = card.querySelector('.c-itemprice');
+            const type = panel.querySelector('.c-type').value;
+            const pleat = parseFloat(panel.querySelector('.c-pleat').value) || 2;
+            const fabWidth = parseFloat(panel.querySelector('.c-fabwidth').value) || 110;
+            const sewingPrice = parseFloat(panel.querySelector('.c-sewingprice').value) || 0;
+            const unitPrice = parseFloat(panel.querySelector('.c-unitprice').value) || 0;
+            const hasTrack = panel.querySelector('.c-track') ? panel.querySelector('.c-track').checked : false;
+            const resultBox = document.getElementById(`calc-result-${idx}`);
+            const firstPriceInput = panel.querySelector('.c-itemprice');
 
             if (type === 'manual') {
-                resultBox.innerHTML = `✏️ <strong>純手動計價模式</strong>：請直接輸入上方金額。`;
+                resultBox.innerHTML = `✏️ <strong>純手動計價模式</strong>：請於下方直接輸入金額。`;
                 resultBox.setAttribute('data-formula-text', '純手動輸入金額');
-                updateWindowTotal(wIdx);
                 return;
             }
 
             if (width <= 0 || height <= 0) {
-                resultBox.innerHTML = `⚠️ 請在上方輸入有效的估價寬度與高度。`;
+                resultBox.innerHTML = `⚠️ 請輸入有效的寬度與高度以進行換算。`;
                 resultBox.setAttribute('data-formula-text', '');
                 return;
             }
@@ -868,13 +844,21 @@
             let finalPrice = 0;
 
             if (type === 'traditional') {
+                // 1. 幅數 = 寬度 × 打摺倍數 ÷ 布寬 (無條件進位)
                 const panels = Math.ceil((width * pleat) / fabWidth);
+                
+                // 5. 車工費用：幅數 X 車工單價 (預設180)
                 const sewingFee = panels * sewingPrice;
+
+                // 4. 一般軌道 = 寬度(台尺)無條件進位 x 90
                 const trackFeet = Math.ceil(width / 30.3);
                 const trackFee = hasTrack ? (trackFeet * 90) : 0;
+
+                // 6. 車縫所需高度與耗布量
                 const sewingHeightFeet = (height + 30.3) / 30.3;
                 const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6);
                 const fabricCost = totalFabricFeet * unitPrice;
+
                 finalPrice = fabricCost + sewingFee + trackFee;
 
                 html = `
@@ -884,11 +868,12 @@
                     • 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>
                     • 布料費用：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
                     • 總車工費用：${panels} 幅 × $${sewingPrice} = <strong>$${sewingFee} 元</strong><br>
-                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : ''}
-                    ➔ 此項合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>
+                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                    ➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
-                formulaPlain = `幅數: ${panels}幅 | 總布量: ${totalFabricFeet}尺($${fabricCost}) | 車工: $${sewingFee}${hasTrack ? ` | 軌道: $${trackFee}` : ''} | 合計: $${finalPrice}元`;
+                formulaPlain = `幅數: ${panels}幅 | 車縫高度: ${sewingHeightFeet.toFixed(2)}尺 | 總耗布: ${totalFabricFeet}尺($${fabricCost}) | 車工: $${sewingFee}${hasTrack ? ` | 軌道: $${trackFee}` : ''} | 試算小計: $${finalPrice}元`;
             } else if (type === 'seamless') {
+                // 7. 無接縫布費用：總寬度(台尺) x 2.3倍摺數 + 0.6尺窗帶量 (差距<=0.01不進位)
                 const widthInFeet = width / 30.3;
                 const rawFeet = (widthInFeet * 2.3) + 0.6;
                 const ceilFeet = Math.ceil(rawFeet);
@@ -901,13 +886,15 @@
 
                 html = `
                     <strong>【無接縫布算式拆解】</strong><br>
-                    • 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong><br>
+                    • 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>
+                    • 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong> (未進位原始值: ${rawFeet.toFixed(3)})<br>
                     • 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
-                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : ''}
-                    ➔ 此項合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>
+                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                    ➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
-                formulaPlain = `無接縫布耗量: ${totalFabricFeet}尺($${fabricCost})${hasTrack ? ` | 軌道: $${trackFee}` : ''} | 合計: $${finalPrice}元`;
+                formulaPlain = `窗寬: ${widthInFeet.toFixed(2)}尺 | 耗布: ${totalFabricFeet}尺($${fabricCost})${hasTrack ? ` | 軌道: $${trackFee}` : ''} | 試算小計: $${finalPrice}元`;
             } else if (type === 'roller') {
+                // 3. 才數計算：寬度(台尺) x 高度(台尺)
                 const widthFeet = width / 30.3;
                 const heightFeet = height / 30.3;
                 const totalCai = Math.round((widthFeet * heightFeet) * 10) / 10;
@@ -923,36 +910,12 @@
 
             resultBox.innerHTML = html;
             resultBox.setAttribute('data-formula-text', formulaPlain);
-            
-            if (priceInput && (priceInput.value === '' || priceInput.getAttribute('data-auto') === 'true')) {
-                priceInput.value = finalPrice;
-                priceInput.setAttribute('data-auto', 'true');
+
+            if (firstPriceInput && (firstPriceInput.value === '' || firstPriceInput.getAttribute('data-auto') === 'true')) {
+                firstPriceInput.value = finalPrice;
+                firstPriceInput.setAttribute('data-auto', 'true');
             }
-            updateWindowTotal(wIdx);
-        }
-
-        window.runAllItemsInWindow = function(wIdx) {
-            const panel = document.querySelector(`.est-window-panel[data-widx="${wIdx}"]`);
-            if(!panel) return;
-            const cards = panel.querySelectorAll('.fabric-card-item');
-            cards.forEach((_, itIdx) => {
-                toggleItemCalcFields(wIdx, itIdx);
-                runSingleItemFormula(wIdx, itIdx);
-            });
-        }
-
-        window.updateWindowTotal = function(wIdx) {
-            const panel = document.querySelector(`.est-window-panel[data-widx="${wIdx}"]`);
-            if(!panel) return;
-            const priceInputs = panel.querySelectorAll('.c-itemprice');
-            let total = 0;
-            priceInputs.forEach(input => {
-                const val = parseFloat(input.value);
-                if (!isNaN(val)) total += val;
-            });
-            const sumDisplay = document.getElementById(`window-sum-${wIdx}`);
-            if (sumDisplay) sumDisplay.innerText = total;
-            sumTotalFromWindows();
+            updateWindowTotal(idx);
         }
 
         window.sumTotalFromWindows = function() {
@@ -1008,44 +971,39 @@
             const quoteWindows = [];
 
             panels.forEach(panel => {
-                const wIdx = parseInt(panel.getAttribute('data-widx'));
-                const originalWindow = records[index].windows[wIdx] || {};
+                const idx = parseInt(panel.getAttribute('data-idx'));
+                const originalWindow = records[index].windows[idx] || {};
 
-                const cards = panel.querySelectorAll('.fabric-card-item');
+                const fabricRows = panel.querySelectorAll('.fabric-item-row');
                 const fabricItems = [];
                 let windowSum = 0;
 
-                cards.forEach(card => {
-                    const itIdx = card.getAttribute('data-itidx');
-                    const note = card.querySelector('.c-note').value.trim();
-                    const price = card.querySelector('.c-itemprice').value.trim();
-                    const resBox = document.getElementById(`calc-result-${wIdx}-${itIdx}`);
-                    const formulaText = resBox ? resBox.getAttribute('data-formula-text') : '';
-
+                fabricRows.forEach(row => {
+                    const note = row.querySelector('.c-note').value.trim();
+                    const price = row.querySelector('.c-itemprice').value.trim();
                     if (price) windowSum += parseFloat(price) || 0;
-
-                    fabricItems.push({
-                        note: note,
-                        price: price,
-                        calcType: card.querySelector('.c-type').value,
-                        pleatRate: card.querySelector('.c-pleat') ? card.querySelector('.c-pleat').value.trim() : '2',
-                        fabricWidth: card.querySelector('.c-fabwidth') ? card.querySelector('.c-fabwidth').value.trim() : '110',
-                        sewingPrice: card.querySelector('.c-sewingprice') ? card.querySelector('.c-sewingprice').value.trim() : '180',
-                        unitPrice: card.querySelector('.c-unitprice') ? card.querySelector('.c-unitprice').value.trim() : '',
-                        hasTrack: card.querySelector('.c-track') ? card.querySelector('.c-track').checked : false,
-                        formulaText: formulaText
-                    });
+                    fabricItems.push({ note, price });
                 });
 
+                const resBox = document.getElementById(`calc-result-${idx}`);
+                const formulaText = resBox ? resBox.getAttribute('data-formula-text') : '';
+
                 quoteWindows.push({
-                    itemNumber: originalWindow.itemNumber || (wIdx + 1),
+                    itemNumber: originalWindow.itemNumber || (idx + 1),
                     location: originalWindow.location || '',
                     types: originalWindow.types || [],
                     envs: originalWindow.envs || [],
                     boxDepth: originalWindow.boxDepth || '',
                     calcWidth: panel.querySelector('.c-width').value.trim(),
                     calcHeight: panel.querySelector('.c-height').value.trim(),
+                    calcType: panel.querySelector('.c-type').value,
+                    pleatRate: panel.querySelector('.c-pleat').value.trim(),
+                    fabricWidth: panel.querySelector('.c-fabwidth').value.trim(),
+                    sewingPrice: panel.querySelector('.c-sewingprice') ? panel.querySelector('.c-sewingprice').value.trim() : '180',
+                    unitPrice: panel.querySelector('.c-unitprice').value.trim(),
+                    hasTrack: panel.querySelector('.c-track').checked,
                     fabricItems: fabricItems,
+                    formulaText: formulaText,
                     itemPrice: windowSum
                 });
             });
@@ -1232,7 +1190,7 @@
         }
 
         // ==========================================
-        // 📄 PDF 匯出 1：包含 T-Chart 圖 (含各項目算式拆解)
+        // 📄 PDF 匯出 1：包含 T-Chart 圖 + 底部算式拆解
         // ==========================================
         window.exportPDFWithTChart = function(recordId) {
             const records = getLocalStorageData();
@@ -1258,29 +1216,32 @@
                     const depthStr = w.boxDepth ? w.boxDepth.trim() + ' cm' : '未填';
                     const itemPriceDisplay = qItem.itemPrice ? `$${qItem.itemPrice} 元` : (price ? '包含於總額' : '未估價');
 
-                    // 處理各項目（如：布、紗）與其下方獨立算式拆解
+                    // 處理各項目（如：項目一主布、項目二紗簾）
                     let itemsHtml = '';
-                    const items = qItem.fabricItems || (qItem.itemStyleNote ? [{ note: qItem.itemStyleNote, price: qItem.itemPrice, formulaText: '' }] : []);
+                    const items = qItem.fabricItems || (qItem.itemStyleNote ? [{ note: qItem.itemStyleNote, price: qItem.itemPrice }] : []);
                     
                     if (items.length > 0) {
-                        itemsHtml += '<div style="margin-top:12px; border-top:1px dashed #cbd5e1; padding-top:8px;">';
+                        itemsHtml += '<div style="margin-top:12px; border-top:1px dashed #cbd5e1; padding-top:10px;">';
                         items.forEach((it, i) => {
                             const rowPrice = it.price ? `$${it.price} 元` : '包含於總額';
                             itemsHtml += `
-                                <div style="margin-bottom: 10px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px;">
-                                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; color:#2c3e50;">
-                                        <span>🎨 <strong>項目 ${i + 1}：</strong>${it.note || '標準款式規劃'}</span>
-                                        <span style="font-weight:bold; color:#e67e22; font-size:14px;">金額：${rowPrice}</span>
-                                    </div>
-                                    ${it.formulaText ? `
-                                        <div style="margin-top: 5px; font-size: 11px; color: #5b21b6; background: #f3f0ff; padding: 4px 8px; border-radius: 4px; border-left: 3px solid #8e44ad; line-height: 1.5;">
-                                            🧮 <strong>算式拆解：</strong>${it.formulaText}
-                                        </div>
-                                    ` : ''}
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px; padding:6px 10px; margin-bottom:6px;">
+                                    <span style="font-size:13px; color:#2c3e50;">🎨 <strong>項目 ${i + 1}：</strong>${it.note || '標準款式規劃'}</span>
+                                    <span style="font-size:13px; font-weight:bold; color:#e67e22;">此項金額：${rowPrice}</span>
                                 </div>
                             `;
                         });
                         itemsHtml += '</div>';
+                    }
+
+                    // 項目底部：顯示該窗的算式拆解明細
+                    let formulaHtml = '';
+                    if (qItem.formulaText) {
+                        formulaHtml = `
+                            <div style="margin-top:8px; font-size:12px; color:#4c1d95; background:#f5f3ff; border:1px solid #ddd6fe; border-left:4px solid #8e44ad; padding:6px 10px; border-radius:4px; line-height:1.6;">
+                                🧮 <strong>算式拆解：</strong>${qItem.formulaText}
+                            </div>
+                        `;
                     }
 
                     windowsPrintHtml += `
@@ -1318,6 +1279,7 @@
                                 </div>
                             </div>
                             ${itemsHtml}
+                            ${formulaHtml}
                             ${w.note ? `<div class="pdf-w-note"> 📝  <strong>丈量備註：</strong>${w.note}</div>` : ''}
                         </div>
                     `;
