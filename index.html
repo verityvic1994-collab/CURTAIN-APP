@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>專業窗簾丈量系統</title>
@@ -36,7 +36,27 @@
             padding: 15px;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: max-width 0.3s ease;
         }
+        /* 针对摺疊機 Z Fold 展開模式與大平板的寬度調整 */
+        @media (min-width: 700px) {
+            .container {
+                max-width: 820px;
+                padding: 24px;
+            }
+            .est-grid-layout {
+                display: flex;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            .est-grid-left {
+                flex: 0 0 340px;
+            }
+            .est-grid-right {
+                flex: 1;
+            }
+        }
+
         /* 密碼鎖畫面 */
         #auth-overlay {
             position: fixed;
@@ -64,7 +84,7 @@
             padding: 12px 30px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%;
         }
         /* 主程式內容 */
-        #app-content { display: none; width: 100%; max-width: 600px; }
+        #app-content { display: none; width: 100%; }
         h1 { text-align: center; margin-bottom: 15px; color: var(--primary-dark); font-size: 22px; }
         .client-info-card { background: #fdfdfd; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 20px; }
         .client-info-title { font-size: 16px; font-weight: bold; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 1px solid #edf2f7; padding-bottom: 5px; }
@@ -93,12 +113,16 @@
         }
         .checkbox-item input { width: 18px; height: 18px; }
 
-        /* T 字圖通用樣式 */
+        /* T 字圖通用樣式 (針對 Fold 外側超窄螢幕自動縮放適配) */
         .t-chart-container {
             display: flex; justify-content: center; align-items: center;
-            margin: 15px 0; padding: 25px 0; background: #fdfdfd; border: 1px dashed #e2e8f0; border-radius: 8px;
+            margin: 10px 0; padding: 15px 0; background: #fdfdfd; border: 1px dashed #e2e8f0; border-radius: 8px;
+            overflow-x: auto;
         }
-        .t-chart { position: relative; width: 320px; height: 330px; }
+        .t-chart { position: relative; width: 320px; height: 330px; transform-origin: center center; }
+        @media (max-width: 360px) {
+            .t-chart { transform: scale(0.85); margin: -20px 0; }
+        }
         .t-line-horizontal { position: absolute; top: 120px; left: 35px; width: 250px; height: 4px; background-color: var(--primary-color); z-index: 1; }
         .t-line-vertical { position: absolute; top: 55px; left: 158px; width: 4px; height: 215px; background-color: var(--primary-color); z-index: 1; }
         .t-input {
@@ -106,7 +130,15 @@
             text-align: center; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; background: white; z-index: 2;
         }
         .t-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); }
-        .t-locked { background-color: #f1f5f9 !important; color: #475569 !important; font-weight: bold; cursor: not-allowed; border-color: #94a3b8 !important; }
+
+        /* 鎖定模式 T-Chart 顯示方框 (補足上方標題) */
+        .t-locked-box {
+            position: absolute; width: 85px; text-align: center; background: #f8fafc;
+            border: 1px solid #94a3b8; border-radius: 6px; padding: 1px 2px; z-index: 2;
+        }
+        .t-locked-box small { font-size: 10px; color: #64748b; font-weight: bold; display: block; line-height: 1.1; }
+        .t-locked-box strong { font-size: 13px; color: #1e293b; display: block; }
+        .t-locked-box.highlight strong { color: #2980b9; }
 
         .t-out-top      { top: 5px;   left: 118px; }
         .t-out-top-sub  { top: 41px;  left: 118px; border-style: dashed; }
@@ -147,30 +179,30 @@
         /* 全螢幕燈箱樣式 */
         #history-lightbox, #estimate-lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f5f7fa; z-index: 5000; display: none; flex-direction: column; padding: 15px; overflow: hidden;
+            background: #f5f7fa; z-index: 5000; display: none; flex-direction: column; padding: 12px; overflow: hidden;
         }
-        .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--primary-color); margin-bottom: 15px; }
+        .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color); margin-bottom: 12px; }
         .lightbox-title { font-size: 18px; font-weight: bold; color: #2c3e50; }
         .lightbox-close-btn { background: #e74c3c; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
         .lightbox-save-btn { background: #27ae60; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
         .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 40px; }
 
         /* 估價試算頁排版 */
-        .est-window-panel { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .est-window-panel { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
         .est-panel-header { font-size: 17px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; border-bottom: 2px solid #edf2f7; padding-bottom: 6px; }
         
         .t-locked-container {
-            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 15px; text-align: center;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; margin-bottom: 12px; text-align: center;
         }
         .t-locked-alert {
-            font-size: 12px; color: #e74c3c; font-weight: bold; margin-bottom: 8px; display: inline-block; background: #fff5f5; padding: 3px 10px; border-radius: 20px; border: 1px solid #feb2b2;
+            font-size: 12px; color: #e74c3c; font-weight: bold; margin-bottom: 6px; display: inline-block; background: #fff5f5; padding: 3px 10px; border-radius: 20px; border: 1px solid #feb2b2;
         }
 
         .calc-form-container {
-            background: #fdfdfd; border: 1px solid #cbd5e1; border-radius: 6px; padding: 14px;
+            background: #fdfdfd; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px;
         }
         .calc-title { font-size: 15px; font-weight: bold; color: #8e44ad; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-        .calc-sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 12px; }
+        .calc-sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 12px; }
         .calc-formula-result-box {
             background: #f3f0ff; border: 1px solid #d8b4fe; border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 13px; line-height: 1.6; color: #4c1d95;
         }
@@ -390,7 +422,7 @@
             if (!record) return;
 
             editingId = recordId;
-            document.getElementById('main-header').innerText = "✏️ 正在修改丈量尺寸資料";
+            document.getElementById('main-header').innerText = "✏️️ 正在修改丈量尺寸資料";
             document.getElementById('btn-save-main').innerText = "✅ 更新並覆蓋尺寸資料";
             document.getElementById('btn-save-main').style.backgroundColor = "#27ae60";
             document.getElementById('btn-cancel-edit').style.display = "block";
@@ -541,7 +573,7 @@
         }
 
         // ==========================================
-        // 💰 估價試算模組 (維持原本操作直覺)
+        // 💰 估價試算模組 (帶文字標籤的唯讀 T-Chart + 支援 Z Fold 大小螢幕排版)
         // ==========================================
         window.openEstimateModal = function(recordId) {
             const records = getLocalStorageData();
@@ -596,92 +628,99 @@
                     <div class="est-window-panel" data-idx="${idx}">
                         <div class="est-panel-header">🪟 窗戶項目 ${origW.itemNumber}：${origW.location || '未填位置'}</div>
                         
-                        <!-- 🔒 原始丈量 T-Chart (唯讀鎖定) -->
-                        <div class="t-locked-container">
-                            <span class="t-locked-alert">🔒 初始丈量基準尺寸（已鎖定保護不可更動）</span>
-                            <div class="t-chart-container" style="background:#f1f5f9; padding:15px 0; margin:5px 0;">
-                                <div class="t-chart" style="transform: scale(0.9);">
-                                    <div class="t-line-horizontal"></div>
-                                    <div class="t-line-vertical"></div>
-                                    <input type="text" class="t-input t-locked t-out-top" value="${origW.sizeOutTop || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-out-top-sub" value="${origW.sizeOutTopSub || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-win-width" value="${origW.sizeWindowWidth || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-out-left" value="${origW.sizeOutLeft || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-out-left-sub" value="${origW.sizeOutLeftSub || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-out-right" value="${origW.sizeOutRight || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-out-right-sub" value="${origW.sizeOutRightSub || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-win-height" value="${origW.sizeWindowHeight || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-out-bottom" value="${origW.sizeOutBottom || ''}" readonly>
-                                    <input type="text" class="t-input t-locked t-out-bottom-sub" value="${origW.sizeOutBottomSub || ''}" readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 🧮 估價算式與尺寸試算區 -->
-                        <div class="calc-form-container">
-                            <div class="calc-title">📐 估價尺寸與金額試算</div>
-                            
-                            <div class="calc-sub-grid">
-                                <div>
-                                    <label>估價寬度 (cm)：</label>
-                                    <input type="number" class="c-width" value="${currentCalcWidth}" placeholder="寬度" oninput="runWindowFormula(${idx})">
-                                </div>
-                                <div>
-                                    <label>估價高度 (cm)：</label>
-                                    <input type="number" class="c-height" value="${currentCalcHeight}" placeholder="高度" oninput="runWindowFormula(${idx})">
-                                </div>
-                                <div>
-                                    <label>計算模式：</label>
-                                    <select class="c-type" onchange="toggleCalcFields(${idx}); runWindowFormula(${idx});">
-                                        <option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布 (標準幅寬)</option>
-                                        <option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布 (定高買寬)</option>
-                                        <option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數計算 (捲簾/百葉/調光)</option>
-                                        <option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動輸入金額</option>
-                                    </select>
+                        <div class="est-grid-layout">
+                            <!-- 🔒 原始丈量 T-Chart (清晰帶有文字標籤，唯讀鎖定) -->
+                            <div class="est-grid-left">
+                                <div class="t-locked-container">
+                                    <span class="t-locked-alert">🔒 初始丈量基準尺寸（已鎖定保護）</span>
+                                    <div class="t-chart-container" style="background:#f1f5f9; padding:15px 0; margin:5px 0;">
+                                        <div class="t-chart">
+                                            <div class="t-line-horizontal"></div>
+                                            <div class="t-line-vertical"></div>
+                                            
+                                            <div class="t-locked-box t-out-top"><small>上框高</small><strong>${origW.sizeOutTop || '0'}</strong></div>
+                                            <div class="t-locked-box t-out-top-sub" style="border-style:dashed;"><small>上框(註)</small><strong>${origW.sizeOutTopSub || '無'}</strong></div>
+                                            <div class="t-locked-box t-win-width highlight" style="border-color:#3498db;"><small style="color:#2980b9;">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div>
+                                            <div class="t-locked-box t-out-left"><small>左牆寬</small><strong>${origW.sizeOutLeft || '0'}</strong></div>
+                                            <div class="t-locked-box t-out-left-sub" style="border-style:dashed;"><small>左牆(註)</small><strong>${origW.sizeOutLeftSub || '無'}</strong></div>
+                                            <div class="t-locked-box t-out-right"><small>右牆寬</small><strong>${origW.sizeOutRight || '0'}</strong></div>
+                                            <div class="t-locked-box t-out-right-sub" style="border-style:dashed;"><small>右牆(註)</small><strong>${origW.sizeOutRightSub || '無'}</strong></div>
+                                            <div class="t-locked-box t-win-height highlight" style="border-color:#3498db;"><small style="color:#2980b9;">窗本身高</small><strong>${origW.sizeWindowHeight || '0'}</strong></div>
+                                            <div class="t-locked-box t-out-bottom"><small>下框地</small><strong>${origW.sizeOutBottom || '0'}</strong></div>
+                                            <div class="t-locked-box t-out-bottom-sub" style="border-style:dashed;"><small>下框(註)</small><strong>${origW.sizeOutBottomSub || '無'}</strong></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- 動態算式參數 -->
-                            <div class="calc-sub-grid dynamic-fields" id="dynamic-fields-${idx}">
-                                <div class="f-pleat">
-                                    <label>摺數倍率：</label>
-                                    <input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runWindowFormula(${idx})">
-                                </div>
-                                <div class="f-fab-width">
-                                    <label>布幅寬 (cm)：</label>
-                                    <input type="number" class="c-fabwidth" value="${fabricWidth}" placeholder="常見110或150" oninput="runWindowFormula(${idx})">
-                                </div>
-                                <div class="f-sewing">
-                                    <label>車工單價 (元/幅)：</label>
-                                    <input type="number" class="c-sewingprice" value="${sewingPrice}" placeholder="預設180" oninput="runWindowFormula(${idx})">
-                                </div>
-                                <div>
-                                    <label class="c-price-label">單價 (元/尺 或 元/才)：</label>
-                                    <input type="number" class="c-unitprice" value="${unitPrice}" placeholder="單價" oninput="runWindowFormula(${idx})">
-                                </div>
-                                <div class="f-track" style="display:flex; align-items:center; gap:8px; padding-top:22px;">
-                                    <label style="cursor:pointer; display:flex; align-items:center; gap:6px;">
-                                        <input type="checkbox" class="c-track" ${hasTrack ? 'checked' : ''} onchange="runWindowFormula(${idx})" style="width:18px; height:18px;">
-                                        含一般軌 ($90/尺)
-                                    </label>
-                                </div>
-                            </div>
+                            <!-- 🧮 估價算式與尺寸試算區 -->
+                            <div class="est-grid-right">
+                                <div class="calc-form-container">
+                                    <div class="calc-title">📐 估價尺寸與金額試算</div>
+                                    
+                                    <div class="calc-sub-grid">
+                                        <div>
+                                            <label>估價寬度 (cm)：</label>
+                                            <input type="number" class="c-width" value="${currentCalcWidth}" placeholder="寬度" oninput="runWindowFormula(${idx})">
+                                        </div>
+                                        <div>
+                                            <label>估價高度 (cm)：</label>
+                                            <input type="number" class="c-height" value="${currentCalcHeight}" placeholder="高度" oninput="runWindowFormula(${idx})">
+                                        </div>
+                                        <div>
+                                            <label>計算模式：</label>
+                                            <select class="c-type" onchange="toggleCalcFields(${idx}); runWindowFormula(${idx});">
+                                                <option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布 (標準幅寬)</option>
+                                                <option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布 (定高買寬)</option>
+                                                <option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數計算 (捲簾/百葉/調光)</option>
+                                                <option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動輸入金額</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div class="calc-formula-result-box" id="calc-result-${idx}">
-                                正在計算中...
-                            </div>
+                                    <!-- 動態算式參數 -->
+                                    <div class="calc-sub-grid dynamic-fields" id="dynamic-fields-${idx}">
+                                        <div class="f-pleat">
+                                            <label>摺數倍率：</label>
+                                            <input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runWindowFormula(${idx})">
+                                        </div>
+                                        <div class="f-fab-width">
+                                            <label>布幅寬 (cm)：</label>
+                                            <input type="number" class="c-fabwidth" value="${fabricWidth}" placeholder="常見110或150" oninput="runWindowFormula(${idx})">
+                                        </div>
+                                        <div class="f-sewing">
+                                            <label>車工單價 (元/幅)：</label>
+                                            <input type="number" class="c-sewingprice" value="${sewingPrice}" placeholder="預設180" oninput="runWindowFormula(${idx})">
+                                        </div>
+                                        <div>
+                                            <label class="c-price-label">單價 (元/尺 或 元/才)：</label>
+                                            <input type="number" class="c-unitprice" value="${unitPrice}" placeholder="單價" oninput="runWindowFormula(${idx})">
+                                        </div>
+                                        <div class="f-track" style="display:flex; align-items:center; gap:8px; padding-top:22px;">
+                                            <label style="cursor:pointer; display:flex; align-items:center; gap:6px;">
+                                                <input type="checkbox" class="c-track" ${hasTrack ? 'checked' : ''} onchange="runWindowFormula(${idx})" style="width:18px; height:18px;">
+                                                含一般軌 ($90/尺，低消$500)
+                                            </label>
+                                        </div>
+                                    </div>
 
-                            <!-- 一布一紗多列款式與金額清單 -->
-                            <div class="fabric-items-container">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                                    <span style="font-size:13px; font-weight:bold; color:#2c3e50;">布料與紗簾清單 (可新增一布一紗)：</span>
-                                    <button type="button" class="btn-add-item-row" onclick="addFabricRow(${idx})">➕ 新增款式/布號列</button>
-                                </div>
-                                <div class="fabric-rows-wrapper" id="fabric-rows-${idx}">
-                                    ${itemsRowsHtml}
-                                </div>
-                                <div style="text-align: right; font-size: 14px; font-weight: bold; color: #2980b9; margin-top: 6px;">
-                                    本窗總估價金額：$<span class="window-sum-display" id="window-sum-${idx}">0</span> 元
+                                    <div class="calc-formula-result-box" id="calc-result-${idx}">
+                                        正在計算中...
+                                    </div>
+
+                                    <!-- 一布一紗多列款式與金額清單 -->
+                                    <div class="fabric-items-container">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                            <span style="font-size:13px; font-weight:bold; color:#2c3e50;">布料與紗簾清單 (可新增一布一紗)：</span>
+                                            <button type="button" class="btn-add-item-row" onclick="addFabricRow(${idx})">➕ 新增款式/布號列</button>
+                                        </div>
+                                        <div class="fabric-rows-wrapper" id="fabric-rows-${idx}">
+                                            ${itemsRowsHtml}
+                                        </div>
+                                        <div style="text-align: right; font-size: 14px; font-weight: bold; color: #2980b9; margin-top: 6px;">
+                                            本窗總估價金額：$<span class="window-sum-display" id="window-sum-${idx}">0</span> 元
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -812,6 +851,7 @@
             }
         }
 
+        // 7 大算式精準換算邏輯 (含一般軌低消 $500 邏輯)
         window.runWindowFormula = function(idx) {
             const panel = document.querySelector(`.est-window-panel[data-idx="${idx}"]`);
             if(!panel) return;
@@ -842,11 +882,27 @@
             let html = '';
             let finalPrice = 0;
 
+            // 軌道低消 $500 核心計算模組
+            const trackFeet = Math.ceil(width / 30.3);
+            const rawTrackFee = trackFeet * 90;
+            let trackFee = 0;
+            let trackNoteHtml = '';
+
+            if (hasTrack) {
+                if (rawTrackFee < 500) {
+                    trackFee = 500;
+                    trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#e74c3c; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
+                } else {
+                    trackFee = rawTrackFee;
+                    trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>`;
+                }
+            } else {
+                trackNoteHtml = `• 一般軌道：無<br>`;
+            }
+
             if (type === 'traditional') {
                 const panels = Math.ceil((width * pleat) / fabWidth);
                 const sewingFee = panels * sewingPrice;
-                const trackFeet = Math.ceil(width / 30.3);
-                const trackFee = hasTrack ? (trackFeet * 90) : 0;
                 const sewingHeightFeet = (height + 30.3) / 30.3;
                 const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6);
                 const fabricCost = totalFabricFeet * unitPrice;
@@ -860,7 +916,7 @@
                     • 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>
                     • 布料費用：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
                     • 總車工費用：${panels} 幅 × $${sewingPrice} = <strong>$${sewingFee} 元</strong><br>
-                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                    ${trackNoteHtml}
                     ➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
             } else if (type === 'seamless') {
@@ -870,8 +926,6 @@
                 const diff = ceilFeet - rawFeet;
                 const totalFabricFeet = (diff > 0 && diff <= 0.01) ? Math.floor(rawFeet) : ceilFeet;
                 const fabricCost = totalFabricFeet * unitPrice;
-                const trackFeet = Math.ceil(width / 30.3);
-                const trackFee = hasTrack ? (trackFeet * 90) : 0;
                 finalPrice = fabricCost + trackFee;
 
                 html = `
@@ -879,7 +933,7 @@
                     • 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>
                     • 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong> (未進位原始值: ${rawFeet.toFixed(3)})<br>
                     • 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
-                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                    ${trackNoteHtml}
                     ➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
             } else if (type === 'roller') {
@@ -1177,7 +1231,7 @@
         }
 
         // ==========================================
-        // 📄 PDF 匯出 1：包含 T-Chart 圖 + 底部算式拆解 (保證完整呈現)
+        // 📄 PDF 匯出 1：包含 T-Chart 圖 + 底部算式拆解 (支援低消 $500 標註)
         // ==========================================
         window.exportPDFWithTChart = function(recordId) {
             const records = getLocalStorageData();
@@ -1203,7 +1257,7 @@
                     const depthStr = w.boxDepth ? w.boxDepth.trim() + ' cm' : '未填';
                     const itemPriceDisplay = qItem.itemPrice ? `$${qItem.itemPrice} 元` : (price ? '包含於總額' : '未估價');
 
-                    // 動態取得算式拆解文字 (若已有儲存直接取用，否則根據該窗參數即時現算)
+                    // 動態取得算式拆解 (含低消 $500 邏輯)
                     let formulaHtml = qItem.formulaHtml || '';
                     if (!formulaHtml || formulaHtml.trim() === '') {
                         const width = parseFloat(qItem.calcWidth || w.sizeWindowWidth) || 0;
@@ -1215,12 +1269,27 @@
                         const hasTrack = qItem.hasTrack !== undefined ? qItem.hasTrack : true;
                         const cType = qItem.calcType || 'traditional';
 
+                        const trackFeet = Math.ceil(width / 30.3);
+                        const rawTrackFee = trackFeet * 90;
+                        let trackFee = 0;
+                        let trackNoteHtml = '';
+
+                        if (hasTrack) {
+                            if (rawTrackFee < 500) {
+                                trackFee = 500;
+                                trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#e74c3c; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
+                            } else {
+                                trackFee = rawTrackFee;
+                                trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>`;
+                            }
+                        } else {
+                            trackNoteHtml = `• 一般軌道：無<br>`;
+                        }
+
                         if (width > 0 && height > 0) {
                             if (cType === 'traditional') {
                                 const panels = Math.ceil((width * pleat) / fabWidth);
                                 const sewingFee = panels * sewingPrice;
-                                const trackFeet = Math.ceil(width / 30.3);
-                                const trackFee = hasTrack ? (trackFeet * 90) : 0;
                                 const sewingHeightFeet = (height + 30.3) / 30.3;
                                 const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6);
                                 const fabricCost = totalFabricFeet * unitPrice;
@@ -1232,7 +1301,7 @@
                                     • 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>
                                     • 布料費用：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
                                     • 總車工費用：${panels} 幅 × $${sewingPrice} = <strong>$${sewingFee} 元</strong><br>
-                                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                                    ${trackNoteHtml}
                                     ➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${subTotal} 元</strong>
                                 `;
                             } else if (cType === 'seamless') {
@@ -1242,15 +1311,13 @@
                                 const diff = ceilFeet - rawFeet;
                                 const totalFabricFeet = (diff > 0 && diff <= 0.01) ? Math.floor(rawFeet) : ceilFeet;
                                 const fabricCost = totalFabricFeet * unitPrice;
-                                const trackFeet = Math.ceil(width / 30.3);
-                                const trackFee = hasTrack ? (trackFeet * 90) : 0;
                                 const subTotal = fabricCost + trackFee;
                                 formulaHtml = `
                                     <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【無接縫布算式拆解】</div>
                                     • 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>
                                     • 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong><br>
                                     • 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
-                                    ${hasTrack ? `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>` : '• 一般軌道：無<br>'}
+                                    ${trackNoteHtml}
                                     ➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${subTotal} 元</strong>
                                 `;
                             } else if (cType === 'roller') {
@@ -1267,7 +1334,6 @@
                         }
                     }
 
-                    // 處理項目一、項目二列表 (若沒有填寫布號則預設出項目一)
                     let items = qItem.fabricItems;
                     if (!items || !Array.isArray(items) || items.length === 0) {
                         items = [{
@@ -1330,7 +1396,7 @@
                                 </div>
                             </div>
                             
-                            <!-- 項目一、項目二與下方算式拆解 -->
+                            <!-- 項目列表與算式拆解 -->
                             ${itemsHtml}
                             
                             ${w.note ? `<div class="pdf-w-note"> 📝  <strong>丈量備註：</strong>${w.note}</div>` : ''}
