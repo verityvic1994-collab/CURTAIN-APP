@@ -581,7 +581,7 @@
         // ==========================================
         // 雲端自動上傳模組 (自動命名為：客戶名+丈量日期，不覆蓋舊檔)
         // ==========================================
-        function syncRecordToGoogleDrive(record) {
+               function syncRecordToGoogleDrive(record) {
             if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("XXXXX")) return;
 
             const fullPdfHtml = generateFullPdfHtml(record);
@@ -591,8 +591,13 @@
                 action: 'backup_pdfs',
                 recordId: record.id,
                 clientName: record.clientName,
+                clientPhone: record.clientPhone,
+                clientAddress: record.clientAddress,
+                clientTaxId: record.clientTaxId,
                 measureDate: record.measureDate || getTodayString(),
                 timestamp: record.timestamp || new Date().toLocaleString('zh-TW'),
+                windows: record.windows,
+                quoteData: record.quoteData || {}, // 確保試算表能記錄到最新估價金額
                 fullPdfHtml: fullPdfHtml,
                 pricePdfHtml: pricePdfHtml
             };
@@ -603,9 +608,10 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             })
-            .then(() => console.log('☁️ 雲端 PDF 自動備份完成！'))
+            .then(() => console.log('☁️ 雲端 PDF 與試算表同步備份完成！'))
             .catch(err => console.error('❌ 雲端備份失敗：', err));
         }
+
 
         // ==========================================
         // 💰 估價試算模組 (帶文字標籤 T-Chart + 支援 Fold 大小螢幕排版)
