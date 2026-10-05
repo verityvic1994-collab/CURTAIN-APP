@@ -8,115 +8,165 @@
     <title>專業窗簾丈量系統</title>
     <style>
         :root {
-            --primary-color: #3498db;
-            --primary-dark: #2980b9;
-            --bg-color: #f5f7fa;
-            --card-bg: #ffffff;
-            --text-color: #2c3e50;
-            --border-color: #dcdde1;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #8b5cf6;
+            --slate-800: #1e293b;
+            --slate-600: #475569;
+            --slate-400: #94a3b8;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
         }
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 10px;
+            background-color: #f0f4f8;
+            color: var(--slate-800);
+            padding: 12px;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
         }
         .container {
             width: 100%;
-            max-width: 600px;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            max-width: 620px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
             transition: max-width 0.3s ease;
         }
-        @media (min-width: 700px) {
-            .container { max-width: 820px; padding: 24px; }
-            .est-grid-layout { display: flex; gap: 20px; align-items: flex-start; }
-            .est-grid-left { flex: 0 0 340px; }
+        /* 支援 Z Fold 展開螢幕雙欄佈局 */
+        @media (min-width: 720px) {
+            .container { max-width: 860px; padding: 28px; }
+            .est-grid-layout { display: flex; gap: 24px; align-items: flex-start; }
+            .est-grid-left { flex: 0 0 350px; }
             .est-grid-right { flex: 1; }
         }
 
+        /* 密碼鎖畫面 */
         #auth-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #1a252f; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999; color: white;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; color: white;
         }
         .auth-box {
-            background: #2c3e50; padding: 25px; border-radius: 8px; text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3); width: 90%; max-width: 360px;
+            background: #1e293b;
+            padding: 32px 24px; border-radius: 16px; text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); width: 90%; max-width: 360px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .auth-box h2 { margin-bottom: 20px; font-weight: 400; font-size: 20px; }
+        .auth-box h2 { margin-bottom: 20px; font-weight: 600; font-size: 20px; letter-spacing: 1px; }
         .auth-box input {
-            width: 100%; padding: 12px; margin-bottom: 15px;
-            border: none; border-radius: 4px; font-size: 16px; text-align: center;
+            width: 100%; padding: 14px; margin-bottom: 16px;
+            border: 1px solid #334155; border-radius: 8px; font-size: 18px; text-align: center;
+            background: #0f172a; color: #fff; outline: none;
         }
+        .auth-box input:focus { border-color: var(--primary); }
         .auth-box button {
-            background: var(--primary-color); color: white; border: none;
-            padding: 12px 30px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%;
+            background: var(--primary); color: white; border: none;
+            padding: 14px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; width: 100%;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
+        /* 主程式卡片與標題 */
         #app-content { display: none; width: 100%; }
-        h1 { text-align: center; margin-bottom: 15px; color: var(--primary-dark); font-size: 22px; }
-        .client-info-card { background: #fdfdfd; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        .client-info-title { font-size: 16px; font-weight: bold; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 1px solid #edf2f7; padding-bottom: 5px; }
+        h1 { text-align: center; margin-bottom: 20px; color: var(--slate-800); font-size: 22px; font-weight: 700; }
+        
+        .client-info-card {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 12px; padding: 16px; margin-bottom: 20px;
+        }
+        .client-info-title {
+            font-size: 15px; font-weight: 700; color: var(--primary-dark);
+            margin-bottom: 14px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;
+            display: flex; align-items: center; gap: 6px;
+        }
         .form-group { margin-bottom: 12px; }
         .form-row { display: flex; gap: 10px; }
         .form-row .form-group { flex: 1; }
-        label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 14px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: var(--slate-600); }
         input[type="text"], input[type="tel"], input[type="number"], input[type="date"], input[type="search"], select {
-            width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 15px; background-color: #fff;
+            width: 100%; padding: 10px 12px; border: 1px solid var(--slate-200); border-radius: 8px;
+            font-size: 14px; background-color: #fff; color: var(--slate-800); outline: none;
+            transition: border-color 0.2s;
         }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
 
+        /* 窗戶項目卡片 */
         .window-card {
-            border: 1px solid var(--border-color); border-left: 5px solid var(--primary-color);
-            border-radius: 8px; padding: 15px; margin-bottom: 20px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid var(--slate-200);
+            border-left: 5px solid var(--primary);
+            border-radius: 12px; padding: 18px; margin-bottom: 20px;
+            background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
-        .window-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px; }
-        .window-title { font-size: 17px; font-weight: bold; color: var(--primary-dark); }
-        .delete-btn { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
-        .options-group { margin-bottom: 15px; }
-        .options-title { font-weight: bold; margin-bottom: 8px; font-size: 14px; color: #34495e; }
-        .checkbox-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        .window-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--slate-100); padding-bottom: 10px; }
+        .window-title { font-size: 16px; font-weight: 700; color: var(--slate-800); }
+        .delete-btn { background: #fee2e2; color: var(--danger); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        
+        .options-group { margin-bottom: 14px; }
+        .options-title { font-weight: 600; margin-bottom: 8px; font-size: 13px; color: var(--slate-600); }
+        .checkbox-container { display: flex; flex-wrap: wrap; gap: 8px; }
         .checkbox-item {
             display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: #f8f9fa; padding: 8px 12px; border-radius: 6px; font-size: 14px;
-            flex: 1 1 calc(50% - 5px); min-width: 100px; border: 1px solid #e2e8f0;
+            background: var(--slate-50); padding: 8px 12px; border-radius: 6px; font-size: 13px;
+            flex: 1 1 calc(50% - 4px); min-width: 90px; border: 1px solid var(--slate-200);
         }
-        .checkbox-item input { width: 18px; height: 18px; }
+        .checkbox-item input { width: 16px; height: 16px; accent-color: var(--primary); }
 
+        /* 照片上傳區域 */
+        .photo-upload-zone {
+            margin: 14px 0; padding: 12px; background: #f8fafc; border: 1px dashed var(--slate-300); border-radius: 8px;
+        }
+        .photo-preview-wrap {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center;
+        }
+        .photo-preview-img {
+            width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1;
+        }
+        .compress-loading-tag {
+            font-size: 12px; color: var(--primary); font-weight: bold; display: none;
+        }
+
+        /* T-Chart 容器與結構 */
         .t-chart-container {
             display: flex; justify-content: center; align-items: center;
-            margin: 10px 0; padding: 15px 0; background: #fdfdfd; border: 1px dashed #e2e8f0; border-radius: 8px;
+            margin: 10px 0; padding: 15px 0; background: var(--slate-50); border: 1px dashed #cbd5e1; border-radius: 10px;
             overflow-x: auto;
         }
         .t-chart { position: relative; width: 320px; height: 330px; transform-origin: center center; }
         @media (max-width: 360px) {
             .t-chart { transform: scale(0.85); margin: -20px 0; }
         }
-        .t-line-horizontal { position: absolute; top: 120px; left: 35px; width: 250px; height: 4px; background-color: var(--primary-color); z-index: 1; }
-        .t-line-vertical { position: absolute; top: 55px; left: 158px; width: 4px; height: 215px; background-color: var(--primary-color); z-index: 1; }
+        .t-line-horizontal { position: absolute; top: 120px; left: 35px; width: 250px; height: 3px; background-color: var(--primary); z-index: 1; }
+        .t-line-vertical { position: absolute; top: 55px; left: 158px; width: 3px; height: 215px; background-color: var(--primary); z-index: 1; }
         .t-input {
             position: absolute; width: 85px !important; height: 34px; padding: 0 4px !important;
-            text-align: center; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; background: white; z-index: 2;
+            text-align: center; border: 1px solid var(--slate-300); border-radius: 6px; font-size: 12px; background: white; z-index: 2;
         }
-        .t-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); }
+        .t-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15); }
 
         .t-locked-box {
-            position: absolute; width: 85px; text-align: center; background: #f8fafc;
-            border: 1px solid #94a3b8; border-radius: 6px; padding: 1px 2px; z-index: 2;
+            position: absolute; width: 85px; text-align: center; background: #ffffff;
+            border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 2px; z-index: 2;
         }
-        .t-locked-box small { font-size: 10px; color: #64748b; font-weight: bold; display: block; line-height: 1.1; }
-        .t-locked-box strong { font-size: 13px; color: #1e293b; display: block; }
-        .t-locked-box.highlight strong { color: #2980b9; }
+        .t-locked-box small { font-size: 10px; color: var(--slate-400); font-weight: 600; display: block; line-height: 1.1; }
+        .t-locked-box strong { font-size: 13px; color: var(--slate-800); display: block; }
+        .t-locked-box.highlight strong { color: var(--primary); }
 
         .t-out-top      { top: 5px;   left: 118px; }
         .t-out-top-sub  { top: 41px;  left: 118px; border-style: dashed; }
@@ -129,91 +179,89 @@
         .t-out-bottom   { top: 245px; left: 118px; }
         .t-out-bottom-sub { top: 283px; left: 118px; border-style: dashed; }
 
-        /* 照片上傳快捷鍵樣式 */
-        .photo-upload-block {
-            margin-top: 10px; padding: 10px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 6px;
-        }
-        .btn-upload-photo {
-            background-color: #16a085; color: white; border: none; padding: 8px 14px; border-radius: 6px;
-            font-size: 13px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-        }
-        .photo-status-box { margin-top: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .photo-link-btn {
-            background: #2980b9; color: white; text-decoration: none; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold;
-        }
-        .photo-del-btn {
-            background: #e74c3c; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;
-        }
-
+        /* 主要功能按鈕 */
         .btn-block { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         button.action-btn {
-            width: 100%; padding: 14px; border: none; border-radius: 8px;
-            font-size: 16px; font-weight: bold; cursor: pointer;
+            width: 100%; padding: 13px; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 600; cursor: pointer;
             display: flex; justify-content: center; align-items: center; gap: 8px; color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
         }
-        .btn-add { background-color: #2ecc71; }
-        .btn-save { background-color: var(--primary-color); }
-        .btn-cancel-edit { background-color: #95a5a6; display: none; }
+        .btn-add { background: var(--primary); }
+        .btn-save { background: var(--success); }
+        .btn-cancel-edit { background: var(--slate-600); display: none; }
 
-        .search-box { margin-top: 30px; border-top: 2px dashed var(--border-color); padding-top: 20px; }
+        /* 歷史紀錄卡片 */
+        .search-box { margin-top: 30px; border-top: 2px dashed var(--slate-200); padding-top: 20px; }
         .history-item-simplified {
-            background: #ffffff; padding: 12px 14px; border-radius: 8px; margin-top: 10px;
-            border: 1px solid #e2e8f0; border-left: 4px solid var(--primary-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            background: #ffffff; padding: 14px 16px; border-radius: 10px; margin-top: 10px;
+            border: 1px solid var(--slate-200); border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         .hist-top-line { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
-        .hist-client-title { font-size: 16px; font-weight: bold; color: #1e293b; }
-        .hist-info-line { font-size: 13px; color: #64748b; line-height: 1.6; }
-        .hist-actions-bar { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; margin-top: 8px; border-top: 1px dashed #f1f5f9; padding-top: 6px; }
-        .history-client-details { display: none; font-size: 13px; color: #475569; background: #f8fafc; padding: 10px; border-radius: 6px; margin: 8px 0; border: 1px solid #e2e8f0; }
+        .hist-client-title { font-size: 15px; font-weight: 700; color: var(--slate-800); }
+        .hist-info-line { font-size: 13px; color: var(--slate-600); line-height: 1.6; }
+        .hist-actions-bar {
+            display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 10px;
+            border-top: 1px dashed var(--slate-200); padding-top: 8px;
+        }
+        .history-client-details { display: none; font-size: 13px; color: var(--slate-600); background: var(--slate-50); padding: 12px; border-radius: 8px; margin: 8px 0; border: 1px solid var(--slate-200); }
 
-        .btn-tag { padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; border: none; color: white; }
-        .toggle-btn { background-color: #7f8c8d; }
-        .estimate-btn { background-color: #8e44ad; }
-        .pdf-btn { background-color: #e67e22; }
-        .pdf-price-only-btn { background-color: #d35400; }
-        .row-delete-btn { background-color: #e74c3c; }
-        .row-edit-btn { background-color: #27ae60; }
+        .btn-tag { padding: 5px 9px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; border: none; color: white; }
+        .toggle-btn { background-color: var(--slate-600); }
+        .estimate-btn { background-color: var(--accent); }
+        .pdf-btn { background-color: #d97706; }
+        .pdf-price-only-btn { background-color: #ea580c; }
+        .row-delete-btn { background-color: var(--danger); }
+        .row-edit-btn { background-color: var(--success); }
 
+        /* 燈箱視窗 */
         #history-lightbox, #estimate-lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f5f7fa; z-index: 5000; display: none; flex-direction: column; padding: 12px; overflow: hidden;
+            background: #f8fafc; z-index: 5000; display: none; flex-direction: column; padding: 16px; overflow: hidden;
         }
-        .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color); margin-bottom: 12px; }
-        .lightbox-title { font-size: 18px; font-weight: bold; color: #2c3e50; }
-        .lightbox-close-btn { background: #e74c3c; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
-        .lightbox-save-btn { background: #27ae60; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
-        .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 40px; }
+        .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--primary); margin-bottom: 12px; }
+        .lightbox-title { font-size: 17px; font-weight: 700; color: var(--slate-800); }
+        .lightbox-close-btn { background: #fee2e2; color: var(--danger); border: none; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .lightbox-save-btn { background: var(--success); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 50px; }
 
-        .est-window-panel { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
-        .est-panel-header { font-size: 17px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; border-bottom: 2px solid #edf2f7; padding-bottom: 6px; }
-        .t-locked-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; margin-bottom: 12px; text-align: center; }
-        .t-locked-alert { font-size: 12px; color: #e74c3c; font-weight: bold; margin-bottom: 6px; display: inline-block; background: #fff5f5; padding: 3px 10px; border-radius: 20px; border: 1px solid #feb2b2; }
-        .calc-form-container { background: #fdfdfd; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; }
-        .calc-title { font-size: 15px; font-weight: bold; color: #8e44ad; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-        .calc-sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 12px; }
-        .calc-formula-result-box { background: #f3f0ff; border: 1px solid #d8b4fe; border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 13px; line-height: 1.6; color: #4c1d95; }
-        .fabric-items-container { margin-top: 14px; border-top: 1px dashed #cbd5e1; padding-top: 10px; }
-        .fabric-item-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 8px; background: #fdfdfd; }
-        .btn-add-item-row { background: #34495e; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; margin-bottom: 6px; }
-        .btn-remove-item-row { background: #e74c3c; color: #fff; border: none; padding: 10px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        /* 估價頁面卡片 */
+        .est-window-panel { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .est-panel-header { font-size: 16px; font-weight: 700; color: var(--slate-800); margin-bottom: 12px; border-bottom: 2px solid var(--slate-100); padding-bottom: 6px; }
+        .t-locked-container { background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 8px; padding: 10px; margin-bottom: 12px; text-align: center; }
+        .t-locked-alert { font-size: 11px; color: var(--primary-dark); font-weight: 600; margin-bottom: 6px; display: inline-block; background: var(--primary-light); padding: 3px 10px; border-radius: 20px; }
+        
+        .calc-form-container { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 10px; padding: 14px; }
+        .calc-title { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+        .calc-sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 12px; }
+        .calc-formula-result-box { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 13px; line-height: 1.6; color: #581c87; }
+        
+        .fabric-items-container { margin-top: 14px; border-top: 1px dashed var(--slate-200); padding-top: 12px; }
+        .fabric-item-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 8px; }
+        .btn-add-item-row { background: var(--slate-800); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600; }
+        .btn-remove-item-row { background: #fee2e2; color: var(--danger); border: none; padding: 9px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
 
+        /* 燈箱內迷你 T 圖 */
         .mini-t-container { display: flex; justify-content: center; transform: scale(0.85); margin: 0; }
-        .mini-t-chart { position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; }
-        .mini-t-val { position: absolute; width: 75px; text-align: center; font-size: 11px; background: #f8f9fa; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 0; }
-        .mini-t-val small { font-size: 9px; color: #7f8c8d; display: block; }
+        .mini-t-chart { position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; }
+        .mini-t-val { position: absolute; width: 75px; text-align: center; font-size: 11px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 4px; padding: 1px 0; }
+        .mini-t-val small { font-size: 9px; color: var(--slate-400); display: block; }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 密碼鎖畫面 -->
         <div id="auth-overlay">
             <div class="auth-box">
-                <h2> 🔒  丈量系統</h2>
+                <h2> 🔒  丈量系統登入</h2>
                 <input type="password" id="sys-password" placeholder="請輸入POLO生日四碼" pattern="\d*" inputmode="numeric">
                 <button onclick="window.checkPassword()">登入系統</button>
             </div>
         </div>
 
+        <!-- 主程式內容 -->
         <div id="app-content">
             <h1 id="main-header"> 📋  窗簾現場丈量單 (尺寸輸入)</h1>
             
@@ -255,17 +303,18 @@
                 <button class="action-btn btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"> ✕  取消修改 (不儲存)</button>
             </div>
             <div class="btn-block" style="margin-top: 10px;">
-                <button class="action-btn" style="background-color: #3498db;" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄 (簡化列表)</button>
+                <button class="action-btn" style="background-color: var(--primary);" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄 (簡化列表)</button>
             </div>
 
             <div class="search-box">
-                <h2> 🔍  查詢歷史紀錄</h2>
+                <h2 style="font-size:16px; margin-bottom:8px;"> 🔍  查詢歷史紀錄</h2>
                 <input type="search" id="search-input" placeholder="輸入客戶姓名或地址搜尋..." oninput="searchData()">
                 <div id="search-results"></div>
             </div>
         </div>
     </div>
 
+    <!-- 歷史紀錄燈箱 -->
     <div id="history-lightbox">
         <div class="lightbox-header">
             <span class="lightbox-title"> 📋  客戶丈量歷史紀錄</span>
@@ -274,6 +323,7 @@
         <div id="lightbox-list" class="lightbox-content"></div>
     </div>
 
+    <!-- 估價試算頁面燈箱 -->
     <div id="estimate-lightbox">
         <div class="lightbox-header">
             <span class="lightbox-title" id="est-lightbox-title"> 💰  客戶估價試算</span>
@@ -290,6 +340,7 @@
         let windowCount = 0;
         let currentEstimatingRecordId = null;
 
+        // 全域 Google Apps Script Web App 網址
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPqHnSF3DA6RDA0brfzZdSjLaVPBzTaQE-AGiCtG967DTeC4gK-CJrnodv8DLbdPCJuA/exec";
 
         window.checkPassword = function() {
@@ -300,7 +351,7 @@
             } else {
                 alert('密碼錯誤，請重新輸入！');
             }
-        }
+        };
 
         function getTodayString() {
             const today = new Date();
@@ -310,6 +361,81 @@
             return `${y}-${m}-${d}`;
         }
 
+        // ==========================================
+        // 🚀 核心圖片自動輕量壓縮工具 (解決按鈕卡死問題)
+        // ==========================================
+        function compressImage(file, maxWidth = 1200, maxHeight = 1200, quality = 0.65) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = (err) => reject(err);
+                };
+                reader.onerror = (err) => reject(err);
+            });
+        }
+
+        // 監聽照片上傳並壓縮
+        window.handlePhotoChange = async function(input, windowIdx) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const card = input.closest('.window-card');
+            const loadingTag = card.querySelector('.compress-loading-tag');
+            const previewWrap = card.querySelector('.photo-preview-wrap');
+
+            try {
+                if (loadingTag) loadingTag.style.display = 'inline-block';
+                const compressedBase64 = await compressImage(file);
+                input.setAttribute('data-photo-base64', compressedBase64);
+                if (previewWrap) {
+                    previewWrap.innerHTML = `
+                        <img src="${compressedBase64}" class="photo-preview-img">
+                        <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除照片</button>
+                    `;
+                }
+            } catch (err) {
+                console.error("照片處理失敗：", err);
+                alert("照片讀取失敗，請重新選取！");
+            } finally {
+                if (loadingTag) loadingTag.style.display = 'none';
+            }
+        };
+
+        window.clearPhoto = function(btn) {
+            const card = btn.closest('.window-card');
+            const fileInput = card.querySelector('.w-photo-file');
+            if (fileInput) {
+                fileInput.value = '';
+                fileInput.removeAttribute('data-photo-base64');
+            }
+            const previewWrap = card.querySelector('.photo-preview-wrap');
+            if (previewWrap) previewWrap.innerHTML = '';
+        };
+
         window.addWindowItem = function() {
             windowCount++;
             const windowList = document.getElementById('window-list');
@@ -317,7 +443,7 @@
             newCard.className = 'window-card';
             newCard.setAttribute('data-window-index', windowCount);
             
-            const deleteBtnHtml = windowCount === 1 ? '' : `<button class="delete-btn" onclick="removeWindowCard(this)"> ❌  刪除</button>`;
+            const deleteBtnHtml = windowCount === 1 ? '' : `<button type="button" class="delete-btn" onclick="removeWindowCard(this)"> ❌  刪除</button>`;
 
             newCard.innerHTML = `
                 <div class="window-header">
@@ -349,6 +475,15 @@
                     <label> 📦  窗簾盒深度 (盒深 cm)：</label>
                     <input type="text" class="w-depth" placeholder="例如：15">
                 </div>
+
+                <!-- 📸 現場照片上傳區 -->
+                <div class="photo-upload-zone">
+                    <label> 📸  現場照片 (自動最佳化壓圖)：</label>
+                    <input type="file" class="w-photo-file" accept="image/*" onchange="handlePhotoChange(this, ${windowCount})">
+                    <span class="compress-loading-tag">⚡ 圖片壓縮中...</span>
+                    <div class="photo-preview-wrap"></div>
+                </div>
+
                 <div class="options-title"> 📐  尺寸丈量 (cm)：</div>
                 <div class="t-chart-container">
                     <div class="t-chart">
@@ -356,12 +491,12 @@
                         <div class="t-line-vertical"></div>
                         <input type="text" class="t-input t-out-top" placeholder="上框外高">
                         <input type="text" class="t-input t-out-top-sub" placeholder="上框(註)">
-                        <input type="text" class="t-input t-win-width" placeholder="窗戶本身寬" style="border-color: #3498db; font-weight: bold;">
+                        <input type="text" class="t-input t-win-width" placeholder="窗戶本身寬" style="border-color: var(--primary); font-weight: bold;">
                         <input type="text" class="t-input t-out-left" placeholder="左牆寬">
                         <input type="text" class="t-input t-out-left-sub" placeholder="左牆(註)">
                         <input type="text" class="t-input t-out-right" placeholder="右牆寬">
                         <input type="text" class="t-input t-out-right-sub" placeholder="右牆(註)">
-                        <input type="text" class="t-input t-win-height" placeholder="窗戶本身高" style="border-color: #3498db; font-weight: bold;">
+                        <input type="text" class="t-input t-win-height" placeholder="窗戶本身高" style="border-color: var(--primary); font-weight: bold;">
                         <input type="text" class="t-input t-out-bottom" placeholder="下框外高">
                         <input type="text" class="t-input t-out-bottom-sub" placeholder="下框(註)">
                     </div>
@@ -370,118 +505,18 @@
                     <label> 📝  窗簾盒備註 / 其他特殊狀況：</label>
                     <input type="text" class="w-note" placeholder="例如：特殊狀況備註">
                 </div>
-
-                <!-- 快捷照片上傳區塊 -->
-                <div class="photo-upload-block">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <label style="font-size:13px; font-weight:bold; color:#16a085; margin:0;">📷 現場實景照片：</label>
-                        <label class="btn-upload-photo">
-                            <span>📤 拍照或選取照片</span>
-                            <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="uploadPhotoToCloud(this, ${windowCount})">
-                        </label>
-                    </div>
-                    <div class="photo-status-box" id="photo-box-${windowCount}">
-                        <span style="color:#94a3b8; font-size:12px;">尚未上傳照片</span>
-                    </div>
-                    <input type="hidden" class="w-photo-url" value="">
-                </div>
             `;
             windowList.appendChild(newCard);
             if(windowCount > 1) {
                 newCard.scrollIntoView({ behavior: 'smooth' });
             }
             return newCard;
-        }
-
-        // ==========================================
-        // 📷 前端照片輕量壓縮並直接上傳 Google Drive
-        // ==========================================
-        window.uploadPhotoToCloud = function(inputEl, windowIndex) {
-            const file = inputEl.files[0];
-            if (!file) return;
-
-            const clientName = document.getElementById('client-name').value.trim();
-            if (!clientName) {
-                alert('請先填寫上方【客戶姓名】，以便雲端建立專屬照片資料夾！');
-                inputEl.value = '';
-                return;
-            }
-
-            const card = inputEl.closest('.window-card');
-            const location = card.querySelector('.w-location').value.trim() || '現場';
-            const statusBox = card.querySelector(`#photo-box-${windowIndex}`);
-            const hiddenUrlInput = card.querySelector('.w-photo-url');
-
-            statusBox.innerHTML = `<span style="color:#e67e22; font-weight:bold;">⏳ 照片壓縮並上傳 Google 雲端中，請稍候...</span>`;
-
-            // 前端 Canvas 輕量壓縮 (防卡頓與超載)
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1200;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height = Math.round((height * MAX_WIDTH) / width);
-                        width = MAX_WIDTH;
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
-
-                    // POST 傳送給 GAS
-                    const payload = {
-                        action: 'upload_single_photo',
-                        clientName: clientName,
-                        measureDate: document.getElementById('client-date').value || getTodayString(),
-                        windowIndex: windowIndex,
-                        location: location,
-                        imageBase64: compressedBase64
-                    };
-
-                    fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                    })
-                    .then(res => res.json())
-                    .then(resData => {
-                        if (resData.status === 'success' && resData.fileUrl) {
-                            hiddenUrlInput.value = resData.fileUrl;
-                            statusBox.innerHTML = `
-                                <span style="color:#27ae60; font-weight:bold;">✅ 已上傳雲端！</span>
-                                <a href="${resData.fileUrl}" target="_blank" class="photo-link-btn">🔗 點擊查看照片</a>
-                                <button type="button" class="photo-del-btn" onclick="clearPhoto(${windowIndex})">❌ 移除</button>
-                            `;
-                        } else {
-                            statusBox.innerHTML = `<span style="color:#e74c3c;">❌ 上傳失敗，請重試</span>`;
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        statusBox.innerHTML = `<span style="color:#e74c3c;">❌ 網路連線錯誤</span>`;
-                    });
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        window.clearPhoto = function(windowIndex) {
-            const box = document.getElementById(`photo-box-${windowIndex}`);
-            const card = box.closest('.window-card');
-            card.querySelector('.w-photo-url').value = '';
-            box.innerHTML = `<span style="color:#94a3b8; font-size:12px;">尚未上傳照片</span>`;
-        }
+        };
 
         window.removeWindowCard = function(btn) {
             btn.closest('.window-card').remove();
             reindexWindows();
-        }
+        };
 
         function reindexWindows() {
             const cards = document.querySelectorAll('.window-card');
@@ -498,6 +533,7 @@
                 } else {
                     if (!existingBtn) {
                         const newBtn = document.createElement('button');
+                        newBtn.type = 'button';
                         newBtn.className = 'delete-btn';
                         newBtn.onclick = function() { window.removeWindowCard(this); };
                         newBtn.innerHTML = ' ❌  刪除';
@@ -505,6 +541,16 @@
                     }
                 }
             });
+        }
+
+        function getLocalStorageData() {
+            try {
+                const data = localStorage.getItem('curtain_measurements');
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error("讀取 LocalStorage 失敗:", e);
+                return [];
+            }
         }
 
         window.loadRecordForEdit = function(recordId) {
@@ -515,7 +561,7 @@
             editingId = recordId;
             document.getElementById('main-header').innerText = "✏️ 正在修改丈量尺寸資料";
             document.getElementById('btn-save-main').innerText = "✅ 更新並覆蓋尺寸 (雲端另存新版)";
-            document.getElementById('btn-save-main').style.backgroundColor = "#27ae60";
+            document.getElementById('btn-save-main').style.backgroundColor = "var(--success)";
             document.getElementById('btn-cancel-edit').style.display = "block";
 
             document.getElementById('client-name').value = record.clientName || '';
@@ -545,14 +591,16 @@
                 card.querySelector('.t-win-width').value = w.sizeWindowWidth || '';
                 card.querySelector('.t-win-height').value = w.sizeWindowHeight || '';
 
-                if (w.photoUrl) {
-                    card.querySelector('.w-photo-url').value = w.photoUrl;
-                    const pBox = card.querySelector(`.photo-status-box`);
-                    pBox.innerHTML = `
-                        <span style="color:#27ae60; font-weight:bold;">✅ 已有雲端照片</span>
-                        <a href="${w.photoUrl}" target="_blank" class="photo-link-btn">🔗 點擊查看照片</a>
-                        <button type="button" class="photo-del-btn" onclick="clearPhoto(${card.getAttribute('data-window-index')})">❌ 移除</button>
-                    `;
+                if (w.photoBase64) {
+                    const fileInput = card.querySelector('.w-photo-file');
+                    if (fileInput) fileInput.setAttribute('data-photo-base64', w.photoBase64);
+                    const previewWrap = card.querySelector('.photo-preview-wrap');
+                    if (previewWrap) {
+                        previewWrap.innerHTML = `
+                            <img src="${w.photoBase64}" class="photo-preview-img">
+                            <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除照片</button>
+                        `;
+                    }
                 }
 
                 if (w.types) {
@@ -571,18 +619,18 @@
 
             closeHistoryLightbox();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        };
 
         window.cancelEdit = function() {
             if(!confirm("確定要取消修改嗎？未儲存的變更將消失。")) return;
             resetForm();
-        }
+        };
 
         function resetForm() {
             editingId = null;
             document.getElementById('main-header').innerText = "📋 窗簾現場丈量單 (尺寸輸入)";
             document.getElementById('btn-save-main').innerText = "💾 儲存全戶尺寸並備份雲端";
-            document.getElementById('btn-save-main').style.backgroundColor = "#3498db";
+            document.getElementById('btn-save-main').style.backgroundColor = "var(--success)";
             document.getElementById('btn-cancel-edit').style.display = "none";
 
             document.getElementById('client-name').value = '';
@@ -597,113 +645,109 @@
         }
 
         // ==========================================
-        // 格式化窗戶文字 (去除代碼，整齊中文排版)
+        // 💾 儲存至本機 + 自動背景同步 (強化防崩潰)
         // ==========================================
-        function formatWindowsToReadableText(windows) {
-            if (!windows || !Array.isArray(windows)) return "";
-            let text = "";
-            windows.forEach((w, index) => {
-                text += `【窗戶 ${w.itemNumber || (index + 1)}：${w.location || '未填'}】\n`;
-                text += `• 開法：${(w.types && w.types.length) ? w.types.join(', ') : '未填'}\n`;
-                text += `• 環境：${(w.envs && w.envs.length) ? w.envs.join(', ') : '未填'}\n`;
-                text += `• 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '0 cm'}\n`;
-                text += `📐 尺寸(cm)：\n`;
-                text += `  - 上框外高：${w.sizeOutTop || '0'}\n`;
-                if (w.sizeOutTopSub) text += `  - 上框(註)：${w.sizeOutTopSub}\n`;
-                text += `  - 本身寬度：${w.sizeWindowWidth || '0'}\n`;
-                text += `  - 左牆寬度：${w.sizeOutLeft || '0'}\n`;
-                if (w.sizeOutLeftSub) text += `  - 左牆(註)：${w.sizeOutLeftSub}\n`;
-                text += `  - 右牆寬度：${w.sizeOutRight || '0'}\n`;
-                if (w.sizeOutRightSub) text += `  - 右牆(註)：${w.sizeOutRightSub}\n`;
-                text += `  - 本身高寬：${w.sizeWindowHeight || '0'}\n`;
-                text += `  - 下框外地：${w.sizeOutBottom || '0'}\n`;
-                if (w.sizeOutBottomSub) text += `  - 下框(註)：${w.sizeOutBottomSub}\n`;
-                if (w.note) text += `• 備註：${w.note}\n`;
-                if (w.photoUrl) text += `📷 現場照片：${w.photoUrl}\n`;
-                text += `---------------------------\n`;
-            });
-            return text.trim();
-        }
-
-        // 儲存全戶尺寸
         window.saveDataToLocalStorage = function() {
-            const clientName = document.getElementById('client-name').value.trim();
-            if (!clientName) { alert('請輸入客戶姓名！'); return; }
+            try {
+                const clientName = document.getElementById('client-name').value.trim();
+                if (!clientName) { alert('請輸入客戶姓名！'); return; }
 
-            const measureDate = document.getElementById('client-date').value || getTodayString();
-            const windowCards = document.querySelectorAll('.window-card');
-            const windowsData = [];
-            windowCards.forEach((card, index) => {
-                const types = [];
-                card.querySelectorAll('.w-type:checked').forEach(cb => types.push(cb.value));
-                const envs = [];
-                card.querySelectorAll('.w-env:checked').forEach(cb => envs.push(cb.value));
-                windowsData.push({
-                    itemNumber: index + 1,
-                    location: card.querySelector('.w-location').value.trim(),
-                    types: types,
-                    envs: envs,
-                    boxDepth: card.querySelector('.w-depth').value.trim(),
-                    sizeOutTop: card.querySelector('.t-out-top').value.trim(),
-                    sizeOutTopSub: card.querySelector('.t-out-top-sub').value.trim(),
-                    sizeOutBottom: card.querySelector('.t-out-bottom').value.trim(),
-                    sizeOutBottomSub: card.querySelector('.t-out-bottom-sub').value.trim(),
-                    sizeOutLeft: card.querySelector('.t-out-left').value.trim(),
-                    sizeOutLeftSub: card.querySelector('.t-out-left-sub').value.trim(),
-                    sizeOutRight: card.querySelector('.t-out-right').value.trim(),
-                    sizeOutRightSub: card.querySelector('.t-out-right-sub').value.trim(),
-                    sizeWindowWidth: card.querySelector('.t-win-width').value.trim(),
-                    sizeWindowHeight: card.querySelector('.t-win-height').value.trim(),
-                    note: card.querySelector('.w-note').value.trim(),
-                    photoUrl: card.querySelector('.w-photo-url').value.trim()
+                const measureDate = document.getElementById('client-date').value || getTodayString();
+                const windowCards = document.querySelectorAll('.window-card');
+                const windowsData = [];
+
+                windowCards.forEach((card, index) => {
+                    const types = [];
+                    card.querySelectorAll('.w-type:checked').forEach(cb => types.push(cb.value));
+                    const envs = [];
+                    card.querySelectorAll('.w-env:checked').forEach(cb => envs.push(cb.value));
+                    const fileInput = card.querySelector('.w-photo-file');
+                    const photoBase64 = fileInput ? (fileInput.getAttribute('data-photo-base64') || '') : '';
+
+                    windowsData.push({
+                        itemNumber: index + 1,
+                        location: card.querySelector('.w-location').value.trim(),
+                        types: types,
+                        envs: envs,
+                        boxDepth: card.querySelector('.w-depth').value.trim(),
+                        photoBase64: photoBase64,
+                        sizeOutTop: card.querySelector('.t-out-top').value.trim(),
+                        sizeOutTopSub: card.querySelector('.t-out-top-sub').value.trim(),
+                        sizeOutBottom: card.querySelector('.t-out-bottom').value.trim(),
+                        sizeOutBottomSub: card.querySelector('.t-out-bottom-sub').value.trim(),
+                        sizeOutLeft: card.querySelector('.t-out-left').value.trim(),
+                        sizeOutLeftSub: card.querySelector('.t-out-left-sub').value.trim(),
+                        sizeOutRight: card.querySelector('.t-out-right').value.trim(),
+                        sizeOutRightSub: card.querySelector('.t-out-right-sub').value.trim(),
+                        sizeWindowWidth: card.querySelector('.t-win-width').value.trim(),
+                        sizeWindowHeight: card.querySelector('.t-win-height').value.trim(),
+                        note: card.querySelector('.w-note').value.trim()
+                    });
                 });
-            });
 
-            const records = getLocalStorageData();
-            let currentRecord = null;
-            
-            if (editingId) {
-                const index = records.findIndex(r => r.id === editingId);
-                if (index !== -1) {
-                    records[index].clientName = clientName;
-                    records[index].clientPhone = document.getElementById('client-phone').value.trim();
-                    records[index].clientAddress = document.getElementById('client-address').value.trim();
-                    records[index].measureDate = measureDate;
-                    records[index].clientTaxId = document.getElementById('client-taxid').value.trim();
-                    records[index].windows = windowsData;
-                    records[index].timestamp = "已更新: " + new Date().toLocaleString('zh-TW');
-                    currentRecord = records[index];
+                const records = getLocalStorageData();
+                let currentRecord = null;
+                
+                if (editingId) {
+                    const index = records.findIndex(r => r.id === editingId);
+                    if (index !== -1) {
+                        records[index].clientName = clientName;
+                        records[index].clientPhone = document.getElementById('client-phone').value.trim();
+                        records[index].clientAddress = document.getElementById('client-address').value.trim();
+                        records[index].measureDate = measureDate;
+                        records[index].clientTaxId = document.getElementById('client-taxid').value.trim();
+                        records[index].windows = windowsData;
+                        records[index].timestamp = "已更新: " + new Date().toLocaleString('zh-TW');
+                        currentRecord = records[index];
+                    }
+                    alert('🎉 本機尺寸已更新！試算表與雲端已同步另存新版！');
+                } else {
+                    currentRecord = {
+                        id: new Date().toLocaleString('zh-TW', {hour12: false}).replace(/[^0-9]/g, ''),
+                        clientName: clientName,
+                        clientPhone: document.getElementById('client-phone').value.trim(),
+                        clientAddress: document.getElementById('client-address').value.trim(),
+                        measureDate: measureDate,
+                        clientTaxId: document.getElementById('client-taxid').value.trim(),
+                        windows: windowsData,
+                        timestamp: new Date().toLocaleString('zh-TW')
+                    };
+                    records.unshift(currentRecord);
+                    alert('🎉 丈量儲存成功！已自動寫入試算表並產製 PDF 備份 Google 雲端！');
                 }
-                alert('🎉 本機尺寸已更新！試算表與雲端硬碟已同步另存新版！');
-            } else {
-                currentRecord = {
-                    id: new Date().toLocaleString('zh-TW', {hour12: false}).replace(/[^0-9]/g, ''),
-                    clientName: clientName,
-                    clientPhone: document.getElementById('client-phone').value.trim(),
-                    clientAddress: document.getElementById('client-address').value.trim(),
-                    measureDate: measureDate,
-                    clientTaxId: document.getElementById('client-taxid').value.trim(),
-                    windows: windowsData,
-                    timestamp: new Date().toLocaleString('zh-TW')
-                };
-                records.unshift(currentRecord);
-                alert('🎉 丈量儲存成功！已自動寫入試算表並產製 PDF 上傳 Google 雲端！');
+
+                // 儲存至手機 LocalStorage (包含防爆保護)
+                try {
+                    localStorage.setItem('curtain_measurements', JSON.stringify(records));
+                } catch (stErr) {
+                    console.warn("本機空間受限，清理部分照片暫存後重試:", stErr);
+                    // 若舊資料太多，清除舊紀錄照片以保證新資料可存
+                    records.slice(5).forEach(r => {
+                        if (r.windows) r.windows.forEach(w => w.photoBase64 = '');
+                    });
+                    localStorage.setItem('curtain_measurements', JSON.stringify(records));
+                }
+                
+                // 背景同步至 Google Drive 與試算表
+                syncRecordToGoogleDrive(currentRecord);
+
+                resetForm();
+                if(document.getElementById('search-input').value) { searchData(); }
+
+            } catch (fatalErr) {
+                console.error("儲存流程異常:", fatalErr);
+                alert("儲存發生異常：" + fatalErr.message);
             }
+        };
 
-            localStorage.setItem('curtain_measurements', JSON.stringify(records));
-            syncRecordToGoogleDrive(currentRecord);
-
-            resetForm();
-            if(document.getElementById('search-input').value) { searchData(); }
-        }
-
-        // 雲端同步
+        // ==========================================
+        // 雲端自動上傳模組
+        // ==========================================
         function syncRecordToGoogleDrive(record) {
             if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("XXXXX")) return;
 
             const fullPdfHtml = generateFullPdfHtml(record);
             const pricePdfHtml = generatePricePdfHtml(record);
-            const readableDetails = formatWindowsToReadableText(record.windows);
 
             const payload = {
                 action: 'backup_pdfs',
@@ -714,7 +758,7 @@
                 clientTaxId: record.clientTaxId || '',
                 measureDate: record.measureDate || getTodayString(),
                 timestamp: record.timestamp || new Date().toLocaleString('zh-TW'),
-                readableDetails: readableDetails,
+                windows: record.windows || [],
                 quoteData: record.quoteData || {},
                 fullPdfHtml: fullPdfHtml,
                 pricePdfHtml: pricePdfHtml
@@ -730,7 +774,9 @@
             .catch(err => console.error('❌ 雲端備份失敗：', err));
         }
 
-        // 估價試算頁模組
+        // ==========================================
+        // 💰 估價試算模組
+        // ==========================================
         window.openEstimateModal = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
@@ -788,19 +834,19 @@
                             <div class="est-grid-left">
                                 <div class="t-locked-container">
                                     <span class="t-locked-alert">🔒 初始丈量基準尺寸（已鎖定保護）</span>
-                                    <div class="t-chart-container" style="background:#f1f5f9; padding:15px 0; margin:5px 0;">
+                                    <div class="t-chart-container" style="background:#f8fafc; padding:15px 0; margin:5px 0;">
                                         <div class="t-chart">
                                             <div class="t-line-horizontal"></div>
                                             <div class="t-line-vertical"></div>
                                             
                                             <div class="t-locked-box t-out-top"><small>上框高</small><strong>${origW.sizeOutTop || '0'}</strong></div>
                                             <div class="t-locked-box t-out-top-sub" style="border-style:dashed;"><small>上框(註)</small><strong>${origW.sizeOutTopSub || '無'}</strong></div>
-                                            <div class="t-locked-box t-win-width highlight" style="border-color:#3498db;"><small style="color:#2980b9;">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div>
+                                            <div class="t-locked-box t-win-width highlight" style="border-color:var(--primary);"><small style="color:var(--primary);">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div>
                                             <div class="t-locked-box t-out-left"><small>左牆寬</small><strong>${origW.sizeOutLeft || '0'}</strong></div>
                                             <div class="t-locked-box t-out-left-sub" style="border-style:dashed;"><small>左牆(註)</small><strong>${origW.sizeOutLeftSub || '無'}</strong></div>
                                             <div class="t-locked-box t-out-right"><small>右牆寬</small><strong>${origW.sizeOutRight || '0'}</strong></div>
                                             <div class="t-locked-box t-out-right-sub" style="border-style:dashed;"><small>右牆(註)</small><strong>${origW.sizeOutRightSub || '無'}</strong></div>
-                                            <div class="t-locked-box t-win-height highlight" style="border-color:#3498db;"><small style="color:#2980b9;">窗本身高</small><strong>${origW.sizeWindowHeight || '0'}</strong></div>
+                                            <div class="t-locked-box t-win-height highlight" style="border-color:var(--primary);"><small style="color:var(--primary);">窗本身高</small><strong>${origW.sizeWindowHeight || '0'}</strong></div>
                                             <div class="t-locked-box t-out-bottom"><small>下框地</small><strong>${origW.sizeOutBottom || '0'}</strong></div>
                                             <div class="t-locked-box t-out-bottom-sub" style="border-style:dashed;"><small>下框(註)</small><strong>${origW.sizeOutBottomSub || '無'}</strong></div>
                                         </div>
@@ -863,13 +909,13 @@
 
                                     <div class="fabric-items-container">
                                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                                            <span style="font-size:13px; font-weight:bold; color:#2c3e50;">布料與紗簾清單 (可新增一布一紗)：</span>
+                                            <span style="font-size:13px; font-weight:bold; color:var(--slate-800);">布料與紗簾清單 (可新增一布一紗)：</span>
                                             <button type="button" class="btn-add-item-row" onclick="addFabricRow(${idx})">➕ 新增款式/布號列</button>
                                         </div>
                                         <div class="fabric-rows-wrapper" id="fabric-rows-${idx}">
                                             ${itemsRowsHtml}
                                         </div>
-                                        <div style="text-align: right; font-size: 14px; font-weight: bold; color: #2980b9; margin-top: 6px;">
+                                        <div style="text-align: right; font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 6px;">
                                             本窗總估價金額：$<span class="window-sum-display" id="window-sum-${idx}">0</span> 元
                                         </div>
                                     </div>
@@ -912,7 +958,7 @@
                             <input type="number" id="est-withtax" value="${withTax}" placeholder="含稅價" oninput="calcEstimateTax(this, 'toNoTax')">
                         </div>
                     </div>
-                    <div style="font-size: 16px; font-weight: bold; color: #e74c3c; margin-top: 10px; text-align: right;" id="est-balance-display">
+                    <div style="font-size: 16px; font-weight: bold; color: var(--danger); margin-top: 10px; text-align: right;" id="est-balance-display">
                         工程尾款預估：$0 元
                     </div>
                 </div>
@@ -926,7 +972,7 @@
 
             updateEstimateBalance();
             document.getElementById('estimate-lightbox').style.display = 'flex';
-        }
+        };
 
         window.addFabricRow = function(windowIdx) {
             const wrapper = document.getElementById(`fabric-rows-${windowIdx}`);
@@ -945,12 +991,12 @@
             `;
             wrapper.appendChild(newRow);
             updateWindowTotal(windowIdx);
-        }
+        };
 
         window.removeFabricRow = function(btn, windowIdx) {
             btn.closest('.fabric-item-row').remove();
             updateWindowTotal(windowIdx);
-        }
+        };
 
         window.updateWindowTotal = function(windowIdx) {
             const wrapper = document.getElementById(`fabric-rows-${windowIdx}`);
@@ -964,7 +1010,7 @@
             const sumDisplay = document.getElementById(`window-sum-${windowIdx}`);
             if (sumDisplay) sumDisplay.innerText = total;
             sumTotalFromWindows();
-        }
+        };
 
         window.toggleCalcFields = function(idx) {
             const panel = document.querySelector(`.est-window-panel[data-idx="${idx}"]`);
@@ -1001,7 +1047,7 @@
                 if(trackDiv) trackDiv.style.display = 'none';
                 priceLabel.innerText = '單價：';
             }
-        }
+        };
 
         window.runWindowFormula = function(idx) {
             const panel = document.querySelector(`.est-window-panel[data-idx="${idx}"]`);
@@ -1041,7 +1087,7 @@
             if (hasTrack) {
                 if (rawTrackFee < 500) {
                     trackFee = 500;
-                    trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#e74c3c; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
+                    trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:var(--danger); font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
                 } else {
                     trackFee = rawTrackFee;
                     trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>`;
@@ -1107,7 +1153,7 @@
                 firstPriceInput.setAttribute('data-auto', 'true');
             }
             updateWindowTotal(idx);
-        }
+        };
 
         window.sumTotalFromWindows = function() {
             const inputs = document.querySelectorAll('#estimate-lightbox-content .c-itemprice');
@@ -1119,7 +1165,7 @@
             const totalInput = document.getElementById('est-total-price');
             totalInput.value = sum;
             calcEstimateTax(totalInput, 'toTax');
-        }
+        };
 
         window.calcEstimateTax = function(element, direction) {
             const val = parseFloat(element.value);
@@ -1138,7 +1184,7 @@
                 noTaxInput.value = Math.round(val / 1.05);
             }
             updateEstimateBalance();
-        }
+        };
 
         window.updateEstimateBalance = function() {
             const withTax = parseFloat(document.getElementById('est-withtax').value) || 0;
@@ -1150,7 +1196,7 @@
             if (disp) {
                 disp.innerText = `工程尾款預估：$${balance} 元`;
             }
-        }
+        };
 
         window.saveEstimateAndClose = function() {
             if (!currentEstimatingRecordId) return;
@@ -1208,8 +1254,12 @@
                 savedAt: new Date().toLocaleString('zh-TW')
             };
 
-            localStorage.setItem('curtain_measurements', JSON.stringify(records));
-            alert('🎉 估價試算已成功儲存！已自動同步備份 PDF 至 Google 雲端硬碟。');
+            try {
+                localStorage.setItem('curtain_measurements', JSON.stringify(records));
+            } catch (e) {
+                console.warn("本機空間緊張:", e);
+            }
+            alert('🎉 估價試算已成功儲存！已同步備份 PDF 至 Google 雲端硬碟。');
             
             syncRecordToGoogleDrive(records[index]);
 
@@ -1220,40 +1270,40 @@
             if(document.getElementById('search-input').value) {
                 searchData();
             }
-        }
+        };
 
         window.closeEstimateLightbox = function() {
             document.getElementById('estimate-lightbox').style.display = 'none';
             currentEstimatingRecordId = null;
-        }
+        };
 
         // ==========================================
-        // 歷史紀錄展示
+        // 歷史紀錄展示 (極簡化格式)
         // ==========================================
         function makeWindowDetailHtml(w) {
             return `
-                <div style="margin-top: 10px; border-left: 4px solid #3498db; padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px;">
+                <div style="margin-top: 10px; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px;">
                     <strong> 📍  位置：${w.location || '未填'}</strong> (項目 ${w.itemNumber})<br>
                     開法：${w.types ? w.types.join(', ') : '未選'} | 安裝環境：${w.envs ? w.envs.join(', ') : '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
                     <div class="mini-t-container">
                         <div class="mini-t-chart">
-                            <div style="position: absolute; top: 110px; left: 35px; width: 260px; height: 2px; background-color: #3498db;"></div>
-                            <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: #3498db;"></div>
+                            <div style="position: absolute; top: 110px; left: 35px; width: 260px; height: 2px; background-color: var(--primary);"></div>
+                            <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div>
                             
                             <div class="mini-t-val" style="top: 5px; left: 127px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div>
                             <div class="mini-t-val" style="top: 36px; left: 127px; border-style:dashed;"><small>上框(註)</small><strong>${w.sizeOutTopSub || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 72px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身寬</small><strong style="color:#2980b9;">${w.sizeWindowWidth || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 72px; left: 127px; border-color: var(--primary);"><small style="color:var(--primary);">本身寬</small><strong style="color:var(--primary);">${w.sizeWindowWidth || '0'}</strong></div>
                             <div class="mini-t-val" style="top: 90px; left: -5px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div>
                             <div class="mini-t-val" style="top: 122px; left: -5px; border-style:dashed;"><small>左牆(註)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div>
                             <div class="mini-t-val" style="top: 90px; left: 255px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div>
                             <div class="mini-t-val" style="top: 122px; left: 255px; border-style:dashed;"><small>右牆(註)</small><strong>${w.sizeOutRightSub || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 165px; left: 127px; border-color: #3498db;"><small style="color:#2980b9;">本身高</small><strong style="color:#2980b9;">${w.sizeWindowHeight || '0'}</strong></div>
+                            <div class="mini-t-val" style="top: 165px; left: 127px; border-color: var(--primary);"><small style="color:var(--primary);">本身高</small><strong style="color:var(--primary);">${w.sizeWindowHeight || '0'}</strong></div>
                             <div class="mini-t-val" style="top: 220px; left: 127px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div>
                             <div class="mini-t-val" style="top: 252px; left: 127px; border-style:dashed;"><small>下框(註)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
                         </div>
                     </div>
-                    ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:#7f8c8d; background:#fff9db; padding:4px; border-radius:4px;"> 📝  備註: ${w.note}</div>` : ''}
-                    ${w.photoUrl ? `<div style="margin-top: 5px;"><a href="${w.photoUrl}" target="_blank" class="photo-link-btn" style="display:inline-block;">📷 查看現場照片</a></div>` : ''}
+                    ${w.photoBase64 ? `<div style="margin-top:6px;"><img src="${w.photoBase64}" style="max-width:80px; border-radius:4px; border:1px solid #cbd5e1;"></div>` : ''}
+                    ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:var(--slate-600); background:#fff9db; padding:4px; border-radius:4px;"> 📝  備註: ${w.note}</div>` : ''}
                 </div>
             `;
         }
@@ -1271,11 +1321,11 @@
                 <div class="history-client-details" id="details-${uniqueId}">
                     <strong>📞 聯絡電話：</strong>${record.clientPhone || '未填'}<br>
                     <strong>🪪 統一編號：</strong>${record.clientTaxId || '未填'}<br>
-                    <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #edf2f7; line-height: 1.5; color: #2c3e50;">
+                    <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #cbd5e1; line-height: 1.5; color: var(--slate-800);">
                         💰 估價金額：$${price} 元 | 💵 收取訂金：$${deposit} 元<br>
                         📊 未稅價格：$${noTax} 元 | 📈 含稅價格：$${withTax} 元<br>
-                        🚨 <span style="color:#e74c3c; font-weight:bold;">工程尾款結算：$${balance} 元</span>
-                        ${q.savedAt ? `<div style="font-size:11px; color:#8e44ad;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#e67e22;">⚠️ 尚未建立詳細估價試算</div>'}
+                        🚨 <span style="color:var(--danger); font-weight:bold;">工程尾款結算：$${balance} 元</span>
+                        ${q.savedAt ? `<div style="font-size:11px; color:var(--accent);">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#d97706;">⚠️ 尚未建立詳細估價試算</div>'}
                     </div>
                 </div>
             `;
@@ -1289,17 +1339,17 @@
                 target.style.display = 'none';
                 if(wTarget) wTarget.style.display = 'none';
                 btn.innerText = '展開詳情';
-                btn.style.backgroundColor = '#7f8c8d';
+                btn.style.backgroundColor = 'var(--slate-600)';
             } else {
                 target.style.display = 'block';
                 if(wTarget) wTarget.style.display = 'block';
                 btn.innerText = '收合詳情';
-                btn.style.backgroundColor = '#34495e';
+                btn.style.backgroundColor = 'var(--slate-800)';
             }
-        }
+        };
 
         window.deleteSingleRecord = function(recordId, clientName, elementIdToId) {
-            const doubleCheck = confirm(` ⚠ ️ 確定要永久刪除【 ${clientName} 】的本機丈量紀錄嗎？\n此操作刪除後將無法復原！`);
+            const doubleCheck = confirm(` ⚠️ 確定要永久刪除【 ${clientName} 】的本機丈量紀錄嗎？\n此操作刪除後將無法復原！`);
             if (!doubleCheck) return;
             let records = getLocalStorageData();
             records = records.filter(r => r.id !== recordId);
@@ -1307,7 +1357,7 @@
             const targetDom = document.getElementById(elementIdToId);
             if (targetDom) { targetDom.remove(); }
             if (editingId === recordId) resetForm();
-        }
+        };
 
         function createActionButtonsHtml(record, domId, uniqueId) {
             return `
@@ -1336,7 +1386,7 @@
                 <div class="history-item-simplified" id="${domId}">
                     <div class="hist-top-line">
                         <span class="hist-client-title">👤 客戶：${record.clientName}</span>
-                        <span style="font-size:12px; color:#3b82f6; font-weight:bold;">📅 丈量日期：${record.measureDate || '未填'}</span>
+                        <span style="font-size:12px; color:var(--primary); font-weight:bold;">📅 丈量日期：${record.measureDate || '未填'}</span>
                     </div>
                     <div class="hist-info-line">
                         📍 <strong>施工地址：</strong>${record.clientAddress || '未填'}
@@ -1361,26 +1411,31 @@
                     resultsDiv.innerHTML += renderSimplifiedHistoryItem(record, false);
                 }
             });
-        }
+        };
 
         window.openHistoryLightbox = function() {
-            const records = getLocalStorageData();
-            const listDiv = document.getElementById('lightbox-list');
-            listDiv.innerHTML = '';
-            if(records.length === 0) { alert("目前沒有丈量紀錄！"); return; }
-            
-            records.forEach((record) => {
-                listDiv.innerHTML += renderSimplifiedHistoryItem(record, true);
-            });
-            document.getElementById('history-lightbox').style.display = 'flex';
-        }
+            try {
+                const records = getLocalStorageData();
+                const listDiv = document.getElementById('lightbox-list');
+                listDiv.innerHTML = '';
+                if(records.length === 0) { alert("目前沒有丈量紀錄！"); return; }
+                
+                records.forEach((record) => {
+                    listDiv.innerHTML += renderSimplifiedHistoryItem(record, true);
+                });
+                document.getElementById('history-lightbox').style.display = 'flex';
+            } catch (err) {
+                console.error("開啟歷史紀錄失敗:", err);
+                alert("開啟歷史紀錄失敗：" + err.message);
+            }
+        };
 
         window.closeHistoryLightbox = function() {
             document.getElementById('history-lightbox').style.display = 'none';
-        }
+        };
 
         // ==========================================
-        // 核心字串生成器：完整報價單 HTML
+        // 核心字串生成器：完整報價單 HTML (帶報價單精緻風格)
         // ==========================================
         function generateFullPdfHtml(record) {
             const q = record.quoteData || {};
@@ -1419,7 +1474,7 @@
                         if (hasTrack) {
                             if (rawTrackFee < 500) {
                                 trackFee = 500;
-                                trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#e74c3c; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
+                                trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#ef4444; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
                             } else {
                                 trackFee = rawTrackFee;
                                 trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>`;
@@ -1437,7 +1492,7 @@
                                 const fabricCost = totalFabricFeet * unitPrice;
                                 const subTotal = fabricCost + sewingFee + trackFee;
                                 formulaHtml = `
-                                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【傳統窗簾布算式拆解】</div>
+                                    <div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【傳統窗簾布算式拆解】</div>
                                     • 幅數計算：${width} cm × ${pleat}倍 ÷ ${fabWidth} cm = <strong>${panels} 幅</strong><br>
                                     • 車縫高度：(${height} cm + 30.3 cm) ÷ 30.3 = <strong>${sewingHeightFeet.toFixed(2)} 尺</strong><br>
                                     • 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>
@@ -1455,7 +1510,7 @@
                                 const fabricCost = totalFabricFeet * unitPrice;
                                 const subTotal = fabricCost + trackFee;
                                 formulaHtml = `
-                                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【無接縫布算式拆解】</div>
+                                    <div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【無接縫布算式拆解】</div>
                                     • 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>
                                     • 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong> (未進位原始值: ${rawFeet.toFixed(3)})<br>
                                     • 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>
@@ -1468,7 +1523,7 @@
                                 const totalCai = Math.round((widthFeet * heightFeet) * 10) / 10;
                                 const subTotal = Math.round(totalCai * unitPrice);
                                 formulaHtml = `
-                                    <div style="font-weight:bold; color:#5b21b6; margin-bottom:4px;">【才數算式拆解 (捲簾/百葉/調光)】</div>
+                                    <div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【才數算式拆解 (捲簾/百葉/調光)】</div>
                                     • 面積換算：(${width} ÷ 30.3) 尺 × (${height} ÷ 30.3) 尺 = <strong>${totalCai} 才</strong><br>
                                     • 金額總計：${totalCai} 才 × $${unitPrice} = <strong>$${subTotal} 元</strong>
                                 `;
@@ -1490,11 +1545,11 @@
                         itemsHtml += `
                             <div style="margin-bottom:10px;">
                                 <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px;">
-                                    <span style="font-size:14px; color:#2c3e50; font-weight:bold;">🎨 項目 ${i + 1}：${it.note || '標準規劃'}</span>
-                                    <span style="font-size:14px; font-weight:bold; color:#e67e22;">此項金額：${rowPrice}</span>
+                                    <span style="font-size:14px; color:#1e293b; font-weight:bold;">🎨 項目 ${i + 1}：${it.note || '標準規劃'}</span>
+                                    <span style="font-size:14px; font-weight:bold; color:#ea580c;">此項金額：${rowPrice}</span>
                                 </div>
                                 ${ (i === 0 && formulaHtml) ? `
-                                    <div style="margin-top:6px; font-size:12px; color:#4c1d95; background:#f5f3ff; border:1px solid #ddd6fe; border-left:4px solid #8e44ad; padding:10px 14px; border-radius:6px; line-height:1.7;">
+                                    <div style="margin-top:6px; font-size:12px; color:#581c87; background:#faf5ff; border:1px solid #e9d5ff; border-left:4px solid #8b5cf6; padding:10px 14px; border-radius:6px; line-height:1.7;">
                                         ${formulaHtml}
                                     </div>
                                 ` : '' }
@@ -1504,53 +1559,117 @@
                     itemsHtml += '</div>';
 
                     windowsPrintHtml += `
-                        <div class="pdf-window-box" style="border:1px solid #cbd5e1; border-radius:6px; padding:14px; margin-bottom:22px; page-break-inside:avoid;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:15px; font-weight:bold; background:#3498db; color:white; padding:6px 12px; border-radius:4px; margin-bottom:12px;">
+                        <div class="pdf-window-box">
+                            <div class="pdf-window-header">
                                 <span>🪟 窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】</span>
-                                <span style="background:#ffffff; color:#2980b9; padding:2px 8px; border-radius:4px; font-size:13px; font-weight:bold;">本窗總金額：${itemPriceDisplay}</span>
+                                <span class="header-price-tag">本窗總金額：${itemPriceDisplay}</span>
                             </div>
-                            <div style="display:flex; gap:12px; align-items:stretch;">
-                                <div style="flex:1; display:flex; justify-content:center; align-items:center; padding:10px 0; background:#fafafa; border-radius:6px; border:1px solid #cbd5e1;">
-                                    <div style="position:relative; width:380px; height:350px;">
-                                        <div style="position:absolute; top:135px; left:25px; width:330px; height:4px; background-color:#3498db;"></div>
-                                        <div style="position:absolute; top:30px; left:188px; width:4px; height:285px; background-color:#3498db;"></div>
+                            <div class="pdf-main-layout">
+                                <div class="pdf-chart-layout">
+                                    <div class="pdf-t-chart">
+                                        <div class="pdf-t-line-horizontal"></div>
+                                        <div class="pdf-t-line-vertical"></div>
                                         
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px solid #64748b; border-radius:6px; padding:2px 0; top:5px; left:142px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">上框高</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutTop || '0'}</strong></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px dashed #64748b; border-radius:6px; padding:2px 0; top:48px; left:142px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">上框(註)</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutTopSub || '0'}</strong></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px solid #3498db; border-radius:6px; padding:2px 0; top:92px; left:142px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">窗本身寬</small><br><span style="color:#1b6ca8; font-size:15px; font-weight:900;">${w.sizeWindowWidth || '0'}</span></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px solid #64748b; border-radius:6px; padding:2px 0; top:115px; left:-15px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">左牆寬</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutLeft || '0'}</strong></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px dashed #64748b; border-radius:6px; padding:2px 0; top:160px; left:-15px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">左牆(註)</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutLeftSub || '0'}</strong></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px solid #64748b; border-radius:6px; padding:2px 0; top:115px; left:295px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">右牆寬</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutRight || '0'}</strong></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px dashed #64748b; border-radius:6px; padding:2px 0; top:160px; left:295px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">右牆(註)</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutRightSub || '0'}</strong></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px solid #3498db; border-radius:6px; padding:2px 0; top:205px; left:142px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">窗本身高</small><br><span style="color:#1b6ca8; font-size:15px; font-weight:900;">${w.sizeWindowHeight || '0'}</span></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px solid #64748b; border-radius:6px; padding:2px 0; top:268px; left:142px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">下框地</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutBottom || '0'}</strong></div>
-                                        <div style="position:absolute; width:95px; text-align:center; background:#fff; border:1.5px dashed #64748b; border-radius:6px; padding:2px 0; top:312px; left:142px;"><small style="font-size:10px; font-weight:bold; color:#475569; display:inline-block;">下框(註)</small><br><strong style="font-size:15px; font-weight:900;">${w.sizeOutBottomSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-top"><small>上框高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-top-sub"><small>上框(註)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-width" style="border-color: #2563eb;"><small>窗本身寬</small><br><span class="highlight-blue">${w.sizeWindowWidth || '0'}</span></div>
+                                        <div class="pdf-t-value pdf-v-left"><small>左牆寬</small><br><strong>${w.sizeOutLeft || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-left-sub"><small>左牆(註)</small><br><strong>${w.sizeOutLeftSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-right"><small>右牆寬</small><br><strong>${w.sizeOutRight || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-right-sub"><small>右牆(註)</small><br><strong>${w.sizeOutRightSub || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-height" style="border-color: #2563eb;"><small>窗本身高</small><br><span class="highlight-blue">${w.sizeWindowHeight || '0'}</span></div>
+                                        <div class="pdf-t-value pdf-v-bottom"><small>下框地</small><br><strong>${w.sizeOutBottom || '0'}</strong></div>
+                                        <div class="pdf-t-value pdf-v-bottom-sub"><small>下框(註)</small><br><strong>${w.sizeOutBottomSub || '0'}</strong></div>
                                     </div>
                                 </div>
-                                <div style="width:140px; display:flex; flex-direction:column; gap:6px;">
-                                    <div style="flex:1; background:#f0f7fb; border:1px solid #3498db; border-radius:5px; padding:6px 4px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-                                        <div style="font-weight:bold; color:#7f8c8d; font-size:11px; margin-bottom:2px; border-bottom:1px dashed #e2e8f0; width:100%;">本窗估價總額</div>
-                                        <div style="font-size:14px; font-weight:900; color:#e67e22;">${itemPriceDisplay}</div>
+                                <div class="pdf-meta-info-right-panel">
+                                    <div class="meta-row-column price-card">
+                                        <div class="meta-column-title">本窗估價總額</div>
+                                        <div class="meta-price-val">${itemPriceDisplay}</div>
                                     </div>
-                                    <div style="flex:1; background:#ffffff; border:1px solid #cbd5e1; border-radius:5px; padding:6px 4px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;"><div style="font-weight:bold; color:#7f8c8d; font-size:11px; margin-bottom:2px; border-bottom:1px dashed #e2e8f0; width:100%;">開法選項</div><div style="font-size:13px; font-weight:bold; color:#2c3e50;">${typeStr}</div></div>
-                                    <div style="flex:1; background:#ffffff; border:1px solid #cbd5e1; border-radius:5px; padding:6px 4px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;"><div style="font-weight:bold; color:#7f8c8d; font-size:11px; margin-bottom:2px; border-bottom:1px dashed #e2e8f0; width:100%;">安裝環境</div><div style="font-size:13px; font-weight:bold; color:#2c3e50;">${envStr}</div></div>
-                                    <div style="flex:1; background:#ffffff; border:1px solid #cbd5e1; border-radius:5px; padding:6px 4px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;"><div style="font-weight:bold; color:#7f8c8d; font-size:11px; margin-bottom:2px; border-bottom:1px dashed #e2e8f0; width:100%;">窗簾盒深</div><div style="font-size:13px; font-weight:bold; color:#2c3e50;">${depthStr}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">開法選項</div><div class="meta-column-val">${typeStr}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">安裝環境</div><div class="meta-column-val">${envStr}</div></div>
+                                    <div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div class="meta-column-val">${depthStr}</div></div>
                                 </div>
                             </div>
                             ${itemsHtml}
-                            ${w.note ? `<div style="margin-top:8px; font-size:13px; background:#fff9db; padding:6px 8px; border-radius:4px; border:1px solid #ffeaa7;"> 📝  <strong>丈量備註：</strong>${w.note}</div>` : ''}
-                            ${w.photoUrl ? `<div style="margin-top:8px; font-size:13px; background:#e8f8f5; padding:6px 8px; border-radius:4px; border:1px solid #a3e4d7;"> 📷  <strong>現場照片：</strong><a href="${w.photoUrl}" target="_blank" style="color:#16a085; font-weight:bold;">點此開啟雲端照片</a></div>` : ''}
+                            ${w.note ? `<div class="pdf-w-note"> 📝 <strong>丈量備註：</strong>${w.note}</div>` : ''}
                         </div>
                     `;
                 });
             }
 
-            return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>窗簾估價單_${record.clientName}_${record.measureDate || ''}</title><style>body { font-family: sans-serif; color: #2c3e50; padding: 25px; background: #fff; } .pdf-header { text-align: center; border-bottom: 3px double #3498db; padding-bottom: 8px; margin-bottom: 20px; } .pdf-header h1 { margin: 0; color: #2980b9; font-size: 24px; } .pdf-section-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #3498db; padding-left: 8px; margin-top: 20px; } .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; } .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; } .price-alert { color: #c0392b; font-weight: bold; }</style></head><body><div style="max-width: 780px; margin: 0 auto;"><div class="pdf-header"><h1>📋 窗簾現場丈量與估價確認單</h1><p>丈量日期：${record.measureDate || '未填'} ｜ 系統時間：${record.timestamp || ''}</p></div><div class="pdf-section-title">👤 客戶基本資料</div><table class="pdf-table"><tr><td width="50%"><strong>客戶姓名：</strong>${record.clientName}</td><td width="50%"><strong>聯絡電話：</strong>${record.clientPhone || '未填'}</td></tr><tr><td colspan="2"><strong>施工地址：</strong>${record.clientAddress || '未填'}</td></tr><tr><td width="50%"><strong>統一編號：</strong>${record.clientTaxId || '未填'}</td><td width="50%"><strong>丈量日期：</strong>${record.measureDate || '未填'}</td></tr></table><div class="pdf-section-title">💰 財務與工程總覽</div><table class="pdf-table"><tr><td width="33%"><strong>估價總額：</strong>$${price} 元</td><td width="33%"><strong>未稅金額：</strong>$${noTax} 元</td><td width="34%"><strong>含稅總額：</strong>$${withTax} 元</td></tr><tr><td><strong>已收訂金：</strong>$${deposit} 元</td><td colspan="2"><strong>工程尾款結算：</strong><span class="price-alert">$${balance} 元</span></td></tr></table><div class="pdf-section-title">📐 各窗詳細資訊</div>${windowsPrintHtml}</div></body></html>`;
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>窗簾估價單_${record.clientName}_${record.measureDate || ''}</title>
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; padding: 25px; background: #fff; }
+                        .pdf-header { text-align: center; border-bottom: 3px double #2563eb; padding-bottom: 8px; margin-bottom: 20px; }
+                        .pdf-header h1 { margin: 0; color: #1d4ed8; font-size: 24px; font-weight: 700; }
+                        .pdf-section-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #2563eb; padding-left: 8px; margin-top: 20px; }
+                        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+                        .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; }
+                        .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 22px; page-break-inside: avoid; }
+                        .pdf-window-header { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: bold; background: #2563eb; color: white; padding: 6px 12px; border-radius: 6px; margin-bottom: 12px; }
+                        .header-price-tag { background: #ffffff; color: #1d4ed8; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; }
+                        .pdf-main-layout { display: flex; gap: 12px; align-items: stretch; }
+                        .pdf-chart-layout { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 0; background: #f8fafc; border-radius: 6px; border: 1px solid #cbd5e1; }
+                        .pdf-t-chart { position: relative; width: 380px; height: 350px; }
+                        .pdf-t-line-horizontal { position: absolute; top: 135px; left: 25px; width: 330px; height: 3px; background-color: #2563eb; }
+                        .pdf-t-line-vertical { position: absolute; top: 30px; left: 188px; width: 3px; height: 285px; background-color: #2563eb; }
+                        .pdf-t-value { position: absolute; width: 95px; text-align: center; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; padding: 2px 0; }
+                        .pdf-t-value small { font-size: 10px; font-weight: bold; color: #64748b; display: inline-block; }
+                        .pdf-t-value strong, .pdf-t-value .highlight-blue { font-size: 15px; font-weight: 800; }
+                        .pdf-v-top { top: 5px; left: 142px; } .pdf-v-top-sub { top: 48px; left: 142px; border-style: dashed; }
+                        .pdf-v-width { top: 92px; left: 142px; } .pdf-v-left { top: 115px; left: -15px; } .pdf-v-left-sub { top: 160px; left: -15px; border-style: dashed; }
+                        .pdf-v-right { top: 115px; left: 295px; } .pdf-v-right-sub { top: 160px; left: 295px; border-style: dashed; }
+                        .pdf-v-height { top: 205px; left: 142px; } .pdf-v-bottom { top: 268px; left: 142px; } .pdf-v-bottom-sub { top: 312px; left: 142px; border-style: dashed; }
+                        .pdf-meta-info-right-panel { width: 140px; display: flex; flex-direction: column; gap: 6px; }
+                        .meta-row-column { flex: 1; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+                        .price-card { background: #eff6ff; border-color: #bfdbfe; }
+                        .meta-column-title { font-weight: bold; color: #64748b; font-size: 11px; margin-bottom: 2px; border-bottom: 1px dashed #cbd5e1; width: 100%; }
+                        .meta-column-val { font-size: 13px; font-weight: bold; color: #1e293b; }
+                        .meta-price-val { font-size: 14px; font-weight: 800; color: #ea580c; }
+                        .highlight-blue { color: #1d4ed8; font-weight: 800; }
+                        .price-alert { color: #dc2626; font-weight: bold; }
+                        .pdf-w-note { margin-top: 8px; font-size: 13px; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; }
+                    </style>
+                </head>
+                <body>
+                    <div style="max-width: 780px; margin: 0 auto;">
+                        <div class="pdf-header"><h1>📋 窗簾現場丈量與估價確認單</h1><p>丈量日期：${record.measureDate || '未填'} ｜ 系統時間：${record.timestamp || ''}</p></div>
+                        <div class="pdf-section-title">👤 客戶基本資料</div>
+                        <table class="pdf-table">
+                            <tr><td width="50%"><strong>客戶姓名：</strong>${record.clientName}</td><td width="50%"><strong>聯絡電話：</strong>${record.clientPhone || '未填'}</td></tr>
+                            <tr><td colspan="2"><strong>施工地址：</strong>${record.clientAddress || '未填'}</td></tr>
+                            <tr><td width="50%"><strong>統一編號：</strong>${record.clientTaxId || '未填'}</td><td width="50%"><strong>丈量日期：</strong>${record.measureDate || '未填'}</td></tr>
+                        </table>
+                        <div class="pdf-section-title">💰 財務與工程總覽</div>
+                        <table class="pdf-table">
+                            <tr>
+                                <td width="33%"><strong>估價總額：</strong>$${price} 元</td>
+                                <td width="33%"><strong>未稅金額：</strong>$${noTax} 元</td>
+                                <td width="34%"><strong>含稅總額：</strong>$${withTax} 元</td>
+                            </tr>
+                            <tr>
+                                <td><strong>已收訂金：</strong>$${deposit} 元</td>
+                                <td colspan="2"><strong>工程尾款結算：</strong><span class="price-alert">$${balance} 元</span></td>
+                            </tr>
+                        </table>
+                        <div class="pdf-section-title">📐 各窗詳細資訊</div>
+                        ${windowsPrintHtml}
+                    </div>
+                </body>
+                </html>
+            `;
         }
 
-        // ==============================================================
-        // 📄 升級版：精品設計風「窗簾工程報價單」 (參考專業 Invoice 風格)
-        // ==============================================================
+        // ==========================================
+        // 核心字串生成器：純金額報價單 HTML
+        // ==========================================
         function generatePricePdfHtml(record) {
             const q = record.quoteData || {};
             const price = parseInt(q.totalPrice) || 0;
@@ -1559,427 +1678,128 @@
             const withTax = parseInt(q.withTax) || 0;
             const finalTotal = withTax || price || 0;
             const balance = finalTotal - deposit;
-            const invoiceNo = "WM-" + (record.id ? record.id.slice(-8) : String(Date.now()).slice(-8));
-
+            
             let tableRowsHtml = "";
-            let itemCounter = 1;
-
             if (record.windows && Array.isArray(record.windows)) {
                 record.windows.forEach((w, i) => {
                     const qItem = (q.windows && q.windows[i]) ? q.windows[i] : {};
-                    const typeStr = (w.types || []).join(', ') || '標準規劃';
+                    const typeStr = (w.types || []).join(', ') || '依標準規格';
                     const envStr = (w.envs || []).join(', ') || '依現場結構';
-                    const items = qItem.fabricItems || (qItem.itemStyleNote ? [{ note: qItem.itemStyleNote, price: qItem.itemPrice }] : [{ note: '依現場約定規格規劃', price: '' }]);
+                    const items = qItem.fabricItems || (qItem.itemStyleNote ? [{ note: qItem.itemStyleNote, price: qItem.itemPrice }] : [{ note: '依現場約定規劃', price: '' }]);
 
                     items.forEach((it, subIdx) => {
                         const isFirst = subIdx === 0;
-                        const rowPrice = it.price ? `$ ${Number(it.price).toLocaleString()}` : (isFirst && qItem.itemPrice ? `$ ${Number(qItem.itemPrice).toLocaleString()}` : '含於總額');
-                        
+                        const rowPrice = it.price ? `$${it.price} 元` : (isFirst && qItem.itemPrice ? `$${qItem.itemPrice} 元` : '含於總價');
                         tableRowsHtml += `
-                            <tr class="${itemCounter % 2 === 0 ? 'stripe-row' : ''}">
-                                <td style="text-align: center; font-weight: bold; color: #2c3e50;">${itemCounter}</td>
-                                <td>
-                                    <div style="font-weight: 700; color: #1e272e; font-size: 14px;">${w.location || '窗戶項目'}</div>
-                                    <div style="font-size: 11px; color: #718093; margin-top: 2px;">開法環境：${typeStr} / ${envStr}</div>
-                                </td>
-                                <td>
-                                    <span style="font-weight: 600; color: #2f3542;">${it.note || '現場確認款式型號'}</span>
-                                </td>
-                                <td style="text-align: center; color: #57606f;">1 式</td>
-                                <td style="text-align: right; font-weight: bold; color: #1e3799; font-size: 14px;">${rowPrice}</td>
+                            <tr>
+                                <td style="text-align: center; font-weight: bold;">${isFirst ? (w.itemNumber || (i + 1)) : ''}</td>
+                                <td><strong>${isFirst ? (w.location || '窗戶項目') : ''}</strong></td>
+                                <td>${it.note || '依約定規劃'}</td>
+                                <td>${isFirst ? `${typeStr} /${envStr}` : ''}</td>
+                                <td style="text-align: right; font-weight: bold; color: #2563eb;">${rowPrice}</td>
                             </tr>
                         `;
-                        itemCounter++;
                     });
                 });
             }
 
-            return `<!DOCTYPE html>
-            <html lang="zh-TW">
-            <head>
-                <meta charset="UTF-8">
-                <title>窗簾工程報價單_${record.clientName}_${record.measureDate || ''}</title>
-                <style>
-                    * { box-sizing: border-box; margin: 0; padding: 0; }
-                    body {
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
-                        color: #2f3542;
-                        background: #ffffff;
-                        padding: 35px 40px;
-                        line-height: 1.5;
-                    }
-                    /* 頂部斜紋幾何條 */
-                    .top-pattern-bar {
-                        height: 12px;
-                        background: repeating-linear-gradient(45deg, #1e3799, #1e3799 10px, #ffffff 10px, #ffffff 16px);
-                        margin-bottom: 25px;
-                        border-radius: 4px;
-                    }
-                    .header-flex {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        padding-bottom: 20px;
-                        border-bottom: 3px solid #1e3799;
-                    }
-                    /* 望美窗簾 品牌 Logo 風格 */
-                    .brand-box {
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                    }
-                    .brand-symbol {
-                        width: 48px;
-                        height: 48px;
-                        background: #1e3799;
-                        color: white;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 24px;
-                        border-radius: 8px;
-                        box-shadow: 0 4px 10px rgba(30, 55, 153, 0.25);
-                    }
-                    .brand-title-group h2 {
-                        font-size: 26px;
-                        font-weight: 900;
-                        letter-spacing: 4px;
-                        color: #1e272e;
-                        line-height: 1.1;
-                    }
-                    .brand-title-group p {
-                        font-size: 11px;
-                        color: #718093;
-                        letter-spacing: 2px;
-                        text-transform: uppercase;
-                        margin-top: 4px;
-                    }
-                    /* 右側大標題 */
-                    .doc-title-block {
-                        text-align: right;
-                    }
-                    .doc-main-title {
-                        font-size: 28px;
-                        font-weight: 900;
-                        color: #1e3799;
-                        letter-spacing: 1px;
-                    }
-                    .doc-subtitle {
-                        font-size: 12px;
-                        color: #718093;
-                        font-weight: 600;
-                        letter-spacing: 1.5px;
-                    }
-                    
-                    /* 客戶資訊與單據資訊欄 */
-                    .info-grid {
-                        display: flex;
-                        gap: 25px;
-                        margin: 25px 0 20px 0;
-                    }
-                    .info-card-left {
-                        flex: 1.2;
-                        background: #f8fafc;
-                        border: 1px solid #e2e8f0;
-                        border-left: 4px solid #1e3799;
-                        padding: 14px 18px;
-                        border-radius: 6px;
-                    }
-                    .info-card-right {
-                        flex: 0.9;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                    }
-                    .info-meta-table {
-                        width: 100%;
-                        font-size: 13px;
-                        border-collapse: collapse;
-                    }
-                    .info-meta-table td {
-                        padding: 3px 0;
-                    }
-                    .info-meta-label {
-                        color: #718093;
-                        font-weight: 600;
-                        width: 95px;
-                    }
-                    .info-meta-val {
-                        color: #2f3542;
-                        font-weight: 700;
-                    }
-                    /* 藍色總額醒目橫條 */
-                    .total-highlight-strip {
-                        background: #1e3799;
-                        color: white;
-                        padding: 10px 16px;
-                        border-radius: 6px;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        box-shadow: 0 4px 10px rgba(30, 55, 153, 0.2);
-                    }
-                    .total-strip-label {
-                        font-size: 13px;
-                        font-weight: bold;
-                        letter-spacing: 1px;
-                    }
-                    .total-strip-value {
-                        font-size: 22px;
-                        font-weight: 900;
-                        letter-spacing: 0.5px;
-                    }
-
-                    /* 報價明細表 */
-                    .item-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin-top: 15px;
-                        font-size: 13px;
-                    }
-                    .item-table th {
-                        background: #1e3799;
-                        color: white;
-                        text-transform: uppercase;
-                        font-size: 12px;
-                        letter-spacing: 0.8px;
-                        padding: 10px 12px;
-                        text-align: left;
-                        border: none;
-                    }
-                    .item-table td {
-                        padding: 11px 12px;
-                        border-bottom: 1px solid #edf2f7;
-                    }
-                    .item-table tr.stripe-row td {
-                        background-color: #f8fafc;
-                    }
-                    
-                    /* 結算匯總與簽章區 */
-                    .bottom-section {
-                        display: flex;
-                        gap: 25px;
-                        margin-top: 25px;
-                        align-items: flex-start;
-                    }
-                    .payment-box {
-                        flex: 1.2;
-                        background: #f8fafc;
-                        border: 1px solid #e2e8f0;
-                        border-radius: 6px;
-                        padding: 14px 16px;
-                        font-size: 12px;
-                        color: #57606f;
-                        line-height: 1.7;
-                    }
-                    .payment-title {
-                        font-size: 13px;
-                        font-weight: bold;
-                        color: #1e3799;
-                        margin-bottom: 6px;
-                        display: flex;
-                        align-items: center;
-                        gap: 6px;
-                    }
-                    .calc-summary-panel {
-                        flex: 0.9;
-                        background: #ffffff;
-                        border: 1px solid #cbd5e1;
-                        border-radius: 6px;
-                        overflow: hidden;
-                    }
-                    .calc-line {
-                        display: flex;
-                        justify-content: space-between;
-                        padding: 8px 14px;
-                        font-size: 13px;
-                        border-bottom: 1px solid #f1f5f9;
-                    }
-                    .calc-line.balance-line {
-                        background: #fff5f5;
-                        color: #c0392b;
-                        font-weight: bold;
-                        font-size: 15px;
-                        border-top: 2px solid #e74c3c;
-                    }
-                    .sign-panel {
-                        margin-top: 15px;
-                        text-align: right;
-                        padding-right: 15px;
-                    }
-                    .sign-line {
-                        display: inline-block;
-                        width: 170px;
-                        border-bottom: 1.5px solid #2f3542;
-                        margin-top: 35px;
-                    }
-
-                    /* 頁底裝飾 */
-                    .footer-bar {
-                        margin-top: 35px;
-                        padding-top: 12px;
-                        border-top: 1px solid #e2e8f0;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        font-size: 11px;
-                        color: #a4b0be;
-                    }
-                    @media print {
-                        body { padding: 15mm; }
-                        button { display: none !important; }
-                    }
-                </style>
-            </head>
-            <body>
-                <div style="max-width: 820px; margin: 0 auto;">
-                    <!-- 頂部幾何斜紋條 -->
-                    <div class="top-pattern-bar"></div>
-
-                    <!-- 頂部 Header -->
-                    <div class="header-flex">
-                        <div class="brand-box">
-                            <div class="brand-symbol">◆</div>
-                            <div class="brand-title-group">
-                                <h2>望美窗簾</h2>
-                                <p>Custom Curtains & Interior Studio</p>
-                            </div>
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>工程估價報價單_${record.clientName}_${record.measureDate || ''}</title>
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; padding: 30px; background: #fff; }
+                        .pdf-header { text-align: center; border-bottom: 3px double #2563eb; padding-bottom: 10px; margin-bottom: 25px; }
+                        .pdf-header h1 { margin: 0; color: #1d4ed8; font-size: 26px; font-weight: 700; }
+                        .pdf-section-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #2563eb; padding-left: 10px; margin-top: 25px; }
+                        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+                        .pdf-table th { background: #f8fafc; padding: 10px; border: 1px solid #cbd5e1; text-align: left; }
+                        .pdf-table td { padding: 10px 12px; border: 1px solid #cbd5e1; }
+                        .price-alert { color: #dc2626; font-weight: bold; font-size: 16px; }
+                        .terms-box { margin-top: 30px; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 16px; font-size: 13px; line-height: 1.8; color: #475569; }
+                    </style>
+                </head>
+                <body>
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <div class="pdf-header">
+                            <h1>📋 窗簾工程估價報價單</h1>
+                            <p style="color:#64748b; font-size:13px;">丈量日期：${record.measureDate || '未填'} ｜ 報價日期：${q.savedAt || record.timestamp || ''}</p>
                         </div>
-                        <div class="doc-title-block">
-                            <div class="doc-main-title">窗簾工程報價單</div>
-                            <div class="doc-subtitle">OFFICIAL QUOTATION</div>
-                        </div>
-                    </div>
-
-                    <!-- 雙欄資訊區 -->
-                    <div class="info-grid">
-                        <div class="info-card-left">
-                            <div style="font-size: 11px; font-weight: 800; color: #1e3799; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase;">
-                                CLIENT DETAILS / 客戶資訊
-                            </div>
-                            <div style="font-size: 16px; font-weight: bold; color: #1e272e; margin-bottom: 4px;">
-                                ${record.clientName || '貴客戶'} 先生/小姐
-                            </div>
-                            <table class="info-meta-table">
+                        <div class="pdf-section-title">👤 客戶與施工資訊</div>
+                        <table class="pdf-table">
+                            <tr><td width="50%"><strong>客戶姓名：</strong>${record.clientName}</td><td width="50%"><strong>聯絡電話：</strong>${record.clientPhone || '未填'}</td></tr>
+                            <tr><td colspan="2"><strong>施工地址：</strong>${record.clientAddress || '未填'}</td></tr>
+                            <tr><td width="50%"><strong>統一編號：</strong>${record.clientTaxId || '無'}</td><td width="50%"><strong>丈量日期：</strong>${record.measureDate || '未填'}</td></tr>
+                        </table>
+                        <div class="pdf-section-title">🪟 各窗施作項目與估價明細 (無尺寸)</div>
+                        <table class="pdf-table">
+                            <thead>
                                 <tr>
-                                    <td class="info-meta-label">聯絡電話：</td>
-                                    <td class="info-meta-val">${record.clientPhone || '未提供'}</td>
+                                    <th width="8%" style="text-align: center;">項次</th>
+                                    <th width="20%">施作空間位置</th>
+                                    <th width="37%">規劃款式型號 / 布號</th>
+                                    <th width="20%">開法與環境</th>
+                                    <th width="15%" style="text-align: right;">報價金額</th>
                                 </tr>
-                                <tr>
-                                    <td class="info-meta-label">施工地址：</td>
-                                    <td class="info-meta-val">${record.clientAddress || '未填寫施工地址'}</td>
-                                </tr>
-                                ${record.clientTaxId ? `<tr><td class="info-meta-label">統一編號：</td><td class="info-meta-val">${record.clientTaxId}</td></tr>` : ''}
-                            </table>
-                        </div>
-
-                        <div class="info-card-right">
-                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 14px; border-radius: 6px;">
-                                <table class="info-meta-table">
-                                    <tr>
-                                        <td class="info-meta-label">報價單號：</td>
-                                        <td class="info-meta-val" style="color:#1e3799;">${invoiceNo}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="info-meta-label">丈量日期：</td>
-                                        <td class="info-meta-val">${record.measureDate || '依現場紀錄'}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="info-meta-label">報價日期：</td>
-                                        <td class="info-meta-val">${q.savedAt || record.timestamp || '今日'}</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class="total-highlight-strip">
-                                <span class="total-strip-label">TOTAL / 總計金額</span>
-                                <span class="total-strip-value">$ ${finalTotal.toLocaleString()}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 報價項目清單 -->
-                    <table class="item-table">
-                        <thead>
+                            </thead>
+                            <tbody>
+                                ${tableRowsHtml}
+                            </tbody>
+                        </table>
+                        <div class="pdf-section-title">💰 工程總計結算</div>
+                        <table class="pdf-table">
                             <tr>
-                                <th width="7%" style="text-align: center;">項次</th>
-                                <th width="28%">施作空間位置</th>
-                                <th width="38%">規劃款式型號 / 布號規格</th>
-                                <th width="12%" style="text-align: center;">數量</th>
-                                <th width="15%" style="text-align: right;">小計金額</th>
+                                <td width="33%"><strong>估價總額：</strong>$${price} 元</td>
+                                <td width="33%"><strong>未稅金額：</strong>$${noTax} 元</td>
+                                <td width="34%"><strong>含稅總額：</strong>$${withTax} 元</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            ${tableRowsHtml}
-                        </tbody>
-                    </table>
-
-                    <!-- 下方結算與款項條款 -->
-                    <div class="bottom-section">
-                        <div class="payment-box">
-                            <div class="payment-title">📌 條款與備註說明</div>
-                            1. 本報價單所列各項產品規格、布料花色均經現場丈量與溝通確認。<br>
-                            2. 訂單確認後請支付三成定金排程製作，尾款於完工驗收無誤後結清。<br>
-                            3. 定製產品一經裁切製作即無法變更尺寸，如有疑問請即時與專員聯繫。
-                            
-                            <div class="sign-panel">
-                                <div>專案設計專員 / 客戶確認簽章</div>
-                                <div class="sign-line"></div>
-                            </div>
-                        </div>
-
-                        <div class="calc-summary-panel">
-                            <div class="calc-line">
-                                <span style="color:#718093;">項目小計金額 (未稅)</span>
-                                <strong>$ ${(noTax || price).toLocaleString()}</strong>
-                            </div>
-                            <div class="calc-line">
-                                <span style="color:#718093;">營業稅 (5% VAT)</span>
-                                <span>${withTax ? '$ ' + (withTax - (noTax || price)).toLocaleString() : '$ 0'}</span>
-                            </div>
-                            <div class="calc-line" style="background:#f1f2f6; font-weight:bold;">
-                                <span>工程總金額</span>
-                                <span style="color:#1e3799; font-size:15px;">$ ${finalTotal.toLocaleString()}</span>
-                            </div>
-                            <div class="calc-line">
-                                <span style="color:#718093;">已付訂金</span>
-                                <span style="color:#27ae60;">- $ ${deposit ? deposit.toLocaleString() : '0'}</span>
-                            </div>
-                            <div class="calc-line balance-line">
-                                <span>完工應付尾款</span>
-                                <span>$ ${balance.toLocaleString()}</span>
-                            </div>
+                            <tr>
+                                <td><strong>已付定金：</strong>$${deposit} 元</td>
+                                <td colspan="2"><strong>完工尾款：</strong><span class="price-alert">$${balance} 元</span></td>
+                            </tr>
+                        </table>
+                        <div class="terms-box">
+                            <strong>備註說明：</strong><br>
+                            1. 本報價單所列各項產品規格、布料花色均經現場溝通確認。<br>
+                            2. 訂單確認後敬請支付訂金，尾款於安裝完工驗收無誤後當日結清。<br>
+                            3. 如有任何規格疑問或變更需求，請隨時與丈量設計專員聯繫。
                         </div>
                     </div>
-
-                    <!-- 頁尾 -->
-                    <div class="footer-bar">
-                        <span>感謝您的支持與肯定！ Thank you for your business!</span>
-                    </div>
-                </div>
-            </body>
-            </html>`;
+                </body>
+                </html>
+            `;
         }
 
+        // 手動列印觸發器 (新增啟動按鈕)
         window.exportPDFWithTChart = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
             if(!record) return;
             const printWindow = window.open("", "_blank");
-            printWindow.document.write(generateFullPdfHtml(record));
+            const html = generateFullPdfHtml(record).replace(
+                '<div style="max-width: 780px; margin: 0 auto;">',
+                `<div style="max-width: 780px; margin: 0 auto;">
+                 <div style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #10b981; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button></div>`
+            );
+            printWindow.document.write(html);
             printWindow.document.close();
-            setTimeout(() => { printWindow.print(); }, 300);
-        }
+        };
 
         window.exportPDFPriceOnly = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
             if(!record) return;
             const printWindow = window.open("", "_blank");
-            printWindow.document.write(generatePricePdfHtml(record));
+            const html = generatePricePdfHtml(record).replace(
+                '<div style="max-width: 800px; margin: 0 auto;">',
+                `<div style="max-width: 800px; margin: 0 auto;">
+                 <div style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #10b981; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button></div>`
+            );
+            printWindow.document.write(html);
             printWindow.document.close();
-            setTimeout(() => { printWindow.print(); }, 300);
-        }
+        };
 
         document.addEventListener("DOMContentLoaded", function() {
             resetForm();
@@ -1987,3 +1807,5 @@
     </script>
 </body>
 </html>
+
+
