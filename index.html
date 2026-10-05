@@ -5,237 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>望美窗簾 - 專業丈量與報價系統</title>
+    <title>望美窗簾 - 專業丈量系統</title>
     <style>
         :root {
             --primary: #1e3a8a;
-            --primary-light: #eff6ff;
-            --accent: #2563eb;
+            --primary-accent: #2563eb;
             --slate-800: #1e293b;
             --slate-600: #475569;
             --slate-400: #94a3b8;
             --slate-200: #e2e8f0;
-            --slate-100: #f1f5f9;
             --slate-50: #f8fafc;
             --danger: #ef4444;
             --success: #10b981;
         }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background-color: #f1f5f9;
-            color: var(--slate-800);
-            padding: 12px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 100%;
-            max-width: 620px;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            transition: max-width 0.3s ease;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f8fafc; color: var(--slate-800); padding: 12px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 620px; background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid var(--slate-200); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); transition: max-width 0.3s ease; }
         @media (min-width: 720px) {
-            .container { max-width: 860px; padding: 28px; }
-            .est-grid-layout { display: flex; gap: 24px; align-items: flex-start; }
+            .container { max-width: 860px; padding: 26px; }
+            .est-grid-layout { display: flex; gap: 20px; align-items: flex-start; }
             .est-grid-left { flex: 0 0 350px; }
             .est-grid-right { flex: 1; }
         }
 
-        /* 密碼鎖畫面 */
-        #auth-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(8px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; color: white;
-        }
-        .auth-box {
-            background: #1e293b;
-            padding: 32px 24px; border-radius: 16px; text-align: center;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); width: 90%; max-width: 360px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .auth-box h2 { margin-bottom: 20px; font-weight: 600; font-size: 20px; }
-        .auth-box input {
-            width: 100%; padding: 14px; margin-bottom: 16px;
-            border: 1px solid #334155; border-radius: 8px; font-size: 18px; text-align: center;
-            background: #0f172a; color: #fff; outline: none;
-        }
-        .auth-box button {
-            background: var(--accent); color: white; border: none;
-            padding: 14px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; width: 100%;
-        }
+        #auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(6px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; }
+        .auth-box { background: #1e293b; padding: 30px 24px; border-radius: 12px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); width: 90%; max-width: 350px; border: 1px solid rgba(255,255,255,0.1); }
+        .auth-box h2 { margin-bottom: 18px; font-weight: 600; font-size: 19px; }
+        .auth-box input { width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #334155; border-radius: 6px; font-size: 16px; text-align: center; background: #0f172a; color: #fff; outline: none; }
+        .auth-box button { background: var(--primary-accent); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: 600; width: 100%; }
 
         #app-content { display: none; width: 100%; }
-        .app-header { text-align: center; margin-bottom: 20px; }
-        /* 【修復點】：加回 id="main-header" */
-        .app-header h1 { color: var(--primary); font-size: 22px; font-weight: 700; margin-top: 6px; }
+        .app-header { text-align: center; margin-bottom: 18px; }
+        .app-header h1 { color: var(--primary); font-size: 21px; font-weight: 700; margin-top: 6px; }
 
-        .client-info-card {
-            background: var(--slate-50);
-            border: 1px solid var(--slate-200);
-            border-radius: 12px; padding: 16px; margin-bottom: 20px;
-        }
-        .client-info-title {
-            font-size: 15px; font-weight: 700; color: var(--primary);
-            margin-bottom: 14px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;
-        }
-        .form-group { margin-bottom: 12px; }
+        .client-info-card { background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 8px; padding: 16px; margin-bottom: 18px; }
+        .client-info-title { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid var(--slate-200); padding-bottom: 5px; }
+        .form-group { margin-bottom: 10px; }
         .form-row { display: flex; gap: 10px; }
         .form-row .form-group { flex: 1; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: var(--slate-600); }
-        input[type="text"], input[type="tel"], input[type="number"], input[type="date"], input[type="search"], select {
-            width: 100%; padding: 10px 12px; border: 1px solid var(--slate-200); border-radius: 8px;
-            font-size: 14px; background-color: #fff; color: var(--slate-800); outline: none;
-        }
-        input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: var(--slate-600); }
+        input[type="text"], input[type="tel"], input[type="number"], input[type="date"], input[type="search"], select { width: 100%; padding: 9px 11px; border: 1px solid var(--slate-300); border-radius: 6px; font-size: 14px; background-color: #fff; color: var(--slate-800); outline: none; transition: border-color 0.15s ease; }
+        input:focus, select:focus { border-color: var(--primary-accent); }
 
-        .window-card {
-            border: 1px solid var(--slate-200);
-            border-left: 5px solid var(--primary);
-            border-radius: 12px; padding: 18px; margin-bottom: 20px;
-            background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .window-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--slate-100); padding-bottom: 10px; }
-        .window-title { font-size: 16px; font-weight: 700; color: var(--slate-800); }
-        .delete-btn { background: #fee2e2; color: var(--danger); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .window-card { border: 1px solid var(--slate-200); border-left: 4px solid var(--primary); border-radius: 8px; padding: 16px; margin-bottom: 18px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .window-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--slate-100); padding-bottom: 8px; }
+        .window-title { font-size: 15px; font-weight: 700; color: var(--slate-800); }
+        .delete-btn { background: #fee2e2; color: var(--danger); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
 
-        .options-group { margin-bottom: 14px; }
-        .options-title { font-weight: 600; margin-bottom: 8px; font-size: 13px; color: var(--slate-600); }
+        .options-group { margin-bottom: 12px; }
+        .options-title { font-weight: 600; margin-bottom: 6px; font-size: 13px; color: var(--slate-600); }
         .checkbox-container { display: flex; flex-wrap: wrap; gap: 8px; }
-        .checkbox-item {
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: var(--slate-50); padding: 8px 12px; border-radius: 6px; font-size: 13px;
-            flex: 1 1 calc(50% - 4px); min-width: 90px; border: 1px solid var(--slate-200);
-        }
+        .checkbox-item { display: flex; align-items: center; gap: 6px; cursor: pointer; background: var(--slate-50); padding: 7px 11px; border-radius: 6px; font-size: 13px; flex: 1 1 calc(50% - 4px); min-width: 90px; border: 1px solid var(--slate-200); }
         .checkbox-item input { width: 16px; height: 16px; accent-color: var(--primary); }
 
         /* 照片上傳區域 */
-        .photo-upload-zone {
-            margin: 14px 0; padding: 12px; background: #f8fafc; border: 1px dashed var(--slate-300); border-radius: 8px;
-        }
-        .photo-preview-wrap {
-            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center;
-        }
-        .photo-preview-img {
-            width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;
-        }
+        .photo-upload-zone { margin: 12px 0; padding: 10px 12px; background: #f8fafc; border: 1px dashed var(--slate-300); border-radius: 6px; }
+        .photo-preview-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; align-items: center; font-size: 13px; }
 
-        /* T-Chart */
-        .t-chart-container {
-            display: flex; justify-content: center; align-items: center;
-            margin: 10px 0; padding: 15px 0; background: var(--slate-50); border: 1px dashed #cbd5e1; border-radius: 10px;
-            overflow-x: auto;
-        }
+        /* T-Chart 精緻線條 */
+        .t-chart-container { display: flex; justify-content: center; align-items: center; margin: 8px 0; padding: 14px 0; background: var(--slate-50); border: 1px dashed var(--slate-300); border-radius: 8px; overflow-x: auto; }
         .t-chart { position: relative; width: 320px; height: 330px; transform-origin: center center; }
-        @media (max-width: 360px) {
-            .t-chart { transform: scale(0.85); margin: -20px 0; }
-        }
-        .t-line-horizontal { position: absolute; top: 120px; left: 35px; width: 250px; height: 3px; background-color: var(--primary); z-index: 1; }
-        .t-line-vertical { position: absolute; top: 55px; left: 158px; width: 3px; height: 215px; background-color: var(--primary); z-index: 1; }
-        .t-input {
-            position: absolute; width: 85px !important; height: 34px; padding: 0 4px !important;
-            text-align: center; border: 1px solid var(--slate-400); border-radius: 6px; font-size: 12px; background: white; z-index: 2;
-        }
-        .t-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15); }
+        @media (max-width: 360px) { .t-chart { transform: scale(0.85); margin: -20px 0; } }
+        .t-line-horizontal { position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary); z-index: 1; }
+        .t-line-vertical { position: absolute; top: 55px; left: 158px; width: 2px; height: 215px; background-color: var(--primary); z-index: 1; }
+        .t-input { position: absolute; width: 85px !important; height: 34px; padding: 0 4px !important; text-align: center; border: 1px solid var(--slate-300); border-radius: 4px; font-size: 12px; background: white; z-index: 2; }
+        .t-input:focus { border-color: var(--primary-accent); }
 
-        .t-locked-box {
-            position: absolute; width: 85px; text-align: center; background: #ffffff;
-            border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 2px; z-index: 2;
-        }
-        .t-locked-box small { font-size: 10px; color: var(--slate-400); font-weight: 600; display: block; line-height: 1.1; }
-        .t-locked-box strong { font-size: 13px; color: var(--slate-800); display: block; }
+        .t-out-top { top: 5px; left: 118px; } .t-out-top-sub { top: 41px; left: 118px; border-style: dashed; }
+        .t-win-width { top: 80px; left: 118px; } .t-out-left { top: 105px; left: -10px; } .t-out-left-sub { top: 143px; left: -10px; border-style: dashed; }
+        .t-out-right { top: 105px; left: 245px; } .t-out-right-sub { top: 143px; left: 245px; border-style: dashed; }
+        .t-win-height { top: 185px; left: 118px; } .t-out-bottom { top: 245px; left: 118px; } .t-out-bottom-sub { top: 283px; left: 118px; border-style: dashed; }
 
-        .t-out-top      { top: 5px;   left: 118px; }
-        .t-out-top-sub  { top: 41px;  left: 118px; border-style: dashed; }
-        .t-win-width    { top: 80px;  left: 118px; }
-        .t-out-left     { top: 105px; left: -10px; }
-        .t-out-left-sub { top: 143px; left: -10px; border-style: dashed; }
-        .t-out-right    { top: 105px; left: 245px; }
-        .t-out-right-sub{ top: 143px; left: 245px; border-style: dashed; }
-        .t-win-height   { top: 185px; left: 118px; }
-        .t-out-bottom   { top: 245px; left: 118px; }
-        .t-out-bottom-sub { top: 283px; left: 118px; border-style: dashed; }
-
-        /* 功能按鈕 */
-        .btn-block { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        button.action-btn {
-            width: 100%; padding: 13px; border: none; border-radius: 10px;
-            font-size: 15px; font-weight: 600; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; gap: 8px; color: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
+        .btn-block { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+        button.action-btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; color: white; transition: opacity 0.15s ease; }
+        button.action-btn:active { opacity: 0.9; }
         .btn-add { background: var(--primary); }
         .btn-save { background: var(--success); }
-        /* 【修復點】：強制取消修改按鈕預設為隱藏 */
         #btn-cancel-edit { background: var(--slate-600); display: none !important; }
 
-        /* 歷史卡片 */
-        .search-box { margin-top: 30px; border-top: 2px dashed var(--slate-200); padding-top: 20px; }
-        .history-item-simplified {
-            background: #ffffff; padding: 14px 16px; border-radius: 10px; margin-top: 10px;
-            border: 1px solid var(--slate-200); border-left: 4px solid var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .hist-top-line { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+        .search-box { margin-top: 26px; border-top: 1px dashed var(--slate-300); padding-top: 16px; }
+        .history-item-simplified { background: #ffffff; padding: 12px 14px; border-radius: 8px; margin-top: 8px; border: 1px solid var(--slate-200); border-left: 3px solid var(--primary); box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .hist-top-line { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
         .hist-client-title { font-size: 15px; font-weight: 700; color: var(--slate-800); }
-        .hist-info-line { font-size: 13px; color: var(--slate-600); line-height: 1.6; }
-        .hist-actions-bar {
-            display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 10px;
-            border-top: 1px dashed var(--slate-200); padding-top: 8px;
-        }
-        .history-client-details { display: none; font-size: 13px; color: var(--slate-600); background: var(--slate-50); padding: 12px; border-radius: 8px; margin: 8px 0; border: 1px solid var(--slate-200); }
+        .hist-info-line { font-size: 13px; color: var(--slate-600); line-height: 1.5; }
+        .hist-actions-bar { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; margin-top: 8px; border-top: 1px dashed var(--slate-200); padding-top: 6px; }
+        .history-client-details { display: none; font-size: 13px; color: var(--slate-600); background: var(--slate-50); padding: 10px; border-radius: 6px; margin: 6px 0; border: 1px solid var(--slate-200); }
 
-        .btn-tag { padding: 5px 9px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; border: none; color: white; }
+        .btn-tag { padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; border: none; color: white; }
         .toggle-btn { background-color: var(--slate-600); }
-        .estimate-btn { background-color: var(--accent); }
+        .estimate-btn { background-color: #8b5cf6; }
         .pdf-btn { background-color: #d97706; }
-        .pdf-price-only-btn { background-color: #ea580c; }
+        .pdf-price-only-btn { background-color: var(--primary); }
         .row-delete-btn { background-color: var(--danger); }
         .row-edit-btn { background-color: var(--success); }
 
-        /* 燈箱視窗 */
-        #history-lightbox, #estimate-lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f8fafc; z-index: 5000; display: none; flex-direction: column; padding: 16px; overflow: hidden;
-        }
-        .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--primary); margin-bottom: 12px; }
-        .lightbox-title { font-size: 17px; font-weight: 700; color: var(--slate-800); }
-        .lightbox-close-btn { background: #fee2e2; color: var(--danger); border: none; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
-        .lightbox-save-btn { background: var(--success); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
-        .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 50px; }
+        #history-lightbox, #estimate-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 5000; display: none; flex-direction: column; padding: 16px; overflow: hidden; }
+        .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--primary); margin-bottom: 12px; }
+        .lightbox-title { font-size: 16px; font-weight: 700; color: var(--slate-800); }
+        .lightbox-close-btn { background: #fee2e2; color: var(--danger); border: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .lightbox-save-btn { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .lightbox-content { flex: 1; overflow-y: auto; padding-bottom: 40px; }
 
-        /* 估價頁面 */
-        .est-window-panel { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .est-panel-header { font-size: 16px; font-weight: 700; color: var(--slate-800); margin-bottom: 12px; border-bottom: 2px solid var(--slate-100); padding-bottom: 6px; }
-        .t-locked-container { background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 8px; padding: 10px; margin-bottom: 12px; text-align: center; }
-        .t-locked-alert { font-size: 11px; color: var(--primary); font-weight: 600; margin-bottom: 6px; display: inline-block; background: var(--primary-light); padding: 3px 10px; border-radius: 20px; }
+        .est-window-panel { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+        .est-panel-header { font-size: 15px; font-weight: 700; color: var(--slate-800); margin-bottom: 10px; border-bottom: 1px solid var(--slate-100); padding-bottom: 5px; }
+        .calc-form-container { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 6px; padding: 12px; }
+        .calc-title { font-size: 14px; font-weight: 700; color: #8b5cf6; margin-bottom: 10px; }
+        .calc-sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 10px; }
+        .calc-formula-result-box { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 10px; margin-top: 8px; font-size: 13px; line-height: 1.5; color: #581c87; }
         
-        .calc-form-container { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 10px; padding: 14px; }
-        .calc-title { font-size: 14px; font-weight: 700; color: #8b5cf6; margin-bottom: 12px; }
-        .calc-sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 12px; }
-        .calc-formula-result-box { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 13px; line-height: 1.6; color: #581c87; }
+        .fabric-items-container { margin-top: 12px; border-top: 1px dashed var(--slate-200); padding-top: 10px; }
+        .fabric-item-row { display: flex; gap: 6px; align-items: flex-end; margin-bottom: 6px; }
+        .btn-add-item-row { background: var(--slate-800); color: #fff; border: none; padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: 600; }
+        .btn-remove-item-row { background: #fee2e2; color: var(--danger); border: none; padding: 8px 9px; border-radius: 4px; cursor: pointer; font-size: 12px; }
         
-        .fabric-items-container { margin-top: 14px; border-top: 1px dashed var(--slate-200); padding-top: 12px; }
-        .fabric-item-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 8px; }
-        .btn-add-item-row { background: var(--slate-800); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600; }
-        .btn-remove-item-row { background: #fee2e2; color: var(--danger); border: none; padding: 9px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        /* 唯讀 T-Chart */
+        .t-locked-box { position: absolute; width: 85px; text-align: center; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 2px; z-index: 2; }
+        .t-locked-box small { font-size: 10px; color: var(--slate-400); font-weight: 600; display: block; line-height: 1.1; }
+        .t-locked-box strong { font-size: 13px; color: var(--slate-800); display: block; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 密碼鎖畫面 -->
         <div id="auth-overlay">
             <div class="auth-box">
                 <h2> 🔒  丈量系統登入</h2>
@@ -244,7 +134,6 @@
             </div>
         </div>
 
-        <!-- 主程式內容 -->
         <div id="app-content">
             <div class="app-header">
                 <h1 id="main-header">📋 望美窗簾 - 現場丈量單</h1>
@@ -285,7 +174,7 @@
             <div class="btn-block">
                 <button class="action-btn btn-add" id="btn-add-window" onclick="addWindowItem()"> ➕  新增下一個窗戶項目</button>
                 <button class="action-btn btn-save" id="btn-save-main" onclick="saveDataToLocalStorage()"> 💾  儲存尺寸並自動備份雲端</button>
-                <button class="action-btn" id="btn-cancel-edit" onclick="cancelEdit()"> ✕  取消修改 (不儲存)</button>
+                <button class="action-btn" id="btn-cancel-edit" onclick="cancelEdit()" style="display: none !important;"> ✕  取消修改 (不儲存)</button>
             </div>
             <div class="btn-block" style="margin-top: 10px;">
                 <button class="action-btn" style="background-color: var(--primary);" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄</button>
@@ -325,8 +214,8 @@
         let windowCount = 0;
         let currentEstimatingRecordId = null;
 
-        // 全域 Google Apps Script Web App 網址
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPqHnSF3DA6RDA0brfzZdSjLaVPBzTaQE-AGiCtG967DTeC4gK-CJrnodv8DLbdPCJuA/exec";
+        // 全域 Google Apps Script Web App 網址 (請換成您最新部署的網址)
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKJZ1PGGme_FKPDzcAdVXEOt6AgZpyAIfOvODAqQj8sHecfVBKuCL023XKMKHRwh-NhA/exec";
 
         window.checkPassword = function() {
             const pass = document.getElementById('sys-password').value;
@@ -381,31 +270,50 @@
             });
         }
 
+        // 🌟 即時上傳 Google Drive (取得連結並拋棄 Base64)
         window.handlePhotoChange = async function(input, windowIdx) {
             const file = input.files[0];
             if (!file) return;
 
+            const clientName = document.getElementById('client-name').value.trim() || "未命名";
             const card = input.closest('.window-card');
             const previewWrap = card.querySelector('.photo-preview-wrap');
 
             try {
+                previewWrap.innerHTML = `<span style="color:#2563eb; font-weight:bold;">⏳ 照片壓縮與上傳雲端中，請稍候...</span>`;
                 const compressedBase64 = await compressImage(file);
-                input.setAttribute('data-photo-base64', compressedBase64);
-                if (previewWrap) {
+                
+                const payload = {
+                    action: 'upload_photo',
+                    base64: compressedBase64,
+                    clientName: clientName,
+                    windowIndex: windowIdx
+                };
+
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const resData = await response.json();
+
+                if (resData.status === 'success') {
+                    // 僅存入真實的 Google Drive URL 連結
+                    input.setAttribute('data-photo-url', resData.url);
                     previewWrap.innerHTML = `
-                        <img src="${compressedBase64}" class="photo-preview-img" onclick="openFullImage('${compressedBase64}')" title="點擊預覽">
+                        <span style="color:#10b981; font-weight:bold;">✅ 已成功上傳</span>
+                        <a href="${resData.url}" target="_blank" style="color:#2563eb; font-weight:bold; text-decoration:underline;">🔗開啟雲端照片</a>
                         <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除</button>
                     `;
+                } else {
+                    throw new Error(resData.message);
                 }
             } catch (err) {
-                console.error("照片讀取失敗：", err);
-                alert("照片處理異常，請重新選擇！");
+                console.error("上傳失敗：", err);
+                previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 照片上傳失敗，請重新選擇</span>`;
+                input.value = '';
             }
-        };
-
-        window.openFullImage = function(base64) {
-            const w = window.open("");
-            w.document.write(`<img src="${base64}" style="max-width:100%; height:auto;">`);
         };
 
         window.clearPhoto = function(btn) {
@@ -413,7 +321,7 @@
             const fileInput = card.querySelector('.w-photo-file');
             if (fileInput) {
                 fileInput.value = '';
-                fileInput.removeAttribute('data-photo-base64');
+                fileInput.removeAttribute('data-photo-url');
             }
             const previewWrap = card.querySelector('.photo-preview-wrap');
             if (previewWrap) previewWrap.innerHTML = '';
@@ -460,7 +368,7 @@
                 </div>
 
                 <div class="photo-upload-zone">
-                    <label> 📸  現場照片 (將獨立上傳 Drive 雲端資料夾)：</label>
+                    <label> 📸  現場照片 (將即時上傳 Drive 並產出連結)：</label>
                     <input type="file" class="w-photo-file" accept="image/*" onchange="handlePhotoChange(this, ${windowCount})">
                     <div class="photo-preview-wrap"></div>
                 </div>
@@ -532,7 +440,6 @@
             }
         }
 
-        // 🌟 修正載入編輯報錯，並加入 Try-Catch 防止編輯 ID 卡死
         window.loadRecordForEdit = function(recordId) {
             try {
                 const records = getLocalStorageData();
@@ -541,14 +448,12 @@
 
                 editingId = recordId;
                 
-                // 確保 DOM 存在再設定，防止報錯
                 const headerEl = document.getElementById('main-header');
-                if (headerEl) headerEl.innerText = "✏️️ 正在修改丈量尺寸資料";
+                if (headerEl) headerEl.innerText = "✏️ 正在修改丈量尺寸資料";
                 
                 document.getElementById('btn-save-main').innerText = "✅ 更新並覆蓋尺寸 (雲端另存新版)";
                 document.getElementById('btn-save-main').style.backgroundColor = "var(--success)";
                 
-                // 展開取消按鈕
                 const cancelBtn = document.getElementById('btn-cancel-edit');
                 if (cancelBtn) cancelBtn.style.setProperty('display', 'block', 'important');
 
@@ -580,13 +485,14 @@
                         card.querySelector('.t-win-width').value = w.sizeWindowWidth || '';
                         card.querySelector('.t-win-height').value = w.sizeWindowHeight || '';
 
-                        if (w.photoBase64) {
+                        if (w.photoUrl) {
                             const fileInput = card.querySelector('.w-photo-file');
-                            if (fileInput) fileInput.setAttribute('data-photo-base64', w.photoBase64);
+                            if (fileInput) fileInput.setAttribute('data-photo-url', w.photoUrl);
                             const previewWrap = card.querySelector('.photo-preview-wrap');
                             if (previewWrap) {
                                 previewWrap.innerHTML = `
-                                    <img src="${w.photoBase64}" class="photo-preview-img" onclick="openFullImage('${w.photoBase64}')">
+                                    <span style="color:#10b981; font-weight:bold;">✅ 留存照片：</span>
+                                    <a href="${w.photoUrl}" target="_blank" style="color:#2563eb; font-weight:bold; text-decoration:underline;">🔗開啟雲端照片</a>
                                     <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除</button>
                                 `;
                             }
@@ -610,7 +516,7 @@
                 closeHistoryLightbox();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (err) {
-                editingId = null; // 解除編輯鎖定，防止蓋台
+                editingId = null;
                 alert("載入編輯資料發生錯誤：" + err.message);
             }
         };
@@ -627,9 +533,8 @@
             if (headerEl) headerEl.innerText = "📋 望美窗簾 - 現場丈量單";
             
             document.getElementById('btn-save-main').innerText = "💾 儲存全戶尺寸並備份雲端";
-            document.getElementById('btn-save-main').style.backgroundColor = "var(--primary)";
+            document.getElementById('btn-save-main').style.backgroundColor = "var(--success)";
             
-            // 強制隱藏取消按鈕
             const cancelBtn = document.getElementById('btn-cancel-edit');
             if (cancelBtn) cancelBtn.style.setProperty('display', 'none', 'important');
 
@@ -659,7 +564,9 @@
                     const envs = [];
                     card.querySelectorAll('.w-env:checked').forEach(cb => envs.push(cb.value));
                     const fileInput = card.querySelector('.w-photo-file');
-                    const photoBase64 = fileInput ? (fileInput.getAttribute('data-photo-base64') || '') : '';
+                    
+                    // 這裡只儲存輕量的網址，不再存 Base64！
+                    const photoUrl = fileInput ? (fileInput.getAttribute('data-photo-url') || '') : '';
 
                     windowsData.push({
                         itemNumber: index + 1,
@@ -667,7 +574,7 @@
                         types: types,
                         envs: envs,
                         boxDepth: card.querySelector('.w-depth').value.trim(),
-                        photoBase64: photoBase64,
+                        photoUrl: photoUrl,
                         sizeOutTop: card.querySelector('.t-out-top').value.trim(),
                         sizeOutTopSub: card.querySelector('.t-out-top-sub').value.trim(),
                         sizeOutBottom: card.querySelector('.t-out-bottom').value.trim(),
@@ -713,14 +620,7 @@
                     alert('🎉 丈量儲存成功！已自動寫入試算表並產製 PDF 備份 Google 雲端！');
                 }
 
-                try {
-                    localStorage.setItem('curtain_measurements', JSON.stringify(records));
-                } catch (stErr) {
-                    records.slice(3).forEach(r => {
-                        if (r.windows) r.windows.forEach(w => w.photoBase64 = '');
-                    });
-                    localStorage.setItem('curtain_measurements', JSON.stringify(records));
-                }
+                localStorage.setItem('curtain_measurements', JSON.stringify(records));
                 
                 syncRecordToGoogleDrive(currentRecord);
 
@@ -756,16 +656,11 @@
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
-            })
-            .then(() => console.log('☁ 雲端 PDF 與試算表同步備份完成！'))
-            .catch(err => console.error('❌ 雲端備份失敗：', err));
+            });
         }
 
-        // ==========================================
-        // 💰 估價試算模組
-        // ==========================================
         window.openEstimateModal = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
@@ -791,10 +686,7 @@
 
                 let fabricItems = savedQ.fabricItems;
                 if (!fabricItems || !Array.isArray(fabricItems) || fabricItems.length === 0) {
-                    fabricItems = [{
-                        note: savedQ.itemStyleNote || '',
-                        price: savedQ.itemPrice || ''
-                    }];
+                    fabricItems = [{ note: savedQ.itemStyleNote || '', price: savedQ.itemPrice || '' }];
                 }
 
                 let itemsRowsHtml = '';
@@ -818,7 +710,6 @@
                 windowsSectionsHtml += `
                     <div class="est-window-panel" data-idx="${idx}">
                         <div class="est-panel-header">🪟 窗戶項目 ${origW.itemNumber}：${origW.location || '未填位置'}</div>
-                        
                         <div class="est-grid-layout">
                             <div class="est-grid-left">
                                 <div class="t-locked-container">
@@ -827,7 +718,6 @@
                                         <div class="t-chart">
                                             <div class="t-line-horizontal"></div>
                                             <div class="t-line-vertical"></div>
-                                            
                                             <div class="t-locked-box t-out-top"><small>上框高</small><strong>${origW.sizeOutTop || '0'}</strong></div>
                                             <div class="t-locked-box t-out-top-sub" style="border-style:dashed;"><small>上框(註)</small><strong>${origW.sizeOutTopSub || '無'}</strong></div>
                                             <div class="t-locked-box t-win-width highlight" style="border-color:var(--primary);"><small style="color:var(--primary);">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div>
@@ -842,68 +732,41 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="est-grid-right">
                                 <div class="calc-form-container">
                                     <div class="calc-title">📐 估價尺寸與金額試算</div>
-                                    
                                     <div class="calc-sub-grid">
-                                        <div>
-                                            <label>估價寬度 (cm)：</label>
-                                            <input type="number" class="c-width" value="${currentCalcWidth}" placeholder="寬度" oninput="runWindowFormula(${idx})">
-                                        </div>
-                                        <div>
-                                            <label>估價高度 (cm)：</label>
-                                            <input type="number" class="c-height" value="${currentCalcHeight}" placeholder="高度" oninput="runWindowFormula(${idx})">
-                                        </div>
+                                        <div><label>估價寬度 (cm)：</label><input type="number" class="c-width" value="${currentCalcWidth}" placeholder="寬度" oninput="runWindowFormula(${idx})"></div>
+                                        <div><label>估價高度 (cm)：</label><input type="number" class="c-height" value="${currentCalcHeight}" placeholder="高度" oninput="runWindowFormula(${idx})"></div>
                                         <div>
                                             <label>計算模式：</label>
                                             <select class="c-type" onchange="toggleCalcFields(${idx}); runWindowFormula(${idx});">
-                                                <option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布 (標準幅寬)</option>
-                                                <option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布 (定高買寬)</option>
-                                                <option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數計算 (捲簾/百葉/調光)</option>
-                                                <option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動輸入金額</option>
+                                                <option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布</option>
+                                                <option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布</option>
+                                                <option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數(捲簾等)</option>
+                                                <option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動金額</option>
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="calc-sub-grid dynamic-fields" id="dynamic-fields-${idx}">
-                                        <div class="f-pleat">
-                                            <label>摺數倍率：</label>
-                                            <input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runWindowFormula(${idx})">
-                                        </div>
-                                        <div class="f-fab-width">
-                                            <label>布幅寬 (cm)：</label>
-                                            <input type="number" class="c-fabwidth" value="${fabricWidth}" placeholder="常見110或150" oninput="runWindowFormula(${idx})">
-                                        </div>
-                                        <div class="f-sewing">
-                                            <label>車工單價 (元/幅)：</label>
-                                            <input type="number" class="c-sewingprice" value="${sewingPrice}" placeholder="預設180" oninput="runWindowFormula(${idx})">
-                                        </div>
-                                        <div>
-                                            <label class="c-price-label">單價 (元/尺 或 元/才)：</label>
-                                            <input type="number" class="c-unitprice" value="${unitPrice}" placeholder="單價" oninput="runWindowFormula(${idx})">
-                                        </div>
+                                        <div class="f-pleat"><label>摺數倍率：</label><input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runWindowFormula(${idx})"></div>
+                                        <div class="f-fab-width"><label>布幅寬 (cm)：</label><input type="number" class="c-fabwidth" value="${fabricWidth}" placeholder="110/150" oninput="runWindowFormula(${idx})"></div>
+                                        <div class="f-sewing"><label>車工單價 (元/幅)：</label><input type="number" class="c-sewingprice" value="${sewingPrice}" placeholder="180" oninput="runWindowFormula(${idx})"></div>
+                                        <div><label class="c-price-label">單價 (元/尺 或 元/才)：</label><input type="number" class="c-unitprice" value="${unitPrice}" placeholder="單價" oninput="runWindowFormula(${idx})"></div>
                                         <div class="f-track" style="display:flex; align-items:center; gap:8px; padding-top:22px;">
                                             <label style="cursor:pointer; display:flex; align-items:center; gap:6px;">
                                                 <input type="checkbox" class="c-track" ${hasTrack ? 'checked' : ''} onchange="runWindowFormula(${idx})" style="width:18px; height:18px;">
-                                                含一般軌 ($90/尺，低消$500)
+                                                含一般軌 ($90/尺)
                                             </label>
                                         </div>
                                     </div>
-
-                                    <div class="calc-formula-result-box" id="calc-result-${idx}">
-                                        正在計算中...
-                                    </div>
-
+                                    <div class="calc-formula-result-box" id="calc-result-${idx}">正在計算中...</div>
                                     <div class="fabric-items-container">
                                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                                             <span style="font-size:13px; font-weight:bold; color:var(--slate-800);">布料與紗簾清單 (可新增一布一紗)：</span>
                                             <button type="button" class="btn-add-item-row" onclick="addFabricRow(${idx})">➕ 新增款式/布號列</button>
                                         </div>
-                                        <div class="fabric-rows-wrapper" id="fabric-rows-${idx}">
-                                            ${itemsRowsHtml}
-                                        </div>
+                                        <div class="fabric-rows-wrapper" id="fabric-rows-${idx}">${itemsRowsHtml}</div>
                                         <div style="text-align: right; font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 6px;">
                                             本窗總估價金額：$<span class="window-sum-display" id="window-sum-${idx}">0</span> 元
                                         </div>
@@ -924,7 +787,6 @@
             const contentDiv = document.getElementById('estimate-lightbox-content');
             contentDiv.innerHTML = `
                 ${windowsSectionsHtml}
-                
                 <div class="client-info-card" style="background:#fff; margin-top:20px;">
                     <div class="client-info-title"> 💰  全戶工程金額結算試算</div>
                     <div class="form-row">
@@ -1247,7 +1109,7 @@
                 localStorage.setItem('curtain_measurements', JSON.stringify(records));
             } catch (e) {}
 
-            alert('🎉 估價試算已成功儲存！已同步備份 PDF 至 Google 雲端硬碟。');
+            alert('🎉 估價試算已成功儲存！已同步備份至 Google 雲端硬碟。');
             
             syncRecordToGoogleDrive(records[index]);
 
@@ -1265,30 +1127,35 @@
             currentEstimatingRecordId = null;
         };
 
-        // 簡化歷史紀錄清單
+        // 🌟 完全內聯樣式 T-Chart，杜絕跑版
         function makeWindowDetailHtml(w) {
             return `
                 <div style="margin-top: 10px; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px;">
                     <strong> 📍  位置：${w.location || '未填'}</strong> (項目 ${w.itemNumber})<br>
                     開法：${w.types ? w.types.join(', ') : '未選'} | 安裝環境：${w.envs ? w.envs.join(', ') : '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
-                    <div class="mini-t-container">
-                        <div class="mini-t-chart">
-                            <div style="position: absolute; top: 110px; left: 35px; width: 260px; height: 2px; background-color: var(--primary);"></div>
-                            <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div>
-                            
-                            <div class="mini-t-val" style="top: 5px; left: 127px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 36px; left: 127px; border-style:dashed;"><small>上框(註)</small><strong>${w.sizeOutTopSub || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 72px; left: 127px; border-color: var(--primary);"><small style="color:var(--primary);">本身寬</small><strong style="color:var(--primary);">${w.sizeWindowWidth || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 90px; left: -5px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 122px; left: -5px; border-style:dashed;"><small>左牆(註)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 90px; left: 255px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 122px; left: 255px; border-style:dashed;"><small>右牆(註)</small><strong>${w.sizeOutRightSub || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 165px; left: 127px; border-color: var(--primary);"><small style="color:var(--primary);">本身高</small><strong style="color:var(--primary);">${w.sizeWindowHeight || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 220px; left: 127px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div>
-                            <div class="mini-t-val" style="top: 252px; left: 127px; border-style:dashed;"><small>下框(註)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
-                        </div>
+                    
+                    <div style="position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; margin: 10px auto; transform: scale(0.85); transform-origin: top center;">
+                        <div style="position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary);"></div>
+                        <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div>
+                        
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px; top: 5px; left: 127px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">上框高</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutTop || '0'}</strong></div>
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; padding: 2px; top: 38px; left: 127px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">上框(註)</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutTopSub || '0'}</strong></div>
+                        
+                        <div style="position: absolute; width: 75px; text-align: center; background: #fff; border: 1px solid var(--primary); border-radius: 4px; padding: 2px; top: 75px; left: 127px;"><small style="font-size: 9px; color: var(--primary); display: block; font-weight: bold;">本身寬</small><strong style="font-size: 13px; color: var(--primary); font-weight: 800;">${w.sizeWindowWidth || '0'}</strong></div>
+                        
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px; top: 100px; left: -10px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">左牆寬</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutLeft || '0'}</strong></div>
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; padding: 2px; top: 138px; left: -10px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">左牆(註)</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutLeftSub || '0'}</strong></div>
+                        
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px; top: 100px; left: 255px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">右牆寬</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutRight || '0'}</strong></div>
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; padding: 2px; top: 138px; left: 255px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">右牆(註)</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutRightSub || '0'}</strong></div>
+                        
+                        <div style="position: absolute; width: 75px; text-align: center; background: #fff; border: 1px solid var(--primary); border-radius: 4px; padding: 2px; top: 180px; left: 127px;"><small style="font-size: 9px; color: var(--primary); display: block; font-weight: bold;">本身高</small><strong style="font-size: 13px; color: var(--primary); font-weight: 800;">${w.sizeWindowHeight || '0'}</strong></div>
+                        
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px; top: 235px; left: 127px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">下框地</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutBottom || '0'}</strong></div>
+                        <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; padding: 2px; top: 268px; left: 127px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">下框(註)</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutBottomSub || '0'}</strong></div>
                     </div>
-                    ${w.photoBase64 ? `<div style="margin-top:6px;"><img src="${w.photoBase64}" class="photo-preview-img" onclick="openFullImage('${w.photoBase64}')"></div>` : ''}
+
+                    ${w.photoUrl ? `<div style="margin-top:6px;"><a href="${w.photoUrl}" target="_blank" style="display:inline-block; background:var(--primary-light); color:var(--primary); padding:6px 12px; border-radius:6px; font-weight:bold; text-decoration:none; font-size:13px;">🔗 點此開啟雲端現場照片</a></div>` : ''}
                     ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:var(--slate-600); background:#fff9db; padding:4px; border-radius:4px;"> 📝  備註: ${w.note}</div>` : ''}
                 </div>
             `;
@@ -1553,7 +1420,6 @@
                                     <div class="pdf-t-chart">
                                         <div class="pdf-t-line-horizontal"></div>
                                         <div class="pdf-t-line-vertical"></div>
-                                        
                                         <div class="pdf-t-value pdf-v-top"><small>上框高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
                                         <div class="pdf-t-value pdf-v-top-sub"><small>上框(註)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div>
                                         <div class="pdf-t-value pdf-v-width" style="border-color: #1e3a8a;"><small>窗本身寬</small><br><span class="highlight-blue">${w.sizeWindowWidth || '0'}</span></div>
@@ -1590,7 +1456,8 @@
                     <meta charset="UTF-8">
                     <title>望美窗簾_估價確認單_${record.clientName}_${record.measureDate || ''}</title>
                     <style>
-                        body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; padding: 25px; background: #fff; }
+                        @page { size: A4; margin: 15mm; }
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; padding: 0; background: #fff; max-width: 190mm; margin: 0 auto; }
                         .pdf-header { text-align: center; border-bottom: 3px double #1e3a8a; padding-bottom: 12px; margin-bottom: 20px; }
                         .pdf-header h1 { margin: 6px 0 0 0; color: #1e3a8a; font-size: 24px; font-weight: 700; }
                         .brand-sub { font-size: 13px; color: #64748b; letter-spacing: 2px; }
@@ -1624,7 +1491,7 @@
                     </style>
                 </head>
                 <body>
-                    <div style="max-width: 780px; margin: 0 auto;">
+                    <div>
                         <div class="pdf-header">
                             <div class="brand-sub">WANG-MEI CURTAIN DESIGN</div>
                             <h1>望美窗簾 - 現場丈量與估價確認單</h1>
@@ -1657,7 +1524,7 @@
         }
 
         // ==========================================
-        // 核心：純金額報價單 HTML
+        // 核心：純金額報價單 HTML (全中文 + 淺灰底 + 移除數量)
         // ==========================================
         function generatePricePdfHtml(record) {
             const q = record.quoteData || {};
@@ -1687,7 +1554,6 @@
                                 <td><strong>${w.location || '窗戶項目'}</strong></td>
                                 <td>${it.note || '專業布藝款式規劃'}</td>
                                 <td style="color: #64748b;">${typeStr} / ${envStr}</td>
-                                <td style="text-align: center;">1</td>
                                 <td style="text-align: right; font-weight: bold; color: #1e3a8a;">${rowPrice}</td>
                             </tr>
                         `;
@@ -1702,16 +1568,18 @@
                     <meta charset="UTF-8">
                     <title>望美窗簾_工程報價單_${record.clientName}_${record.measureDate || ''}</title>
                     <style>
+                        @page { size: A4; margin: 15mm; }
                         body {
                             font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif;
                             color: #1e293b;
                             background: #ffffff;
-                            padding: 30px;
+                            padding: 0;
+                            margin: 0 auto;
+                            max-width: 190mm;
                             line-height: 1.5;
                         }
                         .invoice-card {
-                            max-width: 820px;
-                            margin: 0 auto;
+                            width: 100%;
                             border: 1px solid #cbd5e1;
                             background: #ffffff;
                             position: relative;
@@ -1743,165 +1611,56 @@
                             padding: 4px 16px;
                             display: inline-block;
                         }
-                        .doc-title-block {
-                            text-align: right;
-                        }
-                        .doc-main-title {
-                            font-size: 28px;
-                            font-weight: 900;
-                            color: #1e3a8a;
-                            letter-spacing: 2px;
-                        }
-                        .doc-sub-text {
-                            font-size: 13px;
-                            color: #64748b;
-                        }
-
-                        .info-grid {
-                            display: flex;
-                            padding: 20px 30px;
-                            gap: 20px;
-                            background: #f8fafc;
-                            border-bottom: 1px solid #e2e8f0;
-                        }
-                        .info-col {
-                            flex: 1;
-                        }
-                        .col-header-bar {
-                            font-size: 13px;
-                            font-weight: 800;
-                            color: #1e3a8a;
-                            border-bottom: 2px solid #1e3a8a;
-                            padding-bottom: 4px;
-                            margin-bottom: 10px;
-                            letter-spacing: 1px;
-                        }
-                        .info-item {
-                            font-size: 13px;
-                            margin-bottom: 5px;
-                            display: flex;
-                        }
-                        .info-label {
-                            color: #64748b;
-                            width: 80px;
-                            font-weight: 600;
-                        }
-                        .info-value {
-                            color: #1e293b;
-                            font-weight: 700;
-                            flex: 1;
-                        }
-
+                        .doc-title-block { text-align: right; }
+                        .doc-main-title { font-size: 28px; font-weight: 900; color: #1e3a8a; letter-spacing: 2px; }
+                        .doc-sub-text { font-size: 13px; color: #64748b; }
+                        
+                        .info-grid { display: flex; padding: 20px 30px; gap: 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+                        .info-col { flex: 1; }
+                        .col-header-bar { font-size: 13px; font-weight: 800; color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 4px; margin-bottom: 10px; letter-spacing: 1px; }
+                        .info-item { font-size: 13px; margin-bottom: 5px; display: flex; }
+                        .info-label { color: #64748b; width: 80px; font-weight: 600; }
+                        .info-value { color: #1e293b; font-weight: 700; flex: 1; }
+                        
+                        /* 淡灰色底工程結算總額 */
                         .total-due-bar {
-                            background: #1e3a8a;
-                            color: #ffffff;
+                            background: #f1f5f9;
+                            color: #1e3a8a;
                             padding: 10px 16px;
                             border-radius: 6px;
+                            border: 1px solid #cbd5e1;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
                             margin-top: 10px;
                         }
-                        .total-due-title {
-                            font-size: 13px;
-                            font-weight: 800;
-                            letter-spacing: 1px;
-                        }
-                        .total-due-num {
-                            font-size: 20px;
-                            font-weight: 900;
-                        }
-
-                        .table-wrap {
-                            padding: 24px 30px;
-                        }
-                        .invoice-table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        .invoice-table th {
-                            background: #f1f5f9;
-                            color: #1e3a8a;
-                            font-size: 13px;
-                            font-weight: 800;
-                            padding: 10px;
-                            border-bottom: 2px solid #1e3a8a;
-                            border-top: 1px solid #cbd5e1;
-                            text-align: left;
-                        }
-                        .invoice-table td {
-                            padding: 12px 10px;
-                            border-bottom: 1px solid #e2e8f0;
-                            font-size: 13px;
-                        }
-                        .invoice-table tr:nth-child(even) {
-                            background: repeating-linear-gradient(45deg, #f8fafc, #f8fafc 10px, #ffffff 10px, #ffffff 20px);
-                        }
-
-                        .footer-flex {
-                            display: flex;
-                            border-top: 2px solid #1e3a8a;
-                            background: #f8fafc;
-                        }
-                        .footer-left {
-                            flex: 1.2;
-                            padding: 20px 30px;
-                            border-right: 1px solid #e2e8f0;
-                            font-size: 12px;
-                            color: #64748b;
-                            line-height: 1.8;
-                        }
-                        .footer-right {
-                            flex: 1;
-                            padding: 20px 30px;
-                        }
-                        .calc-row {
-                            display: flex;
-                            justify-content: space-between;
-                            font-size: 13px;
-                            margin-bottom: 6px;
-                        }
-                        .calc-row-total {
-                            display: flex;
-                            justify-content: space-between;
-                            font-size: 16px;
-                            font-weight: 900;
-                            color: #1e3a8a;
-                            border-top: 2px solid #1e3a8a;
-                            padding-top: 10px;
-                            margin-top: 8px;
-                        }
-                        .highlight-balance {
-                            color: #dc2626;
-                        }
-
-                        .sign-section {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: flex-end;
-                            padding: 20px 30px 24px 30px;
-                            border-top: 1px solid #e2e8f0;
-                        }
-                        .stamp-space {
-                            font-size: 12px;
-                            color: #64748b;
-                        }
-                        .sign-box {
-                            text-align: center;
-                            width: 180px;
-                            border-bottom: 1px solid #1e293b;
-                            padding-bottom: 4px;
-                            font-size: 14px;
-                            font-weight: bold;
-                        }
-                        .bottom-strip {
-                            background: repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #ffffff 10px, #ffffff 20px);
-                            height: 14px;
-                            border-top: 1px solid #e2e8f0;
-                        }
+                        .total-due-title { font-size: 13px; font-weight: 800; letter-spacing: 1px; }
+                        .total-due-num { font-size: 20px; font-weight: 900; }
+                        
+                        .table-wrap { padding: 24px 30px; }
+                        .invoice-table { width: 100%; border-collapse: collapse; }
+                        .invoice-table th { background: #f1f5f9; color: #1e3a8a; font-size: 13px; font-weight: 800; padding: 10px; border-bottom: 2px solid #1e3a8a; border-top: 1px solid #cbd5e1; text-align: left; }
+                        .invoice-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+                        .invoice-table tr:nth-child(even) { background: repeating-linear-gradient(45deg, #f8fafc, #f8fafc 10px, #ffffff 10px, #ffffff 20px); }
+                        
+                        .footer-flex { display: flex; border-top: 2px solid #1e3a8a; background: #f8fafc; }
+                        .footer-left { flex: 1.2; padding: 20px 30px; border-right: 1px solid #e2e8f0; font-size: 12px; color: #64748b; line-height: 1.8; }
+                        .footer-right { flex: 1; padding: 20px 30px; }
+                        .calc-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+                        .calc-row-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 900; color: #1e3a8a; border-top: 2px solid #1e3a8a; padding-top: 10px; margin-top: 8px; }
+                        .highlight-balance { color: #dc2626; }
+                        
+                        .sign-section { display: flex; justify-content: space-between; align-items: flex-end; padding: 20px 30px 24px 30px; border-top: 1px solid #e2e8f0; }
+                        .stamp-space { font-size: 12px; color: #64748b; }
+                        .sign-box { text-align: center; width: 180px; border-bottom: 1px solid #1e293b; padding-bottom: 4px; font-size: 14px; font-weight: bold; }
+                        .bottom-strip { background: repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #ffffff 10px, #ffffff 20px); height: 14px; border-top: 1px solid #e2e8f0; }
+                        @media print { .no-print { display: none; } }
                     </style>
                 </head>
                 <body>
+                    <div class="no-print" style="text-align: right; margin-bottom: 15px;">
+                        <button onclick="window.print()" style="background: #1e3a8a; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button>
+                    </div>
                     <div class="invoice-card">
                         <div class="pattern-strip"></div>
                         <div class="header-main">
@@ -1939,11 +1698,10 @@
                             <table class="invoice-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 8%; text-align: center;">項次</th>
-                                        <th style="width: 22%;">空間位置</th>
-                                        <th style="width: 38%;">規劃款式與布號型號</th>
-                                        <th style="width: 20%;">開法與環境</th>
-                                        <th style="width: 12%; text-align: right;">金額小計</th>
+                                        <th style="width: 10%; text-align: center;">項次</th>
+                                        <th style="width: 25%;">空間位置</th>
+                                        <th style="width: 40%;">規劃款式與布號型號</th>
+                                        <th style="width: 25%; text-align: right;">報價金額</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1974,7 +1732,7 @@
                         <div class="sign-section">
                             <div class="stamp-space">望美窗簾設計工程 ‧ 現場品質保證</div>
                             <div>
-                                <div style="font-size: 12px; color: #64748b; margin-bottom: 25px; text-align: center;">客戶簽名確認</div>
+                                <div style="font-size: 12px; color: #64748b; margin-bottom: 25px; text-align: center;">客戶確認簽名</div>
                                 <div class="sign-box"></div>
                             </div>
                         </div>
@@ -1990,12 +1748,7 @@
             const record = records.find(r => r.id === recordId);
             if(!record) return;
             const printWindow = window.open("", "_blank");
-            const html = generateFullPdfHtml(record).replace(
-                '<div style="max-width: 780px; margin: 0 auto;">',
-                `<div style="max-width: 780px; margin: 0 auto;">
-                 <div style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #10b981; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button></div>`
-            );
-            printWindow.document.write(html);
+            printWindow.document.write(generateFullPdfHtml(record));
             printWindow.document.close();
         };
 
@@ -2004,12 +1757,7 @@
             const record = records.find(r => r.id === recordId);
             if(!record) return;
             const printWindow = window.open("", "_blank");
-            const html = generatePricePdfHtml(record).replace(
-                '<div class="invoice-card">',
-                `<div style="max-width: 820px; margin: 0 auto 15px auto; text-align: right;"><button onclick="window.print()" style="background: #1e3a8a; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button></div>
-                 <div class="invoice-card">`
-            );
-            printWindow.document.write(html);
+            printWindow.document.write(generatePricePdfHtml(record));
             printWindow.document.close();
         };
 
