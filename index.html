@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -151,7 +152,7 @@
         .btn-save { background-color: var(--primary-color); }
         .btn-cancel-edit { background-color: #95a5a6; display: none; }
 
-        /* 簡化後的歷史紀錄卡片樣式 */
+        /* 歷史紀錄卡片樣式 */
         .search-box { margin-top: 30px; border-top: 2px dashed var(--border-color); padding-top: 20px; }
         .history-item-simplified {
             background: #ffffff; padding: 12px 14px; border-radius: 8px; margin-top: 10px;
@@ -302,8 +303,8 @@
         let windowCount = 0;
         let currentEstimatingRecordId = null;
 
-        // 全域 Google Apps Script Web App 網址 (請更換為部署好的 GAS URL)
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFSFNctIu8xQ4mMIl0YsXuWN0yj-ocL09-gzZkTBhUfrdhiNLE3X-UPjzcuXSL275R5Q/exec";
+        // 全域 Google Apps Script Web App 網址
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxhm0HNouoF7riy6ZZTPjYyo-jg4C1IClyP9afPIxZeBv8q5Dtu9nkbwi5cTqXTQHbqw/exec";
 
         window.checkPassword = function() {
             const pass = document.getElementById('sys-password').value;
@@ -315,7 +316,6 @@
             }
         }
 
-        // 取得當前 YYYY-MM-DD
         function getTodayString() {
             const today = new Date();
             const y = today.getFullYear();
@@ -505,7 +505,7 @@
             addWindowItem();
         }
 
-        // 收集表單並儲存至本機 + 自動背景無聲上傳雲端生成 PDF
+        // 收集表單並儲存至本機 + 自動背景同步試算表與雲端 PDF
         window.saveDataToLocalStorage = function() {
             const clientName = document.getElementById('client-name').value.trim();
             if (!clientName) { alert('請輸入客戶姓名！'); return; }
@@ -547,13 +547,13 @@
                     records[index].clientName = clientName;
                     records[index].clientPhone = document.getElementById('client-phone').value.trim();
                     records[index].clientAddress = document.getElementById('client-address').value.trim();
-                    records[index].measureDate = measureDate; // 保留丈量日期
+                    records[index].measureDate = measureDate;
                     records[index].clientTaxId = document.getElementById('client-taxid').value.trim();
                     records[index].windows = windowsData;
                     records[index].timestamp = "已更新: " + new Date().toLocaleString('zh-TW');
                     currentRecord = records[index];
                 }
-                alert('🎉 本機丈量尺寸已更新！並同步自動匯出新版 PDF 至 Google 雲端備份！');
+                alert('🎉 本機尺寸已更新！試算表與雲端硬碟已同步另存新版！');
             } else {
                 currentRecord = {
                     id: new Date().toLocaleString('zh-TW', {hour12: false}).replace(/[^0-9]/g, ''),
@@ -566,12 +566,12 @@
                     timestamp: new Date().toLocaleString('zh-TW')
                 };
                 records.unshift(currentRecord);
-                alert('🎉 丈量尺寸儲存成功！並已自動生成兩種報價 PDF 上傳至 Google 雲端硬碟備份！');
+                alert('🎉 丈量儲存成功！已自動寫入試算表並產製 PDF 上傳 Google 雲端！');
             }
 
             localStorage.setItem('curtain_measurements', JSON.stringify(records));
             
-            // --- 背景自動產生兩份 HTML/PDF 字串並推播至 Google 雲端資料夾 ---
+            // 背景同步至 Google Drive 與試算表
             syncRecordToGoogleDrive(currentRecord);
 
             resetForm();
@@ -579,9 +579,9 @@
         }
 
         // ==========================================
-        // 雲端自動上傳模組 (自動命名為：客戶名+丈量日期，不覆蓋舊檔)
+        // 雲端自動上傳模組
         // ==========================================
-               function syncRecordToGoogleDrive(record) {
+        function syncRecordToGoogleDrive(record) {
             if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("XXXXX")) return;
 
             const fullPdfHtml = generateFullPdfHtml(record);
@@ -590,14 +590,14 @@
             const payload = {
                 action: 'backup_pdfs',
                 recordId: record.id,
-                clientName: record.clientName,
-                clientPhone: record.clientPhone,
-                clientAddress: record.clientAddress,
-                clientTaxId: record.clientTaxId,
+                clientName: record.clientName || '',
+                clientPhone: record.clientPhone || '',
+                clientAddress: record.clientAddress || '',
+                clientTaxId: record.clientTaxId || '',
                 measureDate: record.measureDate || getTodayString(),
                 timestamp: record.timestamp || new Date().toLocaleString('zh-TW'),
-                windows: record.windows,
-                quoteData: record.quoteData || {}, // 確保試算表能記錄到最新估價金額
+                windows: record.windows || [],
+                quoteData: record.quoteData || {},
                 fullPdfHtml: fullPdfHtml,
                 pricePdfHtml: pricePdfHtml
             };
@@ -608,13 +608,12 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             })
-            .then(() => console.log('☁️ 雲端 PDF 與試算表同步備份完成！'))
+            .then(() => console.log('☁️️ 雲端 PDF 與試算表同步備份完成！'))
             .catch(err => console.error('❌ 雲端備份失敗：', err));
         }
 
-
         // ==========================================
-        // 💰 估價試算模組 (帶文字標籤 T-Chart + 支援 Fold 大小螢幕排版)
+        // 💰 估價試算模組
         // ==========================================
         window.openEstimateModal = function(recordId) {
             const records = getLocalStorageData();
@@ -1096,7 +1095,7 @@
             localStorage.setItem('curtain_measurements', JSON.stringify(records));
             alert('🎉 估價試算已成功儲存！已自動同步備份 PDF 至 Google 雲端硬碟。');
             
-            // 估價完成後也再次背景另存更新版 PDF 到 Google Drive
+            // 另存更新版 PDF 到 Google Drive 與試算表
             syncRecordToGoogleDrive(records[index]);
 
             closeEstimateLightbox();
@@ -1114,7 +1113,7 @@
         }
 
         // ==========================================
-        // 歷史紀錄展示與簡化 (客戶名、地址、丈量日期)
+        // 歷史紀錄展示與簡化
         // ==========================================
         function makeWindowDetailHtml(w) {
             return `
@@ -1207,7 +1206,6 @@
             `;
         }
 
-        // 生成簡約型歷史紀錄項目 HTML (僅顯示：客戶名、地址、丈量日期)
         function renderSimplifiedHistoryItem(record, isLightbox = false) {
             const prefix = isLightbox ? 'lightbox-' : 'search-';
             const domId = prefix + 'item-' + record.id;
@@ -1266,7 +1264,7 @@
         }
 
         // ==========================================
-        // 核心字串生成器：完整報價單 HTML (供列印與背景雲端存檔)
+        // 核心字串生成器：完整報價單 HTML
         // ==========================================
         function generateFullPdfHtml(record) {
             const q = record.quoteData || {};
@@ -1503,7 +1501,7 @@
         }
 
         // ==========================================
-        // 核心字串生成器：純金額報價單 HTML (供列印與背景雲端存檔)
+        // 核心字串生成器：純金額報價單 HTML
         // ==========================================
         function generatePricePdfHtml(record) {
             const q = record.quoteData || {};
@@ -1614,7 +1612,6 @@
             `;
         }
 
-        // 手動列印觸發器
         window.exportPDFWithTChart = function(recordId) {
             const records = getLocalStorageData();
             const record = records.find(r => r.id === recordId);
@@ -1639,6 +1636,3 @@
     </script>
 </body>
 </html>
-
-
-
