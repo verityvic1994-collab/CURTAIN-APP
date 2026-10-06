@@ -58,11 +58,9 @@
         .checkbox-item { display: flex; align-items: center; gap: 6px; cursor: pointer; background: var(--slate-50); padding: 7px 11px; border-radius: 6px; font-size: 13px; flex: 1 1 calc(50% - 4px); min-width: 90px; border: 1px solid var(--slate-200); }
         .checkbox-item input { width: 16px; height: 16px; accent-color: var(--primary); }
 
-        /* 照片上傳區域 */
         .photo-upload-zone { margin: 12px 0; padding: 10px 12px; background: #f8fafc; border: 1px dashed var(--slate-300); border-radius: 6px; }
         .photo-preview-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; align-items: center; font-size: 13px; }
 
-        /* T-Chart 精緻線條 */
         .t-chart-container { display: flex; justify-content: center; align-items: center; margin: 8px 0; padding: 14px 0; background: var(--slate-50); border: 1px dashed var(--slate-300); border-radius: 8px; overflow-x: auto; }
         .t-chart { position: relative; width: 320px; height: 330px; transform-origin: center center; }
         @media (max-width: 360px) { .t-chart { transform: scale(0.85); margin: -20px 0; } }
@@ -268,7 +266,7 @@
             });
         }
 
-        // 🌟 即時上傳 Google Drive (取得連結並拋棄 Base64)
+        // 🌟 即時上傳 Google Drive，並加入回傳驗證機制
         window.handlePhotoChange = async function(input, windowIdx) {
             const file = input.files[0];
             if (!file) return;
@@ -296,8 +294,8 @@
                 
                 const resData = await response.json();
 
-                if (resData.status === 'success') {
-                    // 僅存入真實的 Google Drive URL 連結
+                // 加入嚴格的防呆機制：如果回傳了成功，卻沒有 url，表示後台 GAS 未更新
+                if (resData.status === 'success' && resData.url) {
                     input.setAttribute('data-photo-url', resData.url);
                     previewWrap.innerHTML = `
                         <span style="color:#10b981; font-weight:bold;">✅ 已成功上傳</span>
@@ -305,11 +303,11 @@
                         <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除</button>
                     `;
                 } else {
-                    throw new Error(resData.message);
+                    throw new Error("後台未回傳真實網址，請確認 GAS 已正確建立「新版本」！");
                 }
             } catch (err) {
                 console.error("上傳失敗：", err);
-                previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 照片上傳失敗，請重新選擇</span>`;
+                previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 照片上傳失敗：${err.message}</span>`;
                 input.value = '';
             }
         };
@@ -483,7 +481,8 @@
                         card.querySelector('.t-win-width').value = w.sizeWindowWidth || '';
                         card.querySelector('.t-win-height').value = w.sizeWindowHeight || '';
 
-                        if (w.photoUrl) {
+                        // 歷史資料中有存 url 的話，就顯示為成功上傳連結
+                        if (w.photoUrl && w.photoUrl !== 'undefined') {
                             const fileInput = card.querySelector('.w-photo-file');
                             if (fileInput) fileInput.setAttribute('data-photo-url', w.photoUrl);
                             const previewWrap = card.querySelector('.photo-preview-wrap');
@@ -563,7 +562,6 @@
                     card.querySelectorAll('.w-env:checked').forEach(cb => envs.push(cb.value));
                     const fileInput = card.querySelector('.w-photo-file');
                     
-                    // 這裡只儲存輕量的網址，不再存 Base64！
                     const photoUrl = fileInput ? (fileInput.getAttribute('data-photo-url') || '') : '';
 
                     windowsData.push({
@@ -936,7 +934,7 @@
             if (hasTrack) {
                 if (rawTrackFee < 500) {
                     trackFee = 500;
-                    trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:var(--danger); font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
+                    trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#ef4444; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`;
                 } else {
                     trackFee = rawTrackFee;
                     trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>`;
@@ -964,7 +962,7 @@
                     ${trackNoteHtml}
                     ➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
-            } else if (type === 'seamless') {
+            } else if (cType === 'seamless') {
                 const widthInFeet = width / 30.3;
                 const rawFeet = (widthInFeet * 2.3) + 0.6;
                 const ceilFeet = Math.ceil(rawFeet);
@@ -981,7 +979,7 @@
                     ${trackNoteHtml}
                     ➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>
                 `;
-            } else if (type === 'roller') {
+            } else if (cType === 'roller') {
                 const widthFeet = width / 30.3;
                 const heightFeet = height / 30.3;
                 const totalCai = Math.round((widthFeet * heightFeet) * 10) / 10;
@@ -1125,24 +1123,16 @@
             currentEstimatingRecordId = null;
         };
 
-        // ==========================================
-        // 🌟 修正歷史紀錄列表內展開的詳細 T-Chart 與照片連結
-        // ==========================================
+        // 🌟 展開詳細資料（內聯鎖死 T-Chart 預防跑版 ＋ 雲端相片按鈕）
         function makeWindowDetailHtml(w) {
             let photoDisplay = '';
-            if (w.photoUrl) {
+            // 如果後台有成功回傳真實網址（非 undefined）
+            if (w.photoUrl && w.photoUrl !== 'undefined') {
                 photoDisplay = `
                     <div style="margin-top: 12px; text-align: center;">
                         <a href="${w.photoUrl}" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: #eff6ff; color: #1d4ed8; padding: 10px 16px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 14px; border: 1px solid #bfdbfe; box-shadow: 0 2px 4px rgba(37,99,235,0.1); width: 100%;">
-                            🖼️ 點此開啟檢視雲端現場照片
+                            🖼️ 開啟檢視雲端現場照片
                         </a>
-                    </div>
-                `;
-            } else if (w.photoBase64) {
-                photoDisplay = `
-                    <div style="margin-top: 12px; text-align: center;">
-                        <img src="${w.photoBase64}" style="max-width: 120px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onclick="openFullImage('${w.photoBase64}')" title="點擊放大預覽">
-                        <div style="font-size:11px; color:#64748b; margin-top:4px;">(舊版相片暫存)</div>
                     </div>
                 `;
             } else {
@@ -1205,7 +1195,7 @@
                         💰 估價金額：$${price} 元 | 💵 收取訂金：$${deposit} 元<br>
                         📊 未稅價格：$${noTax} 元 | 📈 含稅價格：$${withTax} 元<br>
                         🚨 <span style="color:var(--danger); font-weight:bold;">工程尾款結算：$${balance} 元</span>
-                        ${q.savedAt ? `<div style="font-size:11px; color:#8b5cf6;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#d97706;">⚠️️ 尚未建立詳細估價試算</div>'}
+                        ${q.savedAt ? `<div style="font-size:11px; color:#8b5cf6;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#d97706;">⚠️ 尚未建立詳細估價試算</div>'}
                     </div>
                 </div>
             `;
@@ -1411,7 +1401,10 @@
 
                     let items = qItem.fabricItems;
                     if (!items || !Array.isArray(items) || items.length === 0) {
-                        items = [{ note: qItem.itemStyleNote || '依現場約定規劃', price: qItem.itemPrice || '' }];
+                        items = [{
+                            note: qItem.itemStyleNote || '依現場約定規劃',
+                            price: qItem.itemPrice || ''
+                        }];
                     }
 
                     let itemsHtml = '<div style="margin-top:14px; border-top:1px dashed #cbd5e1; padding-top:10px;">';
@@ -1444,6 +1437,7 @@
                                     <div class="pdf-t-chart">
                                         <div class="pdf-t-line-horizontal"></div>
                                         <div class="pdf-t-line-vertical"></div>
+                                        
                                         <div class="pdf-t-value pdf-v-top"><small>上框高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
                                         <div class="pdf-t-value pdf-v-top-sub"><small>上框(註)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div>
                                         <div class="pdf-t-value pdf-v-width" style="border-color: #1e3a8a;"><small>窗本身寬</small><br><span class="highlight-blue">${w.sizeWindowWidth || '0'}</span></div>
@@ -1467,6 +1461,7 @@
                                 </div>
                             </div>
                             ${itemsHtml}
+                            ${w.photoUrl && w.photoUrl !== 'undefined' ? `<div class="pdf-w-note" style="border-color:#bfdbfe; background:#eff6ff;"> 📸 <strong>雲端照片連結：</strong><a href="${w.photoUrl}" target="_blank" style="color:#2563eb;">點此檢視照片</a></div>` : ''}
                             ${w.note ? `<div class="pdf-w-note"> 📝 <strong>丈量備註：</strong>${w.note}</div>` : ''}
                         </div>
                     `;
@@ -1552,7 +1547,7 @@
         }
 
         // ==========================================
-        // 核心：純金額報價單 HTML (全中文 + 淺灰底)
+        // 核心：純金額報價單 HTML (全中文 + 淺灰底 + 移除數量)
         // ==========================================
         function generatePricePdfHtml(record) {
             const q = record.quoteData || {};
@@ -1795,3 +1790,4 @@
     </script>
 </body>
 </html>
+
