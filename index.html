@@ -188,7 +188,6 @@
         </div>
     </div>
 
-    <!-- 歷史紀錄燈箱 -->
     <div id="history-lightbox">
         <div class="lightbox-header">
             <span class="lightbox-title"> 📋  客戶丈量歷史紀錄</span>
@@ -197,7 +196,6 @@
         <div id="lightbox-list" class="lightbox-content"></div>
     </div>
 
-    <!-- 估價試算頁面燈箱 -->
     <div id="estimate-lightbox">
         <div class="lightbox-header">
             <span class="lightbox-title" id="est-lightbox-title"> 💰  客戶估價試算</span>
@@ -214,8 +212,8 @@
         let windowCount = 0;
         let currentEstimatingRecordId = null;
 
-        // 全域 Google Apps Script Web App 網址 (請換成您最新部署的網址)
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKJZ1PGGme_FKPDzcAdVXEOt6AgZpyAIfOvODAqQj8sHecfVBKuCL023XKMKHRwh-NhA/exec";
+        // 全域 Google Apps Script Web App 網址
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFSFNctIu8xQ4mMIl0YsXuWN0yj-ocL09-gzZkTBhUfrdhiNLE3X-UPjzcuXSL275R5Q/exec";
 
         window.checkPassword = function() {
             const pass = document.getElementById('sys-password').value;
@@ -368,7 +366,7 @@
                 </div>
 
                 <div class="photo-upload-zone">
-                    <label> 📸  現場照片 (將即時上傳 Drive 並產出連結)：</label>
+                    <label> 📸  現場照片 (將獨立上傳 Drive 雲端資料夾)：</label>
                     <input type="file" class="w-photo-file" accept="image/*" onchange="handlePhotoChange(this, ${windowCount})">
                     <div class="photo-preview-wrap"></div>
                 </div>
@@ -715,19 +713,19 @@
                                 <div class="t-locked-container">
                                     <span class="t-locked-alert">🔒 初始丈量基準尺寸（已鎖定保護）</span>
                                     <div class="t-chart-container" style="background:#f8fafc; padding:15px 0; margin:5px 0;">
-                                        <div class="t-chart">
-                                            <div class="t-line-horizontal"></div>
-                                            <div class="t-line-vertical"></div>
-                                            <div class="t-locked-box t-out-top"><small>上框高</small><strong>${origW.sizeOutTop || '0'}</strong></div>
-                                            <div class="t-locked-box t-out-top-sub" style="border-style:dashed;"><small>上框(註)</small><strong>${origW.sizeOutTopSub || '無'}</strong></div>
-                                            <div class="t-locked-box t-win-width highlight" style="border-color:var(--primary);"><small style="color:var(--primary);">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div>
-                                            <div class="t-locked-box t-out-left"><small>左牆寬</small><strong>${origW.sizeOutLeft || '0'}</strong></div>
-                                            <div class="t-locked-box t-out-left-sub" style="border-style:dashed;"><small>左牆(註)</small><strong>${origW.sizeOutLeftSub || '無'}</strong></div>
-                                            <div class="t-locked-box t-out-right"><small>右牆寬</small><strong>${origW.sizeOutRight || '0'}</strong></div>
-                                            <div class="t-locked-box t-out-right-sub" style="border-style:dashed;"><small>右牆(註)</small><strong>${origW.sizeOutRightSub || '無'}</strong></div>
-                                            <div class="t-locked-box t-win-height highlight" style="border-color:var(--primary);"><small style="color:var(--primary);">窗本身高</small><strong>${origW.sizeWindowHeight || '0'}</strong></div>
-                                            <div class="t-locked-box t-out-bottom"><small>下框地</small><strong>${origW.sizeOutBottom || '0'}</strong></div>
-                                            <div class="t-locked-box t-out-bottom-sub" style="border-style:dashed;"><small>下框(註)</small><strong>${origW.sizeOutBottomSub || '無'}</strong></div>
+                                        <div style="position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; margin: 0 auto; transform: scale(0.85); transform-origin: top center;">
+                                            <div style="position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary);"></div>
+                                            <div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div>
+                                            <div class="t-locked-box" style="top: 5px; left: 127px;"><small>上框高</small><strong>${origW.sizeOutTop || '0'}</strong></div>
+                                            <div class="t-locked-box" style="border-style:dashed; top: 38px; left: 127px;"><small>上框(註)</small><strong>${origW.sizeOutTopSub || '0'}</strong></div>
+                                            <div class="t-locked-box highlight" style="border-color:var(--primary); top: 75px; left: 127px;"><small style="color:var(--primary);">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div>
+                                            <div class="t-locked-box" style="top: 100px; left: -10px;"><small>左牆寬</small><strong>${origW.sizeOutLeft || '0'}</strong></div>
+                                            <div class="t-locked-box" style="border-style:dashed; top: 138px; left: -10px;"><small>左牆(註)</small><strong>${origW.sizeOutLeftSub || '0'}</strong></div>
+                                            <div class="t-locked-box" style="top: 100px; left: 255px;"><small>右牆寬</small><strong>${origW.sizeOutRight || '0'}</strong></div>
+                                            <div class="t-locked-box" style="border-style:dashed; top: 138px; left: 255px;"><small>右牆(註)</small><strong>${origW.sizeOutRightSub || '0'}</strong></div>
+                                            <div class="t-locked-box highlight" style="border-color:var(--primary); top: 180px; left: 127px;"><small style="color:var(--primary);">窗本身高</small><strong>${origW.sizeWindowHeight || '0'}</strong></div>
+                                            <div class="t-locked-box" style="top: 235px; left: 127px;"><small>下框地</small><strong>${origW.sizeOutBottom || '0'}</strong></div>
+                                            <div class="t-locked-box" style="border-style:dashed; top: 268px; left: 127px;"><small>下框(註)</small><strong>${origW.sizeOutBottomSub || '0'}</strong></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1127,12 +1125,40 @@
             currentEstimatingRecordId = null;
         };
 
-        // 🌟 完全內聯樣式 T-Chart，杜絕跑版
+        // ==========================================
+        // 🌟 修正歷史紀錄列表內展開的詳細 T-Chart 與照片連結
+        // ==========================================
         function makeWindowDetailHtml(w) {
+            let photoDisplay = '';
+            if (w.photoUrl) {
+                photoDisplay = `
+                    <div style="margin-top: 12px; text-align: center;">
+                        <a href="${w.photoUrl}" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: #eff6ff; color: #1d4ed8; padding: 10px 16px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 14px; border: 1px solid #bfdbfe; box-shadow: 0 2px 4px rgba(37,99,235,0.1); width: 100%;">
+                            🖼️ 點此開啟檢視雲端現場照片
+                        </a>
+                    </div>
+                `;
+            } else if (w.photoBase64) {
+                photoDisplay = `
+                    <div style="margin-top: 12px; text-align: center;">
+                        <img src="${w.photoBase64}" style="max-width: 120px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onclick="openFullImage('${w.photoBase64}')" title="點擊放大預覽">
+                        <div style="font-size:11px; color:#64748b; margin-top:4px;">(舊版相片暫存)</div>
+                    </div>
+                `;
+            } else {
+                photoDisplay = `
+                    <div style="margin-top: 12px; text-align: center; font-size: 13px; color: #94a3b8; background: #f8fafc; padding: 8px; border-radius: 6px; border: 1px dashed #cbd5e1;">
+                        📷 此窗戶未上傳照片
+                    </div>
+                `;
+            }
+
             return `
-                <div style="margin-top: 10px; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px;">
-                    <strong> 📍  位置：${w.location || '未填'}</strong> (項目 ${w.itemNumber})<br>
-                    開法：${w.types ? w.types.join(', ') : '未選'} | 安裝環境：${w.envs ? w.envs.join(', ') : '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}<br>
+                <div style="margin-top: 10px; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); border: 1px solid #e2e8f0;">
+                    <strong style="color: #1e293b; font-size: 14px;"> 📍  位置：${w.location || '未填'}</strong> <span style="color:#64748b; font-size:13px;">(項目 ${w.itemNumber})</span><br>
+                    <div style="font-size: 13px; color: #475569; margin-top: 4px; margin-bottom: 8px;">
+                        開法：${w.types && w.types.length ? w.types.join(', ') : '未選'} | 安裝環境：${w.envs && w.envs.length ? w.envs.join(', ') : '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}
+                    </div>
                     
                     <div style="position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; margin: 10px auto; transform: scale(0.85); transform-origin: top center;">
                         <div style="position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary);"></div>
@@ -1155,8 +1181,9 @@
                         <div style="position: absolute; width: 75px; text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; padding: 2px; top: 268px; left: 127px;"><small style="font-size: 9px; color: #64748b; display: block; font-weight: bold;">下框(註)</small><strong style="font-size: 13px; color: #1e293b;">${w.sizeOutBottomSub || '0'}</strong></div>
                     </div>
 
-                    ${w.photoUrl ? `<div style="margin-top:6px;"><a href="${w.photoUrl}" target="_blank" style="display:inline-block; background:var(--primary-light); color:var(--primary); padding:6px 12px; border-radius:6px; font-weight:bold; text-decoration:none; font-size:13px;">🔗 點此開啟雲端現場照片</a></div>` : ''}
-                    ${w.note ? `<div style="margin-top: 5px; font-size: 13px; color:var(--slate-600); background:#fff9db; padding:4px; border-radius:4px;"> 📝  備註: ${w.note}</div>` : ''}
+                    ${photoDisplay}
+
+                    ${w.note ? `<div style="margin-top: 10px; font-size: 13px; color: #b45309; background: #fef3c7; padding: 8px 10px; border-radius: 6px; border: 1px solid #fde68a;"> 📝 <strong>備註:</strong> ${w.note}</div>` : ''}
                 </div>
             `;
         }
@@ -1178,7 +1205,7 @@
                         💰 估價金額：$${price} 元 | 💵 收取訂金：$${deposit} 元<br>
                         📊 未稅價格：$${noTax} 元 | 📈 含稅價格：$${withTax} 元<br>
                         🚨 <span style="color:var(--danger); font-weight:bold;">工程尾款結算：$${balance} 元</span>
-                        ${q.savedAt ? `<div style="font-size:11px; color:#8b5cf6;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#d97706;">⚠️ 尚未建立詳細估價試算</div>'}
+                        ${q.savedAt ? `<div style="font-size:11px; color:#8b5cf6;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#d97706;">⚠️️ 尚未建立詳細估價試算</div>'}
                     </div>
                 </div>
             `;
@@ -1384,10 +1411,7 @@
 
                     let items = qItem.fabricItems;
                     if (!items || !Array.isArray(items) || items.length === 0) {
-                        items = [{
-                            note: qItem.itemStyleNote || '依現場約定規劃',
-                            price: qItem.itemPrice || ''
-                        }];
+                        items = [{ note: qItem.itemStyleNote || '依現場約定規劃', price: qItem.itemPrice || '' }];
                     }
 
                     let itemsHtml = '<div style="margin-top:14px; border-top:1px dashed #cbd5e1; padding-top:10px;">';
@@ -1488,9 +1512,13 @@
                         .highlight-blue { color: #1e3a8a; font-weight: 800; }
                         .price-alert { color: #dc2626; font-weight: bold; }
                         .pdf-w-note { margin-top: 8px; font-size: 13px; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; }
+                        @media print { .no-print { display: none; } }
                     </style>
                 </head>
                 <body>
+                    <div class="no-print" style="text-align: right; margin-bottom: 15px;">
+                        <button onclick="window.print()" style="background: #1e3a8a; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;"> 🖨 啟動列印</button>
+                    </div>
                     <div>
                         <div class="pdf-header">
                             <div class="brand-sub">WANG-MEI CURTAIN DESIGN</div>
@@ -1524,7 +1552,7 @@
         }
 
         // ==========================================
-        // 核心：純金額報價單 HTML (全中文 + 淺灰底 + 移除數量)
+        // 核心：純金額報價單 HTML (全中文 + 淺灰底)
         // ==========================================
         function generatePricePdfHtml(record) {
             const q = record.quoteData || {};
