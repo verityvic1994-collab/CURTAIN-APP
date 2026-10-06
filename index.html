@@ -97,7 +97,7 @@
         .row-delete-btn { background-color: var(--danger); }
         .row-edit-btn { background-color: var(--success); }
 
-        #history-lightbox, #estimate-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 5000; display: none; flex-direction: column; padding: 16px; overflow: hidden; }
+        #history-lightbox, #estimate-lightbox, #iq-history-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 5000; display: none; flex-direction: column; padding: 16px; overflow: hidden; }
         .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--primary); margin-bottom: 12px; }
         .lightbox-title { font-size: 16px; font-weight: 700; color: var(--slate-800); }
         .lightbox-close-btn { background: #fee2e2; color: var(--danger); border: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; }
@@ -162,7 +162,6 @@
         #install-menu-content [contenteditable="true"] { background-color: #e0f2fe; border-bottom: 2px dashed #38bdf8; padding: 2px 6px; border-radius: 4px; outline: none; transition: 0.2s; font-weight: bold; color: #0369a1; display: inline-block; min-width: 30px; text-align: center; }
         #install-menu-content [contenteditable="true"]:focus { background-color: #bae6fd; border-bottom: 2px solid #0284c7; }
         
-        /* 列印時的樣式處理 */
         @media print { 
             body { background: #fff; padding: 0; }
             .container { box-shadow: none; border: none; padding: 0; max-width: 100%; width: 100%; }
@@ -192,30 +191,15 @@
             <div class="client-info-card">
                 <div class="client-info-title"> 👤  客戶基本資料</div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>客戶姓名：</label>
-                        <input type="text" id="client-name" placeholder="姓名">
-                    </div>
-                    <div class="form-group">
-                        <label>聯絡電話：</label>
-                        <input type="tel" id="client-phone" placeholder="電話">
-                    </div>
+                    <div class="form-group"><label>客戶姓名：</label><input type="text" id="client-name" placeholder="姓名"></div>
+                    <div class="form-group"><label>聯絡電話：</label><input type="tel" id="client-phone" placeholder="電話"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label>施工地址：</label>
-                        <input type="text" id="client-address" placeholder="完整地址">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>丈量日期：</label>
-                        <input type="date" id="client-date">
-                    </div>
+                    <div class="form-group" style="flex: 2;"><label>施工地址：</label><input type="text" id="client-address" placeholder="完整地址"></div>
+                    <div class="form-group" style="flex: 1;"><label>丈量日期：</label><input type="date" id="client-date"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>統一編號：</label>
-                        <input type="number" id="client-taxid" placeholder="無則免填">
-                    </div>
+                    <div class="form-group"><label>統一編號：</label><input type="number" id="client-taxid" placeholder="無則免填"></div>
                 </div>
             </div>
 
@@ -232,7 +216,6 @@
                 <button class="action-btn" style="background-color: var(--primary);" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄</button>
                 <div style="display: flex; gap: 8px;">
                     <button class="action-btn" style="background-color: #0ea5e9; flex: 1;" onclick="goToInstallQuote()"> 🛠️  切換至代工報價單</button>
-                    <!-- 新增的 Menu 切換按鈕 -->
                     <button class="action-btn" style="background-color: #14b8a6; flex: 1;" onclick="goToInstallMenu()"> 📋  代工價目表(Menu)</button>
                 </div>
             </div>
@@ -253,16 +236,14 @@
                 <p style="color: var(--slate-500); font-size: 14px; margin-top: 4px;">台南市南區健康路一段335號</p>
             </div>
 
-            <!-- 專屬師傅唯讀卡片 -->
             <div class="client-info-card" style="border-color: #bae6fd; background-color: #f0f9ff;">
-                <div class="client-info-title" style="color: #0369a1; border-bottom-color: #bae6fd;"> 服務師傅資訊</div>
+                <div class="client-info-title" style="color: #0369a1; border-bottom-color: #bae6fd;"> 👨‍🔧  服務師傅資訊</div>
                 <div style="font-size: 14px; color: #075985; line-height: 1.8;">
                     <strong>師傅姓名：</strong>劉育聖 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong>poloem7<br>
-                    <strong>聯絡電話：</strong>0985783050 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong>06-2613210
+                    <strong>聯絡電話：</strong>0985286257 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong>06-2613210
                 </div>
             </div>
 
-            <!-- 客戶基本資料 -->
             <div class="client-info-card">
                 <div class="client-info-title"> 👤  客戶基本資料</div>
                 <div class="form-row">
@@ -324,17 +305,24 @@
                     <li><strong>基本出勤說明：</strong>本案設有單趟最低出勤費 NT$ 1,250。若工程總工資未達 NT$ 1,250，將以 NT$ 1,250 計收；若超過則直接依實際項目累積計算。</li>
                     <li><strong>配件與尺寸權責：</strong>自備或網購之窗簾，請於師傅到府前確認配件無缺件。若因業主丈量錯誤或缺件致當日無法完工，仍需收取基本出勤費。</li>
                     <li><strong>牆面安全評估：</strong>若施工牆面為特殊材質，師傅將現場評估承重能力並告知補強方案。</li>
-                    <li><strong>付款方式：</strong>完工驗收無誤後，請以現金或現場轉帳結清尾款，恕不賒帳。</li>
+                    <li><strong>付款方式：</strong>完工驗收無誤後，請以現金或現場轉帳結清尾款。</li>
                 </ol>
             </div>
 
-            <div class="btn-block no-print" style="margin-top: 20px; display: flex; flex-direction: row; gap: 10px;">
-                <button class="action-btn btn-save" style="flex: 1;" onclick="saveInstallQuote()"> 💾 儲存報價資料</button>
-                <button class="action-btn" style="background-color: #d97706; flex: 1;" onclick="exportInstallPdf()"> 📥 匯出PDF報價單</button>
+            <!-- 報價單底部的操作按鈕 -->
+            <div class="btn-block no-print" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; gap: 10px;">
+                    <button class="action-btn btn-save" style="flex: 1;" id="btn-save-iq" onclick="saveInstallQuote()"> 💾 儲存報價資料</button>
+                    <button class="action-btn" style="background-color: #d97706; flex: 1;" onclick="exportInstallPdf()"> 📥 匯出PDF報價單</button>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="action-btn" style="background-color: var(--primary); flex: 1;" onclick="openIqHistoryLightbox()"> 📋 查看報價歷史紀錄</button>
+                    <button class="action-btn" style="background-color: var(--slate-600); flex: 1; display: none;" id="btn-cancel-iq" onclick="cancelIqEdit()"> ✕ 取消修改</button>
+                </div>
             </div>
         </div>
 
-        <!-- ================= 新增：安裝代工價目表 (Menu) 區塊 ================= -->
+        <!-- ================= 安裝代工價目表 (Menu) 區塊 ================= -->
         <div id="install-menu-content">
             <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;" class="no-print">
                 <button class="action-btn" style="background-color: var(--slate-600); width: auto; display: inline-flex; padding: 8px 16px;" onclick="backToMainFromMenu()"> ⬅️ 返回主畫面</button>
@@ -344,13 +332,13 @@
 
             <div class="menu-a4-container">
                 <div class="menu-header">
-                    <h1>望美窗簾 - 專業安裝代工價目表</h1>
+                    <h1>🛠️ 望美窗簾 - 專業安裝代工價目表</h1>
                     <p>台南市南區健康路一段335號 ｜ 專業工法 ‧ 現場客製 ‧ 責任施工</p>
                 </div>
 
                 <div class="menu-info-card">
-                    <div><strong>服務專員：</strong><span contenteditable="true">劉育聖</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong><span contenteditable="true">poloem7</span></div>
-                    <div><strong>手機：</strong><span contenteditable="true">0985783050</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong><span contenteditable="true">06-2613210</span></div>
+                    <div><strong>👨‍🔧 服務專員：</strong><span contenteditable="true">劉育聖</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong><span contenteditable="true">poloem7</span></div>
+                    <div><strong>手機：</strong><span contenteditable="true">0985286257</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong><span contenteditable="true">06-2613210</span></div>
                 </div>
 
                 <div class="menu-section-title">一、 基本出勤與標準窗型安裝（單位：窗）</div>
@@ -415,11 +403,21 @@
         <div class="lightbox-content" id="estimate-lightbox-content"></div>
     </div>
 
+    <!-- 新增：代工報價歷史紀錄燈箱 -->
+    <div id="iq-history-lightbox">
+        <div class="lightbox-header">
+            <span class="lightbox-title" style="color: #0ea5e9;"> 📋  安裝代工報價紀錄</span>
+            <button class="lightbox-close-btn" onclick="closeIqHistoryLightbox()"> ❌  關閉返回</button>
+        </div>
+        <div id="iq-lightbox-list" class="lightbox-content"></div>
+    </div>
+
     <script>
         // ================= 原有系統變數與函數 =================
         let editingId = null;
         let windowCount = 0;
         let currentEstimatingRecordId = null;
+        let editingIqId = null; // 代工報價單編輯 ID
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKJZ1PGGme_FKPDzcAdVXEOt6AgZpyAIfOvODAqQj8sHecfVBKuCL023XKMKHRwh-NhA/exec";
 
         window.checkPassword = function() {
@@ -427,6 +425,7 @@
             if(pass === "1219") {
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('app-content').style.display = 'block';
+                window.location.hash = 'main'; // 登入後設定 hash
             } else {
                 alert('密碼錯誤，請重新輸入！');
             }
@@ -440,34 +439,54 @@
             return `${y}-${m}-${d}`;
         }
 
-        // ================= SPA 切換功能 (主畫面/報價單/價目表) =================
-        window.goToInstallQuote = function() {
-            document.getElementById('app-content').style.display = 'none';
-            document.getElementById('install-menu-content').style.display = 'none';
-            document.getElementById('install-quote-content').style.display = 'block';
-            document.getElementById('iq-client-date').value = getTodayString();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        window.goToInstallMenu = function() {
-            document.getElementById('app-content').style.display = 'none';
-            document.getElementById('install-quote-content').style.display = 'none';
-            document.getElementById('install-menu-content').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        window.backToMainApp = function() {
-            document.getElementById('install-quote-content').style.display = 'none';
-            document.getElementById('install-menu-content').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+        // ================= 防誤觸返回與重整保護機制 (Hash Routing + BeforeUnload) =================
         
-        window.backToMainFromMenu = function() {
-            document.getElementById('install-menu-content').style.display = 'none';
+        // 1. 攔截返回鍵 (透過監聽 hash 變化來切換頁面，不重新整理)
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash;
+            
+            // 隱藏所有主區塊
+            document.getElementById('app-content').style.display = 'none';
             document.getElementById('install-quote-content').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
+            document.getElementById('install-menu-content').style.display = 'none';
+            
+            // 關閉所有可能開啟的燈箱
+            closeHistoryLightbox();
+            closeEstimateLightbox();
+            closeIqHistoryLightbox();
+            
+            // 根據 hash 顯示對應畫面
+            if (hash === '#quote') {
+                document.getElementById('install-quote-content').style.display = 'block';
+            } else if (hash === '#menu') {
+                document.getElementById('install-menu-content').style.display = 'block';
+            } else {
+                // 預設或 '#main' 皆顯示主丈量畫面
+                document.getElementById('app-content').style.display = 'block';
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 2. 防止誤觸重新整理 (提示確認視窗)
+        window.addEventListener('beforeunload', function (e) {
+            // 這個提示只有在使用者真正要離開網頁或按 F5/下拉重整時才會跳出
+            e.preventDefault();
+            e.returnValue = '';
+        });
+
+        // 3. 修改跳轉按鈕，改為操作 hash，而非直接改 display
+        window.goToInstallQuote = function() { 
+            document.getElementById('iq-client-date').value = getTodayString();
+            window.location.hash = 'quote'; 
+        };
+        window.goToInstallMenu = function() { 
+            window.location.hash = 'menu'; 
+        };
+        window.backToMainApp = function() { 
+            window.location.hash = 'main'; 
+        };
+        window.backToMainFromMenu = function() { 
+            window.location.hash = 'main'; 
         };
 
         // ================= 純安裝報價單的模組化運算邏輯 =================
@@ -547,10 +566,189 @@
             document.getElementById('iq-sum-standard').textContent = standardSum.toLocaleString(); document.getElementById('iq-sum-extra').textContent = extraSum.toLocaleString(); document.getElementById('iq-sum-grand').textContent = finalGrandTotal.toLocaleString();
         };
 
+        // ================= 新增：代工報價單的歷史紀錄儲存與讀取 =================
         window.saveInstallQuote = function() {
             const clientName = document.getElementById('iq-client-name').value.trim();
             if(!clientName) { alert("請填寫客戶姓名或案名！"); return; }
-            alert("✅ 安裝代工報價單已暫時儲存！(完整雲端連動功能可後續擴充)");
+            
+            const record = {
+                id: editingIqId || new Date().getTime().toString(),
+                clientName: clientName,
+                clientPhone: document.getElementById('iq-client-phone').value.trim(),
+                clientAddress: document.getElementById('iq-client-address').value.trim(),
+                clientDate: document.getElementById('iq-client-date').value,
+                clientTaxId: document.getElementById('iq-client-taxid').value.trim(),
+                baseFeeQty: document.getElementById('iq-base-fee-qty').textContent,
+                baseFeeSubtotal: document.getElementById('iq-base-fee-subtotal').textContent,
+                stdItems: [],
+                extraItems: [],
+                sumStandard: document.getElementById('iq-sum-standard').textContent,
+                sumExtra: document.getElementById('iq-sum-extra').textContent,
+                sumGrand: document.getElementById('iq-sum-grand').textContent,
+                timestamp: new Date().toLocaleString('zh-TW')
+            };
+
+            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(row => {
+                record.stdItems.push({
+                    name: row.querySelector('.iq-name').value,
+                    qty: row.querySelector('.iq-qty').value,
+                    price: row.querySelector('.iq-price').value,
+                    subtotal: row.querySelector('.iq-row-subtotal').textContent,
+                    note: row.querySelector('.iq-note').value
+                });
+            });
+
+            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(row => {
+                record.extraItems.push({
+                    name: row.querySelector('.iq-name').value,
+                    qty: row.querySelector('.iq-qty').value,
+                    price: row.querySelector('.iq-price').value,
+                    subtotal: row.querySelector('.iq-row-subtotal').textContent,
+                    note: row.querySelector('.iq-note').value
+                });
+            });
+
+            let history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
+            if (editingIqId) {
+                const idx = history.findIndex(r => r.id === editingIqId);
+                if (idx > -1) { history[idx] = record; }
+                alert("✅ 修改已成功儲存！");
+            } else {
+                history.unshift(record);
+                alert("✅ 安裝代工報價單已成功儲存至歷史紀錄！");
+            }
+            
+            localStorage.setItem('install_quotes_history', JSON.stringify(history));
+            resetIqForm();
+        };
+
+        window.resetIqForm = function() {
+            editingIqId = null;
+            document.getElementById('iq-client-name').value = '';
+            document.getElementById('iq-client-phone').value = '';
+            document.getElementById('iq-client-address').value = '台南市';
+            document.getElementById('iq-client-date').value = getTodayString();
+            document.getElementById('iq-client-taxid').value = '';
+            
+            document.getElementById('iq-std-tbody').innerHTML = `
+                <tr style="background-color: #fffaf0;">
+                    <td>1</td><td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td>
+                    <td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td><td>$1,250</td><td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td>
+                    <td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td><td>-</td>
+                </tr>`;
+            document.getElementById('iq-extra-tbody').innerHTML = '';
+            
+            document.getElementById('btn-save-iq').innerText = "💾 儲存報價資料";
+            document.getElementById('btn-save-iq').style.backgroundColor = "";
+            document.getElementById('btn-cancel-iq').style.display = "none";
+            
+            reindexIqRows();
+            calculateInstallTotals();
+        };
+
+        window.cancelIqEdit = function() {
+            if(!confirm("確定要取消修改嗎？未儲存的變更將消失。")) return;
+            resetIqForm();
+        };
+
+        window.openIqHistoryLightbox = function() {
+            const history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
+            const listDiv = document.getElementById('iq-lightbox-list');
+            listDiv.innerHTML = '';
+            
+            if(history.length === 0) { alert("目前沒有代工報價紀錄！"); return; }
+            
+            history.forEach(record => {
+                listDiv.innerHTML += `
+                    <div class="history-item-simplified" style="border-left: 3px solid #0ea5e9;">
+                        <div class="hist-top-line">
+                            <span class="hist-client-title">👤 客戶：${record.clientName}</span>
+                            <span style="font-size:12px; color:#0ea5e9; font-weight:bold;">📅 報價日期：${record.clientDate}</span>
+                        </div>
+                        <div class="hist-info-line">📍 <strong>地址：</strong>${record.clientAddress}</div>
+                        <div class="hist-info-line" style="margin-top:4px; font-weight:bold; color:var(--danger);">💰 總報價金額：$${record.sumGrand}</div>
+                        <div class="hist-actions-bar">
+                            <button class="btn-tag row-edit-btn" onclick="loadIqRecordForEdit('${record.id}')">✏️ 載入修改</button>
+                            <button class="btn-tag row-delete-btn" onclick="deleteIqRecord('${record.id}', '${record.clientName}')">❌ 刪除</button>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('iq-history-lightbox').style.display = 'flex';
+        };
+
+        window.closeIqHistoryLightbox = function() {
+            document.getElementById('iq-history-lightbox').style.display = 'none';
+        };
+
+        window.loadIqRecordForEdit = function(id) {
+            const history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
+            const record = history.find(r => r.id === id);
+            if(!record) return;
+            
+            editingIqId = id;
+            document.getElementById('iq-client-name').value = record.clientName || '';
+            document.getElementById('iq-client-phone').value = record.clientPhone || '';
+            document.getElementById('iq-client-address').value = record.clientAddress || '';
+            document.getElementById('iq-client-date').value = record.clientDate || getTodayString();
+            document.getElementById('iq-client-taxid').value = record.clientTaxId || '';
+            
+            document.getElementById('iq-std-tbody').innerHTML = `
+                <tr style="background-color: #fffaf0;">
+                    <td>1</td><td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td>
+                    <td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td><td>$1,250</td><td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td>
+                    <td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td><td>-</td>
+                </tr>`;
+            document.getElementById('iq-extra-tbody').innerHTML = '';
+            
+            record.stdItems.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = `iq-dynamic-row iq-std-item`;
+                tr.innerHTML = `
+                    <td></td>
+                    <td><input type="text" class="text-left-input iq-name" value="${item.name}"></td>
+                    <td><input type="number" class="iq-qty" min="0" value="${item.qty}" placeholder="填數量" oninput="calculateInstallTotals()"></td>
+                    <td><input type="number" class="iq-price" value="${item.price}" oninput="calculateInstallTotals()"></td>
+                    <td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">${item.subtotal}</span></td>
+                    <td><input type="text" class="iq-note" placeholder="" value="${item.note}"></td>
+                    <td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>
+                `;
+                document.getElementById('iq-std-tbody').appendChild(tr);
+            });
+            
+            record.extraItems.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = `iq-dynamic-row iq-extra-item`;
+                tr.innerHTML = `
+                    <td></td>
+                    <td><input type="text" class="text-left-input iq-name" value="${item.name}"></td>
+                    <td><input type="number" class="iq-qty" min="0" value="${item.qty}" placeholder="填數量" oninput="calculateInstallTotals()"></td>
+                    <td><input type="number" class="iq-price" value="${item.price}" oninput="calculateInstallTotals()"></td>
+                    <td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">${item.subtotal}</span></td>
+                    <td><input type="text" class="iq-note" placeholder="" value="${item.note}"></td>
+                    <td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>
+                `;
+                document.getElementById('iq-extra-tbody').appendChild(tr);
+            });
+            
+            reindexIqRows();
+            calculateInstallTotals();
+            
+            document.getElementById('btn-save-iq').innerText = "✅ 更新報價資料";
+            document.getElementById('btn-save-iq').style.backgroundColor = "var(--success)";
+            document.getElementById('btn-cancel-iq').style.display = "block";
+            
+            closeIqHistoryLightbox();
+        };
+
+        window.deleteIqRecord = function(id, name) {
+            if (!confirm(` ⚠️ 確定要永久刪除【 ${name} 】的報價紀錄嗎？\n刪除後將無法復原！`)) return;
+            let history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
+            history = history.filter(r => r.id !== id);
+            localStorage.setItem('install_quotes_history', JSON.stringify(history));
+            
+            if (editingIqId === id) resetIqForm();
+            openIqHistoryLightbox(); // 重新整理燈箱畫面
         };
 
         window.exportInstallPdf = function() {
@@ -1070,6 +1268,12 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             resetForm(); initIqSelects();
+            
+            // 若為登入狀態，檢查當前 hash 來載入正確頁面
+            if (document.getElementById('auth-overlay').style.display === 'none') {
+                if(!window.location.hash) window.location.hash = 'main';
+                else window.dispatchEvent(new Event('hashchange'));
+            }
         });
     </script>
 </body>
