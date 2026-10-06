@@ -204,6 +204,8 @@
             <div class="btn-block" style="margin-top: 10px; display: flex; flex-direction: row; gap: 8px;">
                 <button class="action-btn" style="background-color: var(--primary); flex: 1;" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄</button>
                 <button class="action-btn" style="background-color: #0ea5e9; flex: 1;" onclick="goToInstallQuote()"> 🔄  切換至代工報價單</button>
+                <button class="action-btn" style="background-color: #14b8a6; flex: 1;" onclick="goToInstallMenu()"> 📋  代工價目表(Menu)</button>
+
             </div>
 
             <div class="search-box">
@@ -360,8 +362,81 @@
             </div>
         </div>
     </div>
+<!-- ================= 安裝代工價目表 (Menu) 區塊 ================= -->
+<div id="install-menu-content" style="display: none; width: 100%;">
+    <div style="max-width: 800px; margin: 0 auto; padding: 10px 0;">
+        <button class="action-btn no-print" style="background-color: var(--slate-600); margin-bottom: 10px; width: auto; display: inline-flex; padding: 8px 16px;" onclick="backToMainFromMenu()"> ⬅️ 返回丈量主畫面</button>
+        <button class="action-btn no-print" style="background-color: #0ea5e9; margin-bottom: 10px; width: auto; display: inline-flex; padding: 8px 16px; margin-left: 10px;" onclick="window.print()"> 🖨️ 儲存為 PDF (直接列印)</button>
+        <p class="no-print" style="color:#64748b; font-size:13px; margin-top:0px; margin-bottom:15px;">💡 提示：點擊下方表格內帶有「淺藍底色」的數字或文字，即可直接修改內容再匯出！</p>
+    </div>
+    
+    <style>
+        .menu-a4-container { width: 100%; max-width: 210mm; background: #ffffff; padding: 10mm 15mm; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin: 0 auto; box-sizing: border-box; }
+        .menu-header { text-align: center; border-bottom: 3px double #0ea5e9; padding-bottom: 15px; margin-bottom: 20px; }
+        .menu-header h1 { color: #0369a1; font-size: 26px; font-weight: 900; margin: 0 0 8px 0; letter-spacing: 2px; }
+        .menu-header p { color: #64748b; font-size: 14px; margin: 0; }
+        .menu-section-title { font-size: 17px; font-weight: bold; color: #0c4a6e; background: #e0f2fe; padding: 8px 12px; border-left: 5px solid #0284c7; margin: 20px 0 10px 0; border-radius: 0 4px 4px 0; }
+        .menu-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 10px; }
+        .menu-table th, .menu-table td { border: 1px solid #cbd5e1; padding: 8px 10px; vertical-align: middle; }
+        .menu-table th { background-color: #f8fafc; color: #0f172a; font-weight: bold; text-align: center; }
+        .menu-terms-box { background: #fefce8; border: 1px solid #fde047; border-left: 5px solid #eab308; padding: 12px 15px; border-radius: 4px; margin-top: 20px; font-size: 13px; line-height: 1.6; color: #334155; }
+        .menu-terms-box h4 { margin: 0 0 8px 0; color: #854d0e; font-size: 15px; }
+        .menu-info-card { display: flex; justify-content: space-between; align-items: center; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px 20px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; color: #075985; flex-wrap: wrap; gap: 10px; }
+        #install-menu-content [contenteditable="true"] { background-color: #e0f2fe; border-bottom: 2px dashed #38bdf8; padding: 2px 6px; border-radius: 4px; outline: none; transition: 0.2s; font-weight: bold; color: #0369a1; display: inline-block; min-width: 30px; text-align: center; }
+        #install-menu-content [contenteditable="true"]:focus { background-color: #bae6fd; border-bottom: 2px solid #0284c7; }
+        @media print { 
+            body { background: #fff; padding: 0; }
+            .menu-a4-container { box-shadow: none; padding: 0; width: 100%; margin: 0; }
+            .no-print { display: none !important; }
+            #install-menu-content [contenteditable="true"] { background-color: transparent !important; border: none !important; padding: 0 !important; color: inherit !important; font-weight: bold !important; }
+        }
+    </style>
+    
+    <div class="menu-a4-container">
+        <div class="menu-header">
+            <h1> 望美窗簾 - 專業安裝代工價目表</h1>
+            <p>台南市南區健康路一段335號 ｜ 專業工法 ‧ 現場客製 ‧ 責任施工</p>
+        </div>
+        <div class="menu-info-card">
+            <div><strong> 服務專員：</strong><span contenteditable="true">劉育聖</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong><span contenteditable="true">poloem7</span></div>
+            <div><strong>手機：</strong><span contenteditable="true">0985783050</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong><span contenteditable="true">06-2613210</span></div>
+        </div>
+        <div class="menu-section-title">一、 基本出勤與標準窗型安裝（單位：窗）</div>
+        <table class="menu-table">
+            <thead><tr><th width="30%">項目名稱</th><th width="20%">代工單價 (NT$)</th><th width="50%">備註說明</th></tr></thead>
+            <tbody>
+                <tr style="background:#f8fafc;"><td style="font-weight:bold; color:#0f172a;">基本出勤費 (低消)</td><td style="text-align:center; color:#dc2626; font-size:15px; font-weight:bold;">$<span contenteditable="true">1,250</span> / 趟</td><td style="font-size:13px; color:#475569;">單趟施工總工資未達此金額以此計收；若超過則全額折抵。</td></tr>
+                <tr><td>捲簾 / 調光簾 / 蜂巢簾</td><td style="text-align:center;">$<span contenteditable="true">350</span></td><td style="font-size:13px; color:#475569;">包含基本金屬腳座鎖固與水平測試</td></tr>
+                <tr><td>傳統布簾 / 紗簾 (單軌)</td><td style="text-align:center;">$<span contenteditable="true">470</span></td><td style="font-size:13px; color:#475569;">包含單支軌道鎖固、鉤針掛置與整燙</td></tr>
+                <tr><td>雙層布紗簾 / 蛇行簾 (雙軌)</td><td style="text-align:center;">$<span contenteditable="true">650</span></td><td style="font-size:13px; color:#475569;">包含雙軌鎖固、波浪倍率調整與理布</td></tr>
+                <tr><td>木百葉 / 鋁百葉 / 羅馬簾</td><td style="text-align:center;">$<span contenteditable="true">700</span></td><td style="font-size:13px; color:#475569;">針對重型簾體加強結構鎖固</td></tr>
+                <tr><td>電動窗簾安裝與設定</td><td style="text-align:center;">$<span contenteditable="true">1,850</span></td><td style="font-size:13px; color:#475569;">含軌道安裝、馬達掛載與遙控器設定 (配線另計)</td></tr>
+            </tbody>
+        </table>
+        <div class="menu-section-title">二、 特殊施工與加價項目（依現場實際狀況採計）</div>
+        <table class="menu-table">
+            <thead><tr><th width="30%">加價項目</th><th width="20%">代工單價 (NT$)</th><th width="50%">備註說明</th></tr></thead>
+            <tbody>
+                <tr><td>特殊牆面鑽孔 (大理石/磁磚/RC)</td><td style="text-align:center;">+$<span contenteditable="true">300</span> / 窗</td><td style="font-size:13px; color:#475569;">需使用特殊水鑽或專用鑽頭，避免磁磚破裂</td></tr>
+                <tr><td>挑高 / 樓梯間高空施工 (>3.2m)</td><td style="text-align:center;">+$<span contenteditable="true">850</span> / 窗</td><td style="font-size:13px; color:#475569;">包含加長型高梯作業與現場安全防護措施</td></tr>
+                <tr><td>舊窗簾與舊軌道拆除</td><td style="text-align:center;">+$<span contenteditable="true">150</span> / 窗</td><td style="font-size:13px; color:#475569;">僅代為拆卸，拆卸後之廢棄物由業主自行處理</td></tr>
+                <tr><td>廢棄物代客載走清運</td><td style="text-align:center;">+$<span contenteditable="true">500</span> / 式</td><td style="font-size:13px; color:#475569;">若需師傅協助將拆卸下之廢棄物載走，單趟酌收環保費</td></tr>
+                <tr><td>淘寶/網購軌道現場組裝</td><td style="text-align:center;">+$<span contenteditable="true">200</span> / 支</td><td style="font-size:13px; color:#475569;">針對需現場串接、校正水平與組裝輪子之軌道</td></tr>
+                <tr><td>金屬軌道現場修改裁切</td><td style="text-align:center;">+$<span contenteditable="true">150</span> / 次</td><td style="font-size:13px; color:#475569;">現場切短金屬軌道長度，以符合實際窗簾盒尺寸</td></tr>
+            </tbody>
+        </table>
+        <div class="menu-terms-box">
+            <h4>📝 服務條款與顧客須知</h4>
+            <ol style="margin-bottom:0; padding-left:20px;">
+                <li style="margin-bottom: 4px;"><strong>配件確認責任：</strong>若為業主自備或網購之窗簾（如淘寶、IKEA），請於師傅到府前確認<strong>配件無缺件</strong>。若因缺件或尺寸錯誤導致無法完工，仍收取基本出勤費。</li>
+                <li style="margin-bottom: 4px;"><strong>牆面安全評估：</strong>施工前將探測牆面，若為輕鋼架、純石膏板等非標準承重牆，師傅將現場評估承載力並給予補強建議。</li>
+                <li><strong>結帳方式：</strong>完工當下雙方驗收測試無誤後，請以「現金」或「現場轉帳」結清尾款。</li>
+            </ol>
+        </div>
+    </div>
+</div>
 
-    <!-- ================= 歷史紀錄與估價燈箱 ================= -->
+    <!-- ================= 歷史紀錄與估價燈箱 ================= →
     <div id="history-lightbox">
         <div class="lightbox-header">
             <span class="lightbox-title"> 📋  客戶丈量歷史紀錄</span>
@@ -416,6 +491,18 @@
 
         window.backToMainApp = function() {
             document.getElementById('install-quote-content').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        window.goToInstallMenu = function() {
+            document.getElementById('app-content').style.display = 'none';
+            document.getElementById('install-quote-content').style.display = 'none';
+            document.getElementById('install-menu-content').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.backToMainFromMenu = function() {
+            document.getElementById('install-menu-content').style.display = 'none';
             document.getElementById('app-content').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
@@ -1180,3 +1267,4 @@
     </script>
 </body>
 </html>
+
