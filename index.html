@@ -143,6 +143,33 @@
         .install-terms h4 { margin-bottom: 8px; color: var(--slate-800); }
         .install-terms ol { padding-left: 20px; margin: 0; }
         .iq-delete-btn { background: #fee2e2; color: #ef4444; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+
+        /* ======== 安裝代工價目表 (Menu) 專用樣式 ======== */
+        #install-menu-content { display: none; width: 100%; }
+        .menu-a4-container { width: 100%; background: #ffffff; padding: 15px; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin: 0 auto; box-sizing: border-box; }
+        @media (min-width: 720px) { .menu-a4-container { padding: 30px; } }
+        .menu-header { text-align: center; border-bottom: 3px double #0ea5e9; padding-bottom: 15px; margin-bottom: 20px; }
+        .menu-header h1 { color: #0369a1; font-size: 24px; font-weight: 900; margin: 0 0 8px 0; letter-spacing: 1px; }
+        .menu-header p { color: #64748b; font-size: 13px; margin: 0; }
+        .menu-section-title { font-size: 16px; font-weight: bold; color: #0c4a6e; background: #e0f2fe; padding: 8px 12px; border-left: 5px solid #0284c7; margin: 20px 0 10px 0; border-radius: 0 4px 4px 0; }
+        .menu-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 10px; }
+        .menu-table th, .menu-table td { border: 1px solid #cbd5e1; padding: 8px 10px; vertical-align: middle; }
+        .menu-table th { background-color: #f8fafc; color: #0f172a; font-weight: bold; text-align: center; }
+        .menu-terms-box { background: #fefce8; border: 1px solid #fde047; border-left: 5px solid #eab308; padding: 12px 15px; border-radius: 4px; margin-top: 20px; font-size: 13px; line-height: 1.6; color: #334155; }
+        .menu-terms-box h4 { margin: 0 0 8px 0; color: #854d0e; font-size: 14px; }
+        .menu-info-card { display: flex; justify-content: space-between; align-items: center; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px 20px; border-radius: 6px; margin-bottom: 20px; font-size: 13px; color: #075985; flex-wrap: wrap; gap: 10px; }
+        
+        #install-menu-content [contenteditable="true"] { background-color: #e0f2fe; border-bottom: 2px dashed #38bdf8; padding: 2px 6px; border-radius: 4px; outline: none; transition: 0.2s; font-weight: bold; color: #0369a1; display: inline-block; min-width: 30px; text-align: center; }
+        #install-menu-content [contenteditable="true"]:focus { background-color: #bae6fd; border-bottom: 2px solid #0284c7; }
+        
+        /* 列印時的樣式處理 */
+        @media print { 
+            body { background: #fff; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; width: 100%; }
+            .menu-a4-container { box-shadow: none; border: none; padding: 0; width: 100%; max-width: 210mm; margin: 0 auto; }
+            .no-print { display: none !important; }
+            #install-menu-content [contenteditable="true"] { background-color: transparent !important; border: none !important; padding: 0 !important; color: inherit !important; font-weight: bold !important; }
+        }
         /* ==================================== */
     </style>
 </head>
@@ -200,10 +227,14 @@
                 <button class="action-btn" id="btn-cancel-edit" onclick="cancelEdit()" style="display: none !important;"> ✕  取消修改 (不儲存)</button>
             </div>
             
-            <!-- 歷史紀錄與切換報價單的按鈕區塊 -->
-            <div class="btn-block" style="margin-top: 10px; display: flex; flex-direction: row; gap: 8px;">
-                <button class="action-btn" style="background-color: var(--primary); flex: 1;" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄</button>
-                <button class="action-btn" style="background-color: #0ea5e9; flex: 1;" onclick="goToInstallQuote()"> 🛠️  切換至代工報價單</button>
+            <!-- 歷史紀錄與功能切換按鈕區塊 -->
+            <div class="btn-block" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                <button class="action-btn" style="background-color: var(--primary);" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄</button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="action-btn" style="background-color: #0ea5e9; flex: 1;" onclick="goToInstallQuote()"> 🛠️  切換至代工報價單</button>
+                    <!-- 新增的 Menu 切換按鈕 -->
+                    <button class="action-btn" style="background-color: #14b8a6; flex: 1;" onclick="goToInstallMenu()"> 📋  代工價目表(Menu)</button>
+                </div>
             </div>
 
             <div class="search-box">
@@ -215,7 +246,7 @@
 
         <!-- ================= 純安裝代工報價單區塊 ================= -->
         <div id="install-quote-content" class="iq-theme">
-            <button class="action-btn" style="background-color: var(--slate-600); margin-bottom: 20px; width: auto; display: inline-flex; padding: 8px 16px;" onclick="backToMainApp()"> ⬅️ 返回丈量主畫面</button>
+            <button class="action-btn no-print" style="background-color: var(--slate-600); margin-bottom: 20px; width: auto; display: inline-flex; padding: 8px 16px;" onclick="backToMainApp()"> ⬅️ 返回丈量主畫面</button>
             
             <div class="app-header">
                 <h1 style="color: #0ea5e9;">🛠️ 望美窗簾-安裝代工報價單</h1>
@@ -231,132 +262,135 @@
                 </div>
             </div>
 
-            <!-- 客戶基本資料 (與丈量單一致) -->
+            <!-- 客戶基本資料 -->
             <div class="client-info-card">
                 <div class="client-info-title"> 👤  客戶基本資料</div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>客戶姓名/案名：</label>
-                        <input type="text" id="iq-client-name" placeholder="姓名或案名">
-                    </div>
-                    <div class="form-group">
-                        <label>聯絡電話：</label>
-                        <input type="tel" id="iq-client-phone" placeholder="電話">
-                    </div>
+                    <div class="form-group"><label>客戶姓名/案名：</label><input type="text" id="iq-client-name" placeholder="姓名或案名"></div>
+                    <div class="form-group"><label>聯絡電話：</label><input type="tel" id="iq-client-phone" placeholder="電話"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label>案場地址：</label>
-                        <input type="text" id="iq-client-address" placeholder="台南市..." value="台南市">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>報價日期：</label>
-                        <input type="date" id="iq-client-date">
-                    </div>
+                    <div class="form-group" style="flex: 2;"><label>案場地址：</label><input type="text" id="iq-client-address" placeholder="台南市..." value="台南市"></div>
+                    <div class="form-group" style="flex: 1;"><label>報價日期：</label><input type="date" id="iq-client-date"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>統一編號：</label>
-                        <input type="number" id="iq-client-taxid" placeholder="無則免填">
-                    </div>
+                    <div class="form-group"><label>統一編號：</label><input type="number" id="iq-client-taxid" placeholder="無則免填"></div>
                 </div>
             </div>
 
             <div class="client-info-title" style="color: var(--slate-800); border-bottom-color: var(--slate-200); margin-top: 24px;">一、 標準施工項目報價（單位：窗）</div>
             
-            <!-- 新增標準項目的控制列 -->
             <div class="iq-add-bar">
-                <select id="iq-std-select">
-                    <option value="" disabled selected>請選擇標準工項加入清單...</option>
-                </select>
+                <select id="iq-std-select"><option value="" disabled selected>請選擇標準工項加入清單...</option></select>
                 <button class="iq-add-btn" onclick="addIqRow('std')">➕ 新增項目</button>
             </div>
 
             <div class="install-table-wrapper">
                 <table class="install-table" id="iq-std-table">
-                    <thead>
-                        <tr>
-                            <th width="5%">項次</th>
-                            <th width="35%">項目名稱與規格說明</th>
-                            <th width="10%">數量</th>
-                            <th width="15%">單價(NT$)</th>
-                            <th width="15%">小計(NT$)</th>
-                            <th width="15%">備註/空間位置</th>
-                            <th width="5%">操作</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th width="5%">項次</th><th width="35%">項目名稱與規格說明</th><th width="10%">數量</th><th width="15%">單價(NT$)</th><th width="15%">小計(NT$)</th><th width="15%">備註/空間位置</th><th width="5%">操作</th></tr></thead>
                     <tbody id="iq-std-tbody">
                         <tr style="background-color: #fffaf0;">
-                            <td>1</td>
-                            <td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td>
-                            <td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td>
-                            <td>$1,250</td>
-                            <td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td>
-                            <td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td>
-                            <td>-</td>
+                            <td>1</td><td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td>
+                            <td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td><td>$1,250</td><td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td>
+                            <td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td><td>-</td>
                         </tr>
-                        <!-- 動態產生的標準項目會插入在這裡 -->
                     </tbody>
                 </table>
             </div>
 
             <div class="client-info-title" style="color: var(--slate-800); border-bottom-color: var(--slate-200);">二、 特殊現場與加價項目（依現場實際狀況採計）</div>
             
-            <!-- 新增加價項目的控制列 -->
             <div class="iq-add-bar">
-                <select id="iq-extra-select">
-                    <option value="" disabled selected>請選擇特殊加價項目加入清單...</option>
-                </select>
+                <select id="iq-extra-select"><option value="" disabled selected>請選擇特殊加價項目加入清單...</option></select>
                 <button class="iq-add-btn" onclick="addIqRow('extra')">➕ 新增項目</button>
             </div>
 
             <div class="install-table-wrapper">
                 <table class="install-table" id="iq-extra-table">
-                    <thead>
-                        <tr>
-                            <th width="5%">項次</th>
-                            <th width="35%">加價項目說明</th>
-                            <th width="10%">數量</th>
-                            <th width="15%">單價(NT$)</th>
-                            <th width="15%">小計(NT$)</th>
-                            <th width="15%">備註</th>
-                            <th width="5%">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="iq-extra-tbody">
-                        <!-- 動態產生的加價項目會插入在這裡 -->
-                    </tbody>
+                    <thead><tr><th width="5%">項次</th><th width="35%">加價項目說明</th><th width="10%">數量</th><th width="15%">單價(NT$)</th><th width="15%">小計(NT$)</th><th width="15%">備註</th><th width="5%">操作</th></tr></thead>
+                    <tbody id="iq-extra-tbody"></tbody>
                 </table>
             </div>
 
             <div class="install-total-section">
-                <div class="install-total-row">
-                    <span>施工工資小計 (第一大項)：</span>
-                    <span>NT$ <span id="iq-sum-standard">0</span></span>
-                </div>
-                <div class="install-total-row">
-                    <span>特殊加價小計 (第二大項)：</span>
-                    <span>NT$ <span id="iq-sum-extra">0</span></span>
-                </div>
-                <div class="install-total-row install-grand-total">
-                    <span>預估總計金額：</span>
-                    <span>NT$ <span id="iq-sum-grand">0</span></span>
-                </div>
+                <div class="install-total-row"><span>施工工資小計 (第一大項)：</span><span>NT$ <span id="iq-sum-standard">0</span></span></div>
+                <div class="install-total-row"><span>特殊加價小計 (第二大項)：</span><span>NT$ <span id="iq-sum-extra">0</span></span></div>
+                <div class="install-total-row install-grand-total"><span>預估總計金額：</span><span>NT$ <span id="iq-sum-grand">0</span></span></div>
             </div>
 
             <div class="install-terms">
                 <h4>四、 服務條款與備註事項</h4>
                 <ol>
                     <li><strong>基本出勤說明：</strong>本案設有單趟最低出勤費 NT$ 1,250。若工程總工資未達 NT$ 1,250，將以 NT$ 1,250 計收；若超過則直接依實際項目累積計算。</li>
-                    <li><strong>配件與尺寸權責：</strong>自備或網購（如淘寶、IKEA）之窗簾，請於師傅到府前確認配件（託架、壁虎、螺絲）無缺件。若因業主丈量錯誤或缺件致當日無法完工，仍需收取基本出勤費。</li>
-                    <li><strong>牆面安全評估：</strong>若施工牆面為特殊材質（如輕鋼架、純石膏板等），師傅將現場評估承重能力並告知補強方案。</li>
+                    <li><strong>配件與尺寸權責：</strong>自備或網購之窗簾，請於師傅到府前確認配件無缺件。若因業主丈量錯誤或缺件致當日無法完工，仍需收取基本出勤費。</li>
+                    <li><strong>牆面安全評估：</strong>若施工牆面為特殊材質，師傅將現場評估承重能力並告知補強方案。</li>
                     <li><strong>付款方式：</strong>完工驗收無誤後，請以現金或現場轉帳結清尾款。</li>
                 </ol>
             </div>
 
-            <div class="btn-block" style="margin-top: 20px; display: flex; flex-direction: row; gap: 10px;">
+            <div class="btn-block no-print" style="margin-top: 20px; display: flex; flex-direction: row; gap: 10px;">
                 <button class="action-btn btn-save" style="flex: 1;" onclick="saveInstallQuote()"> 💾 儲存報價資料</button>
                 <button class="action-btn" style="background-color: #d97706; flex: 1;" onclick="exportInstallPdf()"> 📥 匯出PDF報價單</button>
+            </div>
+        </div>
+
+        <!-- ================= 新增：安裝代工價目表 (Menu) 區塊 ================= -->
+        <div id="install-menu-content">
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;" class="no-print">
+                <button class="action-btn" style="background-color: var(--slate-600); width: auto; display: inline-flex; padding: 8px 16px;" onclick="backToMainFromMenu()"> ⬅️ 返回主畫面</button>
+                <button class="action-btn" style="background-color: #0ea5e9; width: auto; display: inline-flex; padding: 8px 16px;" onclick="window.print()"> 🖨️ 儲存為 PDF (列印)</button>
+                <div style="color:#64748b; font-size:13px; width: 100%; margin-top: 4px;">💡 提示：點擊下方表格內帶有「淺藍底色」的數字或文字，即可直接修改內容再列印匯出！</div>
+            </div>
+
+            <div class="menu-a4-container">
+                <div class="menu-header">
+                    <h1>🛠️ 望美窗簾 - 專業安裝代工價目表</h1>
+                    <p>台南市南區健康路一段335號 ｜ 專業工法 ‧ 現場客製 ‧ 責任施工</p>
+                </div>
+
+                <div class="menu-info-card">
+                    <div><strong>👨‍🔧 服務專員：</strong><span contenteditable="true">劉育聖</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong><span contenteditable="true">poloem7</span></div>
+                    <div><strong>手機：</strong><span contenteditable="true">0985286257</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong><span contenteditable="true">06-2613210</span></div>
+                </div>
+
+                <div class="menu-section-title">一、 基本出勤與標準窗型安裝（單位：窗）</div>
+                <table class="menu-table">
+                    <thead><tr><th width="30%">項目名稱</th><th width="20%">代工單價 (NT$)</th><th width="50%">備註說明</th></tr></thead>
+                    <tbody>
+                        <tr style="background:#f8fafc;">
+                            <td style="font-weight:bold; color:#0f172a;">基本出勤費 (低消)</td>
+                            <td style="text-align:center; color:#dc2626; font-size:16px; font-weight:bold;">$<span contenteditable="true">1,250</span> / 趟</td>
+                            <td style="font-size:13px; color:#475569;">單趟施工總工資若未達此金額，將以此計收；若超過則全額折抵。</td>
+                        </tr>
+                        <tr><td>捲簾 / 調光簾 / 蜂巢簾</td><td style="text-align:center;">$<span contenteditable="true">350</span></td><td style="font-size:13px; color:#475569;">包含基本金屬腳座鎖固與水平測試</td></tr>
+                        <tr><td>傳統布簾 / 紗簾 (單軌)</td><td style="text-align:center;">$<span contenteditable="true">470</span></td><td style="font-size:13px; color:#475569;">包含單支軌道鎖固、鉤針掛置與整燙</td></tr>
+                        <tr><td>雙層布紗簾 / 蛇行簾 (雙軌)</td><td style="text-align:center;">$<span contenteditable="true">650</span></td><td style="font-size:13px; color:#475569;">包含雙軌鎖固、波浪倍率調整與理布</td></tr>
+                        <tr><td>木百葉 / 鋁百葉 / 羅馬簾</td><td style="text-align:center;">$<span contenteditable="true">700</span></td><td style="font-size:13px; color:#475569;">針對重型簾體加強結構鎖固</td></tr>
+                        <tr><td>電動窗簾安裝與設定</td><td style="text-align:center;">$<span contenteditable="true">1,850</span></td><td style="font-size:13px; color:#475569;">含軌道安裝、馬達掛載與遙控器對碼設定 (配線另計)</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="menu-section-title">二、 特殊施工與加價項目（依現場實際狀況採計）</div>
+                <table class="menu-table">
+                    <thead><tr><th width="30%">加價項目</th><th width="20%">代工單價 (NT$)</th><th width="50%">備註說明</th></tr></thead>
+                    <tbody>
+                        <tr><td>特殊牆面鑽孔 (大理石/磁磚/RC)</td><td style="text-align:center;">+$<span contenteditable="true">300</span> / 窗</td><td style="font-size:13px; color:#475569;">需使用特殊水鑽或專用鑽頭施工，避免磁磚破裂</td></tr>
+                        <tr><td>挑高 / 樓梯間高空施工 (>3.2m)</td><td style="text-align:center;">+$<span contenteditable="true">850</span> / 窗</td><td style="font-size:13px; color:#475569;">包含加長型高梯作業與現場安全防護措施</td></tr>
+                        <tr><td>舊窗簾與舊軌道拆除</td><td style="text-align:center;">+$<span contenteditable="true">150</span> / 窗</td><td style="font-size:13px; color:#475569;">僅代為拆卸，拆卸後之廢棄物由業主自行處理</td></tr>
+                        <tr><td>廢棄物代客載走清運</td><td style="text-align:center;">+$<span contenteditable="true">500</span> / 式</td><td style="font-size:13px; color:#475569;">若需師傅協助將拆卸下之廢棄物載走，單趟酌收環保費</td></tr>
+                        <tr><td>淘寶/網購拼接式軌道現場組裝</td><td style="text-align:center;">+$<span contenteditable="true">200</span> / 支</td><td style="font-size:13px; color:#475569;">針對需現場串接、校正水平與組裝輪子之軌道</td></tr>
+                        <tr><td>金屬軌道現場修改裁切</td><td style="text-align:center;">+$<span contenteditable="true">150</span> / 次</td><td style="font-size:13px; color:#475569;">現場切短金屬軌道長度，以符合實際窗簾盒尺寸</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="menu-terms-box">
+                    <h4>📝 服務條款與顧客須知</h4>
+                    <ol style="margin-bottom:0; padding-left:20px;">
+                        <li style="margin-bottom: 6px;"><strong>配件確認責任：</strong>若為業主自備或網購之窗簾（如淘寶、IKEA），請於師傅到府前確認<strong>配件（託架、壁虎、螺絲、滑輪）無短缺</strong>。若因缺件或尺寸錯誤導致當日無法安裝完工，仍收取基本出勤費。</li>
+                        <li style="margin-bottom: 6px;"><strong>牆面安全評估：</strong>施工前師傅將探測牆面，若為輕鋼架、純石膏板等非標準承重牆，將現場評估承載力並給予補強建議。</li>
+                        <li><strong>結帳方式：</strong>完工當下雙方驗收測試無誤後，請以「現金」或「現場轉帳」結清安裝尾款。</li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
@@ -406,15 +440,31 @@
             return `${y}-${m}-${d}`;
         }
 
-        // ================= SPA 切換報價單功能 =================
+        // ================= SPA 切換功能 (主畫面/報價單/價目表) =================
         window.goToInstallQuote = function() {
             document.getElementById('app-content').style.display = 'none';
+            document.getElementById('install-menu-content').style.display = 'none';
             document.getElementById('install-quote-content').style.display = 'block';
             document.getElementById('iq-client-date').value = getTodayString();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
+        window.goToInstallMenu = function() {
+            document.getElementById('app-content').style.display = 'none';
+            document.getElementById('install-quote-content').style.display = 'none';
+            document.getElementById('install-menu-content').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
         window.backToMainApp = function() {
+            document.getElementById('install-quote-content').style.display = 'none';
+            document.getElementById('install-menu-content').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        
+        window.backToMainFromMenu = function() {
+            document.getElementById('install-menu-content').style.display = 'none';
             document.getElementById('install-quote-content').style.display = 'none';
             document.getElementById('app-content').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -437,33 +487,22 @@
             {name: "金屬軌道現場裁切修改", price: 150}
         ];
 
-        // 初始化下拉選單
         function initIqSelects() {
             const stdSelect = document.getElementById('iq-std-select');
-            iqStandardTemplates.forEach((t, i) => {
-                stdSelect.innerHTML += `<option value="${i}">${t.name} ($${t.price})</option>`;
-            });
+            iqStandardTemplates.forEach((t, i) => { stdSelect.innerHTML += `<option value="${i}">${t.name} ($${t.price})</option>`; });
             const extraSelect = document.getElementById('iq-extra-select');
-            iqExtraTemplates.forEach((t, i) => {
-                extraSelect.innerHTML += `<option value="${i}">${t.name} (+$${t.price})</option>`;
-            });
+            iqExtraTemplates.forEach((t, i) => { extraSelect.innerHTML += `<option value="${i}">${t.name} (+$${t.price})</option>`; });
         }
 
-        let iqStdRowCount = 1; // 1是基本出勤費
-        let iqExtraRowCount = 6; // 接續項次，大約從 7 開始
-
-        // 新增動態列
+        let iqStdRowCount = 1; let iqExtraRowCount = 6; 
         window.addIqRow = function(type) {
             const isStd = (type === 'std');
             const selectEl = document.getElementById(isStd ? 'iq-std-select' : 'iq-extra-select');
             const tbody = document.getElementById(isStd ? 'iq-std-tbody' : 'iq-extra-tbody');
             const templates = isStd ? iqStandardTemplates : iqExtraTemplates;
-            
             if (selectEl.value === "") { alert("請先從下拉選單選擇一個項目！"); return; }
-            
             const selectedItem = templates[selectEl.value];
             const rowIdx = isStd ? ++iqStdRowCount : ++iqExtraRowCount;
-
             const tr = document.createElement('tr');
             tr.className = `iq-dynamic-row iq-${type}-item`;
             tr.innerHTML = `
@@ -475,81 +514,45 @@
                 <td><input type="text" class="iq-note" placeholder="" value=""></td>
                 <td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>
             `;
-            tbody.appendChild(tr);
-            selectEl.value = ""; // 重設選單
+            tbody.appendChild(tr); selectEl.value = "";
         };
 
-        window.removeIqRow = function(btn) {
-            btn.closest('tr').remove();
-            calculateInstallTotals();
-            reindexIqRows();
-        };
+        window.removeIqRow = function(btn) { btn.closest('tr').remove(); calculateInstallTotals(); reindexIqRows(); };
 
         function reindexIqRows() {
             iqStdRowCount = 1;
-            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(tr => {
-                tr.cells[0].innerText = ++iqStdRowCount;
-            });
+            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(tr => { tr.cells[0].innerText = ++iqStdRowCount; });
             iqExtraRowCount = iqStdRowCount;
-            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(tr => {
-                tr.cells[0].innerText = ++iqExtraRowCount;
-            });
+            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(tr => { tr.cells[0].innerText = ++iqExtraRowCount; });
         }
 
-        // 即時計算報價單金額
         window.calculateInstallTotals = function() {
-            let standardSum = 0;
-            let extraSum = 0;
-
+            let standardSum = 0; let extraSum = 0;
             document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(row => {
-                const qty = parseFloat(row.querySelector('.iq-qty').value) || 0;
-                const price = parseFloat(row.querySelector('.iq-price').value) || 0;
-                const sub = qty * price;
-                row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString();
-                standardSum += sub;
+                const qty = parseFloat(row.querySelector('.iq-qty').value) || 0; const price = parseFloat(row.querySelector('.iq-price').value) || 0;
+                const sub = qty * price; row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString(); standardSum += sub;
             });
-
             document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(row => {
-                const qty = parseFloat(row.querySelector('.iq-qty').value) || 0;
-                const price = parseFloat(row.querySelector('.iq-price').value) || 0;
-                const sub = qty * price;
-                row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString();
-                extraSum += sub;
+                const qty = parseFloat(row.querySelector('.iq-qty').value) || 0; const price = parseFloat(row.querySelector('.iq-price').value) || 0;
+                const sub = qty * price; row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString(); extraSum += sub;
             });
-
             const actualWorkTotal = standardSum + extraSum;
-            let finalGrandTotal = 0;
-            let baseFeeSubtotal = 0;
-            let baseFeeQty = 0;
-
+            let finalGrandTotal = 0; let baseFeeSubtotal = 0; let baseFeeQty = 0;
             if (actualWorkTotal > 0) {
                 baseFeeQty = 1;
-                if (actualWorkTotal < 1250) {
-                    baseFeeSubtotal = 1250 - actualWorkTotal;
-                    finalGrandTotal = 1250;
-                } else {
-                    baseFeeSubtotal = 0;
-                    finalGrandTotal = actualWorkTotal;
-                }
+                if (actualWorkTotal < 1250) { baseFeeSubtotal = 1250 - actualWorkTotal; finalGrandTotal = 1250; } 
+                else { baseFeeSubtotal = 0; finalGrandTotal = actualWorkTotal; }
             }
-
-            document.getElementById('iq-base-fee-qty').textContent = baseFeeQty;
-            document.getElementById('iq-base-fee-subtotal').textContent = baseFeeSubtotal.toLocaleString();
-            document.getElementById('iq-sum-standard').textContent = standardSum.toLocaleString();
-            document.getElementById('iq-sum-extra').textContent = extraSum.toLocaleString();
-            document.getElementById('iq-sum-grand').textContent = finalGrandTotal.toLocaleString();
+            document.getElementById('iq-base-fee-qty').textContent = baseFeeQty; document.getElementById('iq-base-fee-subtotal').textContent = baseFeeSubtotal.toLocaleString();
+            document.getElementById('iq-sum-standard').textContent = standardSum.toLocaleString(); document.getElementById('iq-sum-extra').textContent = extraSum.toLocaleString(); document.getElementById('iq-sum-grand').textContent = finalGrandTotal.toLocaleString();
         };
 
-        // 儲存安裝報價單 (存於 LocalStorage)
         window.saveInstallQuote = function() {
             const clientName = document.getElementById('iq-client-name').value.trim();
             if(!clientName) { alert("請填寫客戶姓名或案名！"); return; }
-            
-            // 這裡實作簡單的儲存提示，您未來可在此加入雲端備份邏輯
-            alert("✅ 安裝代工報價單已成功儲存！");
+            alert("✅ 安裝代工報價單已暫時儲存！(完整雲端連動功能可後續擴充)");
         };
 
-        // 匯出 PDF 邏輯
         window.exportInstallPdf = function() {
             const clientName = document.getElementById('iq-client-name').value || '未填寫';
             const clientPhone = document.getElementById('iq-client-phone').value || '未填寫';
@@ -558,149 +561,41 @@
             const clientTaxId = document.getElementById('iq-client-taxid').value || '無';
             
             let tableRowsHtml = `
-                <tr>
-                    <td style="text-align:center;">1</td>
-                    <td><strong>基本出勤費</strong><br><span style="font-size:11px; color:#64748b;">單次到府基本工資</span></td>
-                    <td style="text-align:center;">${document.getElementById('iq-base-fee-qty').textContent} 趟</td>
-                    <td style="text-align:right;">$1,250</td>
-                    <td style="text-align:right; font-weight:bold;">$${document.getElementById('iq-base-fee-subtotal').textContent}</td>
-                    <td></td>
-                </tr>
+                <tr><td style="text-align:center;">1</td><td><strong>基本出勤費</strong><br><span style="font-size:11px; color:#64748b;">單次到府基本工資</span></td><td style="text-align:center;">${document.getElementById('iq-base-fee-qty').textContent} 趟</td><td style="text-align:right;">$1,250</td><td style="text-align:right; font-weight:bold;">$${document.getElementById('iq-base-fee-subtotal').textContent}</td><td></td></tr>
             `;
-
             document.querySelectorAll('#install-quote-content .iq-dynamic-row').forEach(row => {
-                const idx = row.cells[0].innerText;
-                const name = row.querySelector('.iq-name').value;
-                const qty = row.querySelector('.iq-qty').value || 0;
-                const price = row.querySelector('.iq-price').value || 0;
-                const sub = row.querySelector('.iq-row-subtotal').textContent;
-                const note = row.querySelector('.iq-note').value;
-
-                tableRowsHtml += `
-                    <tr>
-                        <td style="text-align:center;">${idx}</td>
-                        <td>${name}</td>
-                        <td style="text-align:center;">${qty}</td>
-                        <td style="text-align:right;">$${price}</td>
-                        <td style="text-align:right; font-weight:bold;">$${sub}</td>
-                        <td>${note}</td>
-                    </tr>
-                `;
+                const idx = row.cells[0].innerText; const name = row.querySelector('.iq-name').value; const qty = row.querySelector('.iq-qty').value || 0; const price = row.querySelector('.iq-price').value || 0; const sub = row.querySelector('.iq-row-subtotal').textContent; const note = row.querySelector('.iq-note').value;
+                tableRowsHtml += `<tr><td style="text-align:center;">${idx}</td><td>${name}</td><td style="text-align:center;">${qty}</td><td style="text-align:right;">$${price}</td><td style="text-align:right; font-weight:bold;">$${sub}</td><td>${note}</td></tr>`;
             });
-
             const grandTotal = document.getElementById('iq-sum-grand').textContent;
 
             const pdfHtml = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>安裝代工報價單_${clientName}</title>
+            <!DOCTYPE html><html><head><meta charset="UTF-8"><title>安裝代工報價單_${clientName}</title>
                 <style>
-                    @page { size: A4; margin: 15mm; }
-                    body { font-family: "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; line-height: 1.5; font-size: 13px; }
-                    .header { display: flex; justify-content: space-between; border-bottom: 2px solid #0ea5e9; padding-bottom: 15px; margin-bottom: 20px; }
-                    .header-left h1 { margin: 0; color: #0369a1; font-size: 24px; }
-                    .header-left p { margin: 4px 0 0 0; color: #64748b; font-size: 12px; }
-                    .header-right { text-align: right; }
-                    .master-box { background: #f0f9ff; border: 1px solid #bae6fd; padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; }
-                    .master-box h3 { margin: 0 0 8px 0; color: #0369a1; font-size: 14px; border-bottom: 1px dashed #7dd3fc; padding-bottom: 4px; }
-                    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-                    .info-table td { padding: 6px 10px; border: 1px solid #e2e8f0; }
-                    .info-label { background: #f8fafc; font-weight: bold; width: 15%; text-align: right; color: #475569; }
-                    .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-                    .items-table th { background: #0ea5e9; color: white; padding: 8px; text-align: center; border: 1px solid #0284c7; }
-                    .items-table td { padding: 8px; border: 1px solid #cbd5e1; }
-                    .items-table tr:nth-child(even) { background: #f8fafc; }
+                    @page { size: A4; margin: 15mm; } body { font-family: "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; line-height: 1.5; font-size: 13px; }
+                    .header { display: flex; justify-content: space-between; border-bottom: 2px solid #0ea5e9; padding-bottom: 15px; margin-bottom: 20px; } .header-left h1 { margin: 0; color: #0369a1; font-size: 24px; } .header-left p { margin: 4px 0 0 0; color: #64748b; font-size: 12px; }
+                    .master-box { background: #f0f9ff; border: 1px solid #bae6fd; padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; } .master-box h3 { margin: 0 0 8px 0; color: #0369a1; font-size: 14px; border-bottom: 1px dashed #7dd3fc; padding-bottom: 4px; }
+                    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } .info-table td { padding: 6px 10px; border: 1px solid #e2e8f0; } .info-label { background: #f8fafc; font-weight: bold; width: 15%; text-align: right; color: #475569; }
+                    .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } .items-table th { background: #0ea5e9; color: white; padding: 8px; text-align: center; border: 1px solid #0284c7; } .items-table td { padding: 8px; border: 1px solid #cbd5e1; } .items-table tr:nth-child(even) { background: #f8fafc; }
                     .totals { text-align: right; font-size: 18px; font-weight: bold; padding: 10px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; color: #ef4444; margin-bottom: 20px; }
                     .terms { font-size: 12px; color: #475569; background: #fefce8; padding: 12px; border: 1px solid #fde047; border-radius: 6px; }
-                    .sign-box { margin-top: 40px; display: flex; justify-content: space-between; }
-                    .sign-line { width: 200px; border-bottom: 1px solid #1e293b; padding-bottom: 5px; text-align: center; }
+                    .sign-box { margin-top: 40px; display: flex; justify-content: space-between; } .sign-line { width: 200px; border-bottom: 1px solid #1e293b; padding-bottom: 5px; text-align: center; }
                     @media print { .no-print { display: none; } }
                 </style>
-            </head>
-            <body>
-                <div class="no-print" style="text-align: right; margin-bottom: 15px;">
-                    <button onclick="window.print()" style="background: #0ea5e9; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button>
-                </div>
-                <div class="header">
-                    <div class="header-left">
-                        <h1>望美窗簾 - 安裝代工報價單</h1>
-                        <p>台南市南區健康路一段335號</p>
-                    </div>
-                    <div class="header-right">
-                        <p style="margin:0; font-weight:bold;">單據日期：${clientDate}</p>
-                    </div>
-                </div>
-
-                <div class="master-box">
-                    <h3>👨‍🔧 專業服務師傅</h3>
-                    <p style="margin:0; color:#075985;"><strong>姓名：</strong>劉育聖 ｜ <strong>LINE ID：</strong>poloem7 ｜ <strong>手機：</strong>0985286257 ｜ <strong>市話：</strong>06-2613210</p>
-                </div>
-
-                <table class="info-table">
-                    <tr>
-                        <td class="info-label">客戶姓名</td><td>${clientName}</td>
-                        <td class="info-label">聯絡電話</td><td>${clientPhone}</td>
-                    </tr>
-                    <tr>
-                        <td class="info-label">案場地址</td><td colspan="3">${clientAddress}</td>
-                    </tr>
-                    <tr>
-                        <td class="info-label">統一編號</td><td>${clientTaxId}</td>
-                        <td class="info-label">報價日期</td><td>${clientDate}</td>
-                    </tr>
-                </table>
-
-                <table class="items-table">
-                    <thead>
-                        <tr>
-                            <th width="8%">項次</th>
-                            <th width="32%">項目與規格說明</th>
-                            <th width="10%">數量</th>
-                            <th width="15%">單價</th>
-                            <th width="15%">小計</th>
-                            <th width="20%">備註/空間位置</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${tableRowsHtml}
-                    </tbody>
-                </table>
-
-                <div class="totals">
-                    預估總計金額：NT$ ${grandTotal}
-                </div>
-
-                <div class="terms">
-                    <strong style="color:#b45309;">服務條款與備註事項：</strong><br>
-                    1. 本案設有單趟最低出勤費 NT$ 1,250，若工程總工資未達將以最低基本出勤費計收；若超過則依實際項目累積。<br>
-                    2. 自備或網購之窗簾請於施工前確認配件齊全，若因業主丈量錯誤或缺件致當日無法完工，仍需收取基本出勤費。<br>
-                    3. 特殊材質牆面將由師傅現場評估承重能力並告知補強方案。<br>
-                    4. 完工驗收無誤後，請以現金或現場轉帳結清尾款。
-                </div>
-
-                <div class="sign-box">
-                    <div>
-                        <div style="font-size:12px; color:#64748b; margin-bottom: 25px;">客戶確認簽名：</div>
-                        <div class="sign-line"></div>
-                    </div>
-                    <div>
-                        <div style="font-size:12px; color:#64748b; margin-bottom: 25px; text-align:right;">確認日期：</div>
-                        <div class="sign-line">年　　　月　　　日</div>
-                    </div>
-                </div>
-            </body>
-            </html>
-            `;
-
-            const printWindow = window.open("", "_blank");
-            printWindow.document.write(pdfHtml);
-            printWindow.document.close();
+            </head><body>
+                <div class="no-print" style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #0ea5e9; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button></div>
+                <div class="header"><div class="header-left"><h1>望美窗簾 - 安裝代工報價單</h1><p>台南市南區健康路一段335號</p></div><div class="header-right"><p style="margin:0; font-weight:bold;">單據日期：${clientDate}</p></div></div>
+                <div class="master-box"><h3>👨‍🔧 專業服務師傅</h3><p style="margin:0; color:#075985;"><strong>姓名：</strong>劉育聖 ｜ <strong>LINE ID：</strong>poloem7 ｜ <strong>手機：</strong>0985286257 ｜ <strong>市話：</strong>06-2613210</p></div>
+                <table class="info-table"><tr><td class="info-label">客戶姓名</td><td>${clientName}</td><td class="info-label">聯絡電話</td><td>${clientPhone}</td></tr><tr><td class="info-label">案場地址</td><td colspan="3">${clientAddress}</td></tr><tr><td class="info-label">統一編號</td><td>${clientTaxId}</td><td class="info-label">報價日期</td><td>${clientDate}</td></tr></table>
+                <table class="items-table"><thead><tr><th width="8%">項次</th><th width="32%">項目與規格說明</th><th width="10%">數量</th><th width="15%">單價</th><th width="15%">小計</th><th width="20%">備註/空間位置</th></tr></thead><tbody>${tableRowsHtml}</tbody></table>
+                <div class="totals">預估總計金額：NT$ ${grandTotal}</div>
+                <div class="terms"><strong style="color:#b45309;">服務條款與備註事項：</strong><br>1. 本案設有單趟最低出勤費 NT$ 1,250，若未達將以此計收。<br>2. 自備窗簾請確認配件齊全，若因缺件致無法完工仍需收費。<br>3. 完工驗收無誤後請現金或現場轉帳結清。</div>
+                <div class="sign-box"><div><div style="font-size:12px; color:#64748b; margin-bottom: 25px;">客戶確認簽名：</div><div class="sign-line"></div></div><div><div style="font-size:12px; color:#64748b; margin-bottom: 25px; text-align:right;">確認日期：</div><div class="sign-line">年　　　月　　　日</div></div></div>
+            </body></html>`;
+            const printWindow = window.open("", "_blank"); printWindow.document.write(pdfHtml); printWindow.document.close();
         };
 
-
-        // ================= 原有主系統的函數保留 (丈量/照相/計算/儲存) =================
+        // ================= 原有主系統的函數保留 =================
         function compressImage(file, maxWidth = 1000, maxHeight = 1000, quality = 0.6) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader(); reader.readAsDataURL(file);
@@ -944,7 +839,7 @@
             const width = parseFloat(panel.querySelector('.c-width').value) || 0; const height = parseFloat(panel.querySelector('.c-height').value) || 0; const type = panel.querySelector('.c-type').value; const pleat = parseFloat(panel.querySelector('.c-pleat').value) || 2; const fabWidth = parseFloat(panel.querySelector('.c-fabwidth').value) || 110; const sewingPrice = parseFloat(panel.querySelector('.c-sewingprice').value) || 0; const unitPrice = parseFloat(panel.querySelector('.c-unitprice').value) || 0; const hasTrack = panel.querySelector('.c-track') ? panel.querySelector('.c-track').checked : false;
             const resultBox = document.getElementById(`calc-result-${idx}`); const firstPriceInput = panel.querySelector('.c-itemprice');
             if (type === 'manual') { resultBox.innerHTML = `✏️ <strong>純手動計價模式</strong>：請於下方直接輸入金額。`; resultBox.setAttribute('data-formula-html', ''); return; }
-            if (width <= 0 || height <= 0) { resultBox.innerHTML = `⚠️️ 請輸入有效的寬度與高度以進行換算。`; resultBox.setAttribute('data-formula-html', ''); return; }
+            if (width <= 0 || height <= 0) { resultBox.innerHTML = `⚠ 請輸入有效的寬度與高度以進行換算。`; resultBox.setAttribute('data-formula-html', ''); return; }
             let html = ''; let finalPrice = 0; const trackFeet = Math.ceil(width / 30.3); const rawTrackFee = trackFeet * 90; let trackFee = 0; let trackNoteHtml = '';
             if (hasTrack) { if (rawTrackFee < 500) { trackFee = 500; trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#ef4444; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`; } else { trackFee = rawTrackFee; trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>`; } } else { trackNoteHtml = `• 一般軌道：無<br>`; }
             if (type === 'traditional') {
@@ -1174,8 +1069,7 @@
         };
 
         document.addEventListener("DOMContentLoaded", function() {
-            resetForm();
-            initIqSelects();
+            resetForm(); initIqSelects();
         });
     </script>
 </body>
