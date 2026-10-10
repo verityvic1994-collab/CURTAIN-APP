@@ -813,24 +813,41 @@
             });
         }
 
-        window.handlePhotoChange = async function(input, windowIdx) {
+               window.handlePhotoChange = async function(input, windowIdx) {
             const file = input.files[0]; if (!file) return;
             const clientName = document.getElementById('client-name').value.trim() || "未命名";
-            const card = input.closest('.window-card'); const previewWrap = card.querySelector('.photo-preview-wrap');
+            const card = input.closest('.window-card'); 
+            const previewWrap = card.querySelector('.photo-preview-wrap');
+            
             try {
                 previewWrap.innerHTML = `<span style="color:#2563eb; font-weight:bold;">⏳ 照片壓縮與上傳雲端中，請稍候...</span>`;
                 const compressedBase64 = await compressImage(file);
-                const payload = { action: 'upload_photo', base64: compressedBase64, clientName: clientName, windowIndex: windowIdx };
-                const response = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
-                const resData = await response.json();
-                if (resData.status === 'success' && resData.url) {
-                    input.setAttribute('data-photo-url', resData.url);
-                    previewWrap.innerHTML = `<span style="color:#10b981; font-weight:bold;">✅ 已成功上傳</span> <a href="${resData.url}" target="_blank" style="color:#2563eb; font-weight:bold; text-decoration:underline;">🔗開啟雲端照片</a> <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除</button>`;
-                } else { throw new Error("後台未回傳真實網址，請確認 GAS 已正確建立「新版本」！"); }
+                const payload = { base64: compressedBase64, clientName: clientName, windowIndex: windowIdx };
+                
+                // 🚀 升級使用 google.script.run 原生隧道，無視所有瀏覽器阻擋
+                google.script.run
+                    .withSuccessHandler(function(resData) {
+                        if (resData.status === 'success' && resData.url) {
+                            input.setAttribute('data-photo-url', resData.url);
+                            previewWrap.innerHTML = `<span style="color:#10b981; font-weight:bold;">✅ 已成功上傳</span> <a href="${resData.url}" target="_blank" style="color:#2563eb; font-weight:bold; text-decoration:underline;">🔗開啟雲端照片</a> <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除</button>`;
+                        } else { 
+                            previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 後台回傳錯誤：${resData.message}</span>`;
+                            input.value = '';
+                        }
+                    })
+                    .withFailureHandler(function(error) {
+                        previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 網路連線錯誤：${error.message}</span>`;
+                        input.value = '';
+                    })
+                    .uploadPhotoRPC(payload);
+                    
             } catch (err) {
-                previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 照片上傳失敗：${err.message}</span>`; input.value = '';
+                const errorMsg = err.message || "手機記憶體崩潰或網路逾時，請重試！";
+                previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 處理失敗：${errorMsg}</span>`; 
+                input.value = '';
             }
         };
+
 
         window.clearPhoto = function(btn) {
             const card = btn.closest('.window-card'); const fileInput = card.querySelector('.w-photo-file');
@@ -944,10 +961,20 @@
             } catch (fatalErr) { alert("儲存發生異常：" + fatalErr.message); }
         };
 
-        function syncRecordToGoogleDrive(record) {
-            if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("XXXXX")) return;
-            const payload = { action: 'backup_pdfs', recordId: record.id, clientName: record.clientName || '', clientPhone: record.clientPhone || '', clientAddress: record.clientAddress || '', clientTaxId: record.clientTaxId || '', measureDate: record.measureDate || getTodayString(), timestamp: record.timestamp || new Date().toLocaleString('zh-TW'), windows: record.windows || [], quoteData: record.quoteData || {}, fullPdfHtml: generateFullPdfHtml(record), pricePdfHtml: generatePricePdfHtml(record) };
-            fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+               function syncRecordToGoogleDrive(record) {
+            const payload = { 
+                recordId: record.id, clientName: record.clientName || '', clientPhone: record.clientPhone || '', 
+                clientAddress: record.clientAddress || '', clientTaxId: record.clientTaxId || '', 
+                measureDate: record.measureDate || getTodayString(), timestamp: record.timestamp || new Date().toLocaleString('zh-TW'), 
+                windows: record.windows || [], quoteData: record.quoteData || {}, 
+                fullPdfHtml: generateFullPdfHtml(record), pricePdfHtml: generatePricePdfHtml(record) 
+            };
+            
+            // 🚀 升級使用 google.script.run，穩定寫入試算表與產製 PDF
+            google.script.run
+                .withSuccessHandler(function(res) { console.log("備份成功", res); })
+                .withFailureHandler(function(err) { console.error("備份失敗", err); })
+                .backupDataRPC(payload);
         }
 
         window.openEstimateModal = function(recordId) {
@@ -1278,3 +1305,4 @@
     </script>
 </body>
 </html>
+
