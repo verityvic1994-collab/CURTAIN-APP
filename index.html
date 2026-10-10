@@ -7,26 +7,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>望美窗簾 - 專業丈量系統</title>
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --primary-accent: #2563eb;
-            --slate-800: #1e293b;
-            --slate-600: #475569;
-            --slate-400: #94a3b8;
-            --slate-200: #e2e8f0;
-            --slate-50: #f8fafc;
-            --danger: #ef4444;
-            --success: #10b981;
-        }
+        :root { --primary: #1e3a8a; --primary-accent: #2563eb; --slate-800: #1e293b; --slate-600: #475569; --slate-400: #94a3b8; --slate-200: #e2e8f0; --slate-50: #f8fafc; --danger: #ef4444; --success: #10b981; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #f8fafc; color: var(--slate-800); padding: 12px; display: flex; justify-content: center; min-height: 100vh; }
         .container { width: 100%; max-width: 620px; background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid var(--slate-200); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); transition: max-width 0.3s ease; }
-        @media (min-width: 720px) {
-            .container { max-width: 860px; padding: 26px; }
-            .est-grid-layout { display: flex; gap: 20px; align-items: flex-start; }
-            .est-grid-left { flex: 0 0 350px; }
-            .est-grid-right { flex: 1; }
-        }
+        @media (min-width: 720px) { .container { max-width: 860px; padding: 26px; } .est-grid-layout { display: flex; gap: 20px; align-items: flex-start; } .est-grid-left { flex: 0 0 350px; } .est-grid-right { flex: 1; } }
 
         #auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(6px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; }
         .auth-box { background: #1e293b; padding: 30px 24px; border-radius: 12px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); width: 90%; max-width: 350px; border: 1px solid rgba(255,255,255,0.1); }
@@ -34,15 +19,13 @@
         .auth-box input { width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #334155; border-radius: 6px; font-size: 16px; text-align: center; background: #0f172a; color: #fff; outline: none; }
         .auth-box button { background: var(--primary-accent); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: 600; width: 100%; }
 
-        #app-content { display: none; width: 100%; }
+        #app-content, #install-quote-content, #install-menu-content { display: none; width: 100%; }
         .app-header { text-align: center; margin-bottom: 18px; }
         .app-header h1 { color: var(--primary); font-size: 21px; font-weight: 700; margin-top: 6px; }
 
         .client-info-card { background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 8px; padding: 16px; margin-bottom: 18px; }
         .client-info-title { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid var(--slate-200); padding-bottom: 5px; }
-        .form-group { margin-bottom: 10px; }
-        .form-row { display: flex; gap: 10px; }
-        .form-row .form-group { flex: 1; }
+        .form-group { margin-bottom: 10px; } .form-row { display: flex; gap: 10px; } .form-row .form-group { flex: 1; }
         label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: var(--slate-600); }
         input[type="text"], input[type="tel"], input[type="number"], input[type="date"], input[type="search"], select { width: 100%; padding: 9px 11px; border: 1px solid var(--slate-300); border-radius: 6px; font-size: 14px; background-color: #fff; color: var(--slate-800); outline: none; transition: border-color 0.15s ease; }
         input:focus, select:focus { border-color: var(--primary-accent); }
@@ -52,14 +35,10 @@
         .window-title { font-size: 15px; font-weight: 700; color: var(--slate-800); }
         .delete-btn { background: #fee2e2; color: var(--danger); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
 
-        .options-group { margin-bottom: 12px; }
-        .options-title { font-weight: 600; margin-bottom: 6px; font-size: 13px; color: var(--slate-600); }
+        .options-group { margin-bottom: 12px; } .options-title { font-weight: 600; margin-bottom: 6px; font-size: 13px; color: var(--slate-600); }
         .checkbox-container { display: flex; flex-wrap: wrap; gap: 8px; }
         .checkbox-item { display: flex; align-items: center; gap: 6px; cursor: pointer; background: var(--slate-50); padding: 7px 11px; border-radius: 6px; font-size: 13px; flex: 1 1 calc(50% - 4px); min-width: 90px; border: 1px solid var(--slate-200); }
         .checkbox-item input { width: 16px; height: 16px; accent-color: var(--primary); }
-
-        .photo-upload-zone { margin: 12px 0; padding: 10px 12px; background: #f8fafc; border: 1px dashed var(--slate-300); border-radius: 6px; }
-        .photo-preview-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; align-items: center; font-size: 13px; }
 
         .t-chart-container { display: flex; justify-content: center; align-items: center; margin: 8px 0; padding: 14px 0; background: var(--slate-50); border: 1px dashed var(--slate-300); border-radius: 8px; overflow-x: auto; }
         .t-chart { position: relative; width: 320px; height: 330px; transform-origin: center center; }
@@ -76,9 +55,7 @@
 
         .btn-block { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
         button.action-btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; color: white; transition: opacity 0.15s ease; }
-        button.action-btn:active { opacity: 0.9; }
-        .btn-add { background: var(--primary); }
-        .btn-save { background: var(--success); }
+        button.action-btn:active { opacity: 0.9; } .btn-add { background: var(--primary); } .btn-save { background: var(--success); }
         #btn-cancel-edit { background: var(--slate-600); display: none !important; }
 
         .search-box { margin-top: 26px; border-top: 1px dashed var(--slate-300); padding-top: 16px; }
@@ -90,12 +67,7 @@
         .history-client-details { display: none; font-size: 13px; color: var(--slate-600); background: var(--slate-50); padding: 10px; border-radius: 6px; margin: 6px 0; border: 1px solid var(--slate-200); }
 
         .btn-tag { padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; border: none; color: white; }
-        .toggle-btn { background-color: var(--slate-600); }
-        .estimate-btn { background-color: #8b5cf6; }
-        .pdf-btn { background-color: #d97706; }
-        .pdf-price-only-btn { background-color: var(--primary); }
-        .row-delete-btn { background-color: var(--danger); }
-        .row-edit-btn { background-color: var(--success); }
+        .toggle-btn { background-color: var(--slate-600); } .estimate-btn { background-color: #8b5cf6; } .pdf-btn { background-color: #d97706; } .pdf-price-only-btn { background-color: var(--primary); } .row-delete-btn { background-color: var(--danger); } .row-edit-btn { background-color: var(--success); }
 
         #history-lightbox, #estimate-lightbox, #iq-history-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 5000; display: none; flex-direction: column; padding: 16px; overflow: hidden; }
         .lightbox-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--primary); margin-bottom: 12px; }
@@ -120,8 +92,6 @@
         .t-locked-box small { font-size: 10px; color: var(--slate-400); font-weight: 600; display: block; line-height: 1.1; }
         .t-locked-box strong { font-size: 13px; color: var(--slate-800); display: block; }
 
-        /* ======== 純安裝報價單專用樣式 ======== */
-        #install-quote-content { display: none; width: 100%; }
         .iq-theme { --primary: #0ea5e9; --primary-accent: #38bdf8; }
         .install-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 20px; }
         .install-table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 14px; }
@@ -144,8 +114,6 @@
         .install-terms ol { padding-left: 20px; margin: 0; }
         .iq-delete-btn { background: #fee2e2; color: #ef4444; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
 
-        /* ======== 安裝代工價目表 (Menu) 專用樣式 ======== */
-        #install-menu-content { display: none; width: 100%; }
         .menu-a4-container { width: 100%; background: #ffffff; padding: 15px; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin: 0 auto; box-sizing: border-box; }
         @media (min-width: 720px) { .menu-a4-container { padding: 30px; } }
         .menu-header { text-align: center; border-bottom: 3px double #0ea5e9; padding-bottom: 15px; margin-bottom: 20px; }
@@ -169,27 +137,25 @@
             .no-print { display: none !important; }
             #install-menu-content [contenteditable="true"] { background-color: transparent !important; border: none !important; padding: 0 !important; color: inherit !important; font-weight: bold !important; }
         }
-        /* ==================================== */
     </style>
 </head>
 <body>
     <div class="container">
         <div id="auth-overlay">
             <div class="auth-box">
-                <h2> 🔒  丈量系統登入</h2>
+                <h2> 🔒 丈量系統登入</h2>
                 <input type="password" id="sys-password" placeholder="請輸入POLO生日四碼" pattern="\d*" inputmode="numeric">
                 <button onclick="window.checkPassword()">登入系統</button>
             </div>
         </div>
 
-        <!-- ================= 原有主系統區塊 ================= -->
         <div id="app-content">
             <div class="app-header">
                 <h1 id="main-header">📋 望美窗簾 - 現場丈量單</h1>
             </div>
             
             <div class="client-info-card">
-                <div class="client-info-title"> 👤  客戶基本資料</div>
+                <div class="client-info-title"> 👤 客戶基本資料</div>
                 <div class="form-row">
                     <div class="form-group"><label>客戶姓名：</label><input type="text" id="client-name" placeholder="姓名"></div>
                     <div class="form-group"><label>聯絡電話：</label><input type="tel" id="client-phone" placeholder="電話"></div>
@@ -206,28 +172,26 @@
             <div id="window-list"></div>
 
             <div class="btn-block">
-                <button class="action-btn btn-add" id="btn-add-window" onclick="addWindowItem()"> ➕  新增下一個窗戶項目</button>
-                <button class="action-btn btn-save" id="btn-save-main" onclick="saveDataToLocalStorage()"> 💾  儲存尺寸並自動備份雲端</button>
-                <button class="action-btn" id="btn-cancel-edit" onclick="cancelEdit()" style="display: none !important;"> ✕  取消修改 (不儲存)</button>
+                <button class="action-btn btn-add" id="btn-add-window" onclick="addWindowItem()"> ➕ 新增下一個窗戶項目</button>
+                <button class="action-btn btn-save" id="btn-save-main" onclick="saveDataToLocalStorage()"> 💾 儲存尺寸並自動備份雲端</button>
+                <button class="action-btn" id="btn-cancel-edit" onclick="cancelEdit()" style="display: none !important;"> ✕ 取消修改 (不儲存)</button>
             </div>
             
-            <!-- 歷史紀錄與功能切換按鈕區塊 -->
             <div class="btn-block" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
-                <button class="action-btn" style="background-color: var(--primary);" onclick="openHistoryLightbox()"> 📋  查看客戶歷史紀錄</button>
+                <button class="action-btn" style="background-color: var(--primary);" onclick="openHistoryLightbox()"> 📋 查看客戶歷史紀錄</button>
                 <div style="display: flex; gap: 8px;">
-                    <button class="action-btn" style="background-color: #0ea5e9; flex: 1;" onclick="goToInstallQuote()"> 🛠️  切換至代工報價單</button>
-                    <button class="action-btn" style="background-color: #14b8a6; flex: 1;" onclick="goToInstallMenu()"> 📋  代工價目表(Menu)</button>
+                    <button class="action-btn" style="background-color: #0ea5e9; flex: 1;" onclick="goToInstallQuote()"> 🛠️ 切換至代工報價單</button>
+                    <button class="action-btn" style="background-color: #14b8a6; flex: 1;" onclick="goToInstallMenu()"> 📋 代工價目表(Menu)</button>
                 </div>
             </div>
 
             <div class="search-box">
-                <h2 style="font-size:15px; margin-bottom:8px;"> 🔍  查詢歷史紀錄</h2>
+                <h2 style="font-size:15px; margin-bottom:8px;"> 🔍 查詢歷史紀錄</h2>
                 <input type="search" id="search-input" placeholder="輸入客戶姓名或地址搜尋..." oninput="searchData()">
                 <div id="search-results"></div>
             </div>
         </div>
 
-        <!-- ================= 純安裝代工報價單區塊 ================= -->
         <div id="install-quote-content" class="iq-theme">
             <button class="action-btn no-print" style="background-color: var(--slate-600); margin-bottom: 20px; width: auto; display: inline-flex; padding: 8px 16px;" onclick="backToMainApp()"> ⬅️ 返回丈量主畫面</button>
             
@@ -237,15 +201,15 @@
             </div>
 
             <div class="client-info-card" style="border-color: #bae6fd; background-color: #f0f9ff;">
-                <div class="client-info-title" style="color: #0369a1; border-bottom-color: #bae6fd;"> 服務師傅資訊</div>
+                <div class="client-info-title" style="color: #0369a1; border-bottom-color: #bae6fd;"> 👨‍🔧 服務師傅資訊</div>
                 <div style="font-size: 14px; color: #075985; line-height: 1.8;">
                     <strong>師傅姓名：</strong>劉育聖 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong>poloem7<br>
-                    <strong>聯絡電話：</strong>0985783050 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong>06-2613210
+                    <strong>聯絡電話：</strong>0985286257 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong>06-2613210
                 </div>
             </div>
 
             <div class="client-info-card">
-                <div class="client-info-title"> 👤  客戶基本資料</div>
+                <div class="client-info-title"> 👤 客戶基本資料</div>
                 <div class="form-row">
                     <div class="form-group"><label>客戶姓名/案名：</label><input type="text" id="iq-client-name" placeholder="姓名或案名"></div>
                     <div class="form-group"><label>聯絡電話：</label><input type="tel" id="iq-client-phone" placeholder="電話"></div>
@@ -309,7 +273,6 @@
                 </ol>
             </div>
 
-            <!-- 報價單底部的操作按鈕 -->
             <div class="btn-block no-print" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
                 <div style="display: flex; gap: 10px;">
                     <button class="action-btn btn-save" style="flex: 1;" id="btn-save-iq" onclick="saveInstallQuote()"> 💾 儲存報價資料</button>
@@ -322,7 +285,6 @@
             </div>
         </div>
 
-        <!-- ================= 安裝代工價目表 (Menu) 區塊 ================= -->
         <div id="install-menu-content">
             <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;" class="no-print">
                 <button class="action-btn" style="background-color: var(--slate-600); width: auto; display: inline-flex; padding: 8px 16px;" onclick="backToMainFromMenu()"> ⬅️ 返回主畫面</button>
@@ -332,13 +294,13 @@
 
             <div class="menu-a4-container">
                 <div class="menu-header">
-                    <h1>望美窗簾 - 專業安裝代工價目表</h1>
+                    <h1>🛠️ 望美窗簾 - 專業安裝代工價目表</h1>
                     <p>台南市南區健康路一段335號 ｜ 專業工法 ‧ 現場客製 ‧ 責任施工</p>
                 </div>
 
                 <div class="menu-info-card">
-                    <div><strong>服務專員：</strong><span contenteditable="true">劉育聖</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong><span contenteditable="true">poloem7</span></div>
-                    <div><strong>手機：</strong><span contenteditable="true">0985783050</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong><span contenteditable="true">06-2613210</span></div>
+                    <div><strong>👨‍🔧 服務專員：</strong><span contenteditable="true">劉育聖</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>LINE ID：</strong><span contenteditable="true">poloem7</span></div>
+                    <div><strong>手機：</strong><span contenteditable="true">0985286257</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>市話：</strong><span contenteditable="true">06-2613210</span></div>
                 </div>
 
                 <div class="menu-section-title">一、 基本出勤與標準窗型安裝（單位：窗）</div>
@@ -383,525 +345,172 @@
         </div>
     </div>
 
-    <!-- ================= 歷史紀錄與估價燈箱 ================= -->
     <div id="history-lightbox">
         <div class="lightbox-header">
-            <span class="lightbox-title"> 📋  客戶丈量歷史紀錄</span>
-            <button class="lightbox-close-btn" onclick="closeHistoryLightbox()"> ❌  關閉返回</button>
+            <span class="lightbox-title"> 📋 客戶丈量歷史紀錄</span>
+            <button class="lightbox-close-btn" onclick="closeHistoryLightbox()"> ❌ 關閉返回</button>
         </div>
         <div id="lightbox-list" class="lightbox-content"></div>
     </div>
 
     <div id="estimate-lightbox">
         <div class="lightbox-header">
-            <span class="lightbox-title" id="est-lightbox-title">客戶估價試算</span>
+            <span class="lightbox-title" id="est-lightbox-title"> 💰 客戶估價試算</span>
             <div style="display: flex; gap: 8px;">
-                <button class="lightbox-save-btn" onclick="saveEstimateAndClose()"> 💾  儲存並返回</button>
-                <button class="lightbox-close-btn" onclick="closeEstimateLightbox()"> ✕  關閉</button>
+                <button class="lightbox-save-btn" onclick="saveEstimateAndClose()"> 💾 儲存並返回</button>
+                <button class="lightbox-close-btn" onclick="closeEstimateLightbox()"> ✕ 關閉</button>
             </div>
         </div>
         <div class="lightbox-content" id="estimate-lightbox-content"></div>
     </div>
 
-    <!-- 新增：代工報價歷史紀錄燈箱 -->
     <div id="iq-history-lightbox">
         <div class="lightbox-header">
-            <span class="lightbox-title" style="color: #0ea5e9;"> 📋  安裝代工報價紀錄</span>
-            <button class="lightbox-close-btn" onclick="closeIqHistoryLightbox()"> ❌  關閉返回</button>
+            <span class="lightbox-title" style="color: #0ea5e9;"> 📋 安裝代工報價紀錄</span>
+            <button class="lightbox-close-btn" onclick="closeIqHistoryLightbox()"> ❌ 關閉返回</button>
         </div>
         <div id="iq-lightbox-list" class="lightbox-content"></div>
     </div>
 
     <script>
-        // ================= 原有系統變數與函數 =================
+        // ⚠️【請將這裡替換成您在 GAS 部署的新版本網址 (包含 https://.../exec)】
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqp2Kgkix6IsTIxG6Fs2qai7hkgz_35gZS6FS0yxWkh2H8yWUWMcL3KusoBBlRZvY8VA/exec";
+
         let editingId = null;
         let windowCount = 0;
         let currentEstimatingRecordId = null;
-        let editingIqId = null; // 代工報價單編輯 ID
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKJZ1PGGme_FKPDzcAdVXEOt6AgZpyAIfOvODAqQj8sHecfVBKuCL023XKMKHRwh-NhA/exec";
+        let editingIqId = null; 
 
         window.checkPassword = function() {
             const pass = document.getElementById('sys-password').value;
             if(pass === "1219") {
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('app-content').style.display = 'block';
-                window.location.hash = 'main'; // 登入後設定 hash
-            } else {
-                alert('密碼錯誤，請重新輸入！');
-            }
+                window.location.hash = 'main'; 
+            } else { alert('密碼錯誤，請重新輸入！'); }
         };
 
-        function getTodayString() {
-            const today = new Date();
-            const y = today.getFullYear();
-            const m = String(today.getMonth() + 1).padStart(2, '0');
-            const d = String(today.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
-        }
+        document.getElementById('sys-password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') { window.checkPassword(); }
+        });
 
-        // ================= 防誤觸返回與重整保護機制 (Hash Routing + BeforeUnload) =================
-        
-        // 1. 攔截返回鍵 (透過監聽 hash 變化來切換頁面，不重新整理)
+        function getTodayString() { const today = new Date(); const y = today.getFullYear(); const m = String(today.getMonth() + 1).padStart(2, '0'); const d = String(today.getDate()).padStart(2, '0'); return `${y}-${m}-${d}`; }
+
         window.addEventListener('hashchange', function() {
             const hash = window.location.hash;
-            
-            // 隱藏所有主區塊
-            document.getElementById('app-content').style.display = 'none';
-            document.getElementById('install-quote-content').style.display = 'none';
-            document.getElementById('install-menu-content').style.display = 'none';
-            
-            // 關閉所有可能開啟的燈箱
-            closeHistoryLightbox();
-            closeEstimateLightbox();
-            closeIqHistoryLightbox();
-            
-            // 根據 hash 顯示對應畫面
-            if (hash === '#quote') {
-                document.getElementById('install-quote-content').style.display = 'block';
-            } else if (hash === '#menu') {
-                document.getElementById('install-menu-content').style.display = 'block';
-            } else {
-                // 預設或 '#main' 皆顯示主丈量畫面
-                document.getElementById('app-content').style.display = 'block';
-            }
+            document.getElementById('app-content').style.display = 'none'; document.getElementById('install-quote-content').style.display = 'none'; document.getElementById('install-menu-content').style.display = 'none';
+            closeHistoryLightbox(); closeEstimateLightbox(); closeIqHistoryLightbox();
+            if (hash === '#quote') { document.getElementById('install-quote-content').style.display = 'block'; } else if (hash === '#menu') { document.getElementById('install-menu-content').style.display = 'block'; } else { document.getElementById('app-content').style.display = 'block'; }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // 2. 防止誤觸重新整理 (提示確認視窗)
-        window.addEventListener('beforeunload', function (e) {
-            // 這個提示只有在使用者真正要離開網頁或按 F5/下拉重整時才會跳出
-            e.preventDefault();
-            e.returnValue = '';
-        });
+        window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; });
 
-        // 3. 修改跳轉按鈕，改為操作 hash，而非直接改 display
-        window.goToInstallQuote = function() { 
-            document.getElementById('iq-client-date').value = getTodayString();
-            window.location.hash = 'quote'; 
-        };
-        window.goToInstallMenu = function() { 
-            window.location.hash = 'menu'; 
-        };
-        window.backToMainApp = function() { 
-            window.location.hash = 'main'; 
-        };
-        window.backToMainFromMenu = function() { 
-            window.location.hash = 'main'; 
-        };
+        window.goToInstallQuote = function() { document.getElementById('iq-client-date').value = getTodayString(); window.location.hash = 'quote'; };
+        window.goToInstallMenu = function() { window.location.hash = 'menu'; };
+        window.backToMainApp = function() { window.location.hash = 'main'; };
+        window.backToMainFromMenu = function() { window.location.hash = 'main'; };
 
-        // ================= 純安裝報價單的模組化運算邏輯 =================
-        const iqStandardTemplates = [
-            {name: "捲簾 / 調光簾 / 蜂巢簾", price: 350},
-            {name: "傳統布簾 / 紗簾（單軌）", price: 470},
-            {name: "雙層布紗簾 / 蛇行簾（雙軌）", price: 650},
-            {name: "木百葉 / 鋁百葉 / 羅馬簾", price: 700},
-            {name: "電動窗簾安裝與設定", price: 1850}
-        ];
-        
-        const iqExtraTemplates = [
-            {name: "特殊牆面鑽孔（大理石 / 磁磚 / RC）", price: 300},
-            {name: "挑高 / 樓梯間高空施工（>3.2m）", price: 850},
-            {name: "舊窗簾與舊軌道拆除", price: 150},
-            {name: "淘寶/網購拼接式軌道現場組裝", price: 200},
-            {name: "金屬軌道現場裁切修改", price: 150}
-        ];
+        const iqStandardTemplates = [{name: "捲簾 / 調光簾 / 蜂巢簾", price: 350}, {name: "傳統布簾 / 紗簾（單軌）", price: 470}, {name: "雙層布紗簾 / 蛇行簾（雙軌）", price: 650}, {name: "木百葉 / 鋁百葉 / 羅馬簾", price: 700}, {name: "電動窗簾安裝與設定", price: 1850}];
+        const iqExtraTemplates = [{name: "特殊牆面鑽孔（大理石 / 磁磚 / RC）", price: 300}, {name: "挑高 / 樓梯間高空施工（>3.2m）", price: 850}, {name: "舊窗簾與舊軌道拆除", price: 150}, {name: "淘寶/網購拼接式軌道現場組裝", price: 200}, {name: "金屬軌道現場裁切修改", price: 150}];
 
         function initIqSelects() {
-            const stdSelect = document.getElementById('iq-std-select');
-            iqStandardTemplates.forEach((t, i) => { stdSelect.innerHTML += `<option value="${i}">${t.name} ($${t.price})</option>`; });
-            const extraSelect = document.getElementById('iq-extra-select');
-            iqExtraTemplates.forEach((t, i) => { extraSelect.innerHTML += `<option value="${i}">${t.name} (+$${t.price})</option>`; });
+            const stdSelect = document.getElementById('iq-std-select'); iqStandardTemplates.forEach((t, i) => { stdSelect.innerHTML += `<option value="${i}">${t.name} ($${t.price})</option>`; });
+            const extraSelect = document.getElementById('iq-extra-select'); iqExtraTemplates.forEach((t, i) => { extraSelect.innerHTML += `<option value="${i}">${t.name} (+$${t.price})</option>`; });
         }
 
         let iqStdRowCount = 1; let iqExtraRowCount = 6; 
         window.addIqRow = function(type) {
-            const isStd = (type === 'std');
-            const selectEl = document.getElementById(isStd ? 'iq-std-select' : 'iq-extra-select');
-            const tbody = document.getElementById(isStd ? 'iq-std-tbody' : 'iq-extra-tbody');
-            const templates = isStd ? iqStandardTemplates : iqExtraTemplates;
+            const isStd = (type === 'std'); const selectEl = document.getElementById(isStd ? 'iq-std-select' : 'iq-extra-select'); const tbody = document.getElementById(isStd ? 'iq-std-tbody' : 'iq-extra-tbody'); const templates = isStd ? iqStandardTemplates : iqExtraTemplates;
             if (selectEl.value === "") { alert("請先從下拉選單選擇一個項目！"); return; }
-            const selectedItem = templates[selectEl.value];
-            const rowIdx = isStd ? ++iqStdRowCount : ++iqExtraRowCount;
-            const tr = document.createElement('tr');
-            tr.className = `iq-dynamic-row iq-${type}-item`;
-            tr.innerHTML = `
-                <td>${rowIdx}</td>
-                <td><input type="text" class="text-left-input iq-name" value="${selectedItem.name}"></td>
-                <td><input type="number" class="iq-qty" min="0" value="" placeholder="填數量" oninput="calculateInstallTotals()"></td>
-                <td><input type="number" class="iq-price" value="${selectedItem.price}" oninput="calculateInstallTotals()"></td>
-                <td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">0</span></td>
-                <td><input type="text" class="iq-note" placeholder="" value=""></td>
-                <td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>
-            `;
+            const selectedItem = templates[selectEl.value]; const rowIdx = isStd ? ++iqStdRowCount : ++iqExtraRowCount;
+            const tr = document.createElement('tr'); tr.className = `iq-dynamic-row iq-${type}-item`;
+            tr.innerHTML = `<td>${rowIdx}</td><td><input type="text" class="text-left-input iq-name" value="${selectedItem.name}"></td><td><input type="number" class="iq-qty" min="0" value="" placeholder="填數量" oninput="calculateInstallTotals()"></td><td><input type="number" class="iq-price" value="${selectedItem.price}" oninput="calculateInstallTotals()"></td><td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">0</span></td><td><input type="text" class="iq-note" placeholder="" value=""></td><td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>`;
             tbody.appendChild(tr); selectEl.value = "";
         };
 
         window.removeIqRow = function(btn) { btn.closest('tr').remove(); calculateInstallTotals(); reindexIqRows(); };
-
-        function reindexIqRows() {
-            iqStdRowCount = 1;
-            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(tr => { tr.cells[0].innerText = ++iqStdRowCount; });
-            iqExtraRowCount = iqStdRowCount;
-            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(tr => { tr.cells[0].innerText = ++iqExtraRowCount; });
-        }
-
+        function reindexIqRows() { iqStdRowCount = 1; document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(tr => { tr.cells[0].innerText = ++iqStdRowCount; }); iqExtraRowCount = iqStdRowCount; document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(tr => { tr.cells[0].innerText = ++iqExtraRowCount; }); }
         window.calculateInstallTotals = function() {
             let standardSum = 0; let extraSum = 0;
-            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(row => {
-                const qty = parseFloat(row.querySelector('.iq-qty').value) || 0; const price = parseFloat(row.querySelector('.iq-price').value) || 0;
-                const sub = qty * price; row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString(); standardSum += sub;
-            });
-            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(row => {
-                const qty = parseFloat(row.querySelector('.iq-qty').value) || 0; const price = parseFloat(row.querySelector('.iq-price').value) || 0;
-                const sub = qty * price; row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString(); extraSum += sub;
-            });
-            const actualWorkTotal = standardSum + extraSum;
-            let finalGrandTotal = 0; let baseFeeSubtotal = 0; let baseFeeQty = 0;
-            if (actualWorkTotal > 0) {
-                baseFeeQty = 1;
-                if (actualWorkTotal < 1250) { baseFeeSubtotal = 1250 - actualWorkTotal; finalGrandTotal = 1250; } 
-                else { baseFeeSubtotal = 0; finalGrandTotal = actualWorkTotal; }
-            }
-            document.getElementById('iq-base-fee-qty').textContent = baseFeeQty; document.getElementById('iq-base-fee-subtotal').textContent = baseFeeSubtotal.toLocaleString();
-            document.getElementById('iq-sum-standard').textContent = standardSum.toLocaleString(); document.getElementById('iq-sum-extra').textContent = extraSum.toLocaleString(); document.getElementById('iq-sum-grand').textContent = finalGrandTotal.toLocaleString();
+            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(row => { const qty = parseFloat(row.querySelector('.iq-qty').value) || 0; const price = parseFloat(row.querySelector('.iq-price').value) || 0; const sub = qty * price; row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString(); standardSum += sub; });
+            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(row => { const qty = parseFloat(row.querySelector('.iq-qty').value) || 0; const price = parseFloat(row.querySelector('.iq-price').value) || 0; const sub = qty * price; row.querySelector('.iq-row-subtotal').textContent = sub.toLocaleString(); extraSum += sub; });
+            const actualWorkTotal = standardSum + extraSum; let finalGrandTotal = 0; let baseFeeSubtotal = 0; let baseFeeQty = 0;
+            if (actualWorkTotal > 0) { baseFeeQty = 1; if (actualWorkTotal < 1250) { baseFeeSubtotal = 1250 - actualWorkTotal; finalGrandTotal = 1250; } else { baseFeeSubtotal = 0; finalGrandTotal = actualWorkTotal; } }
+            document.getElementById('iq-base-fee-qty').textContent = baseFeeQty; document.getElementById('iq-base-fee-subtotal').textContent = baseFeeSubtotal.toLocaleString(); document.getElementById('iq-sum-standard').textContent = standardSum.toLocaleString(); document.getElementById('iq-sum-extra').textContent = extraSum.toLocaleString(); document.getElementById('iq-sum-grand').textContent = finalGrandTotal.toLocaleString();
         };
 
-        // ================= 新增：代工報價單的歷史紀錄儲存與讀取 =================
         window.saveInstallQuote = function() {
-            const clientName = document.getElementById('iq-client-name').value.trim();
-            if(!clientName) { alert("請填寫客戶姓名或案名！"); return; }
-            
-            const record = {
-                id: editingIqId || new Date().getTime().toString(),
-                clientName: clientName,
-                clientPhone: document.getElementById('iq-client-phone').value.trim(),
-                clientAddress: document.getElementById('iq-client-address').value.trim(),
-                clientDate: document.getElementById('iq-client-date').value,
-                clientTaxId: document.getElementById('iq-client-taxid').value.trim(),
-                baseFeeQty: document.getElementById('iq-base-fee-qty').textContent,
-                baseFeeSubtotal: document.getElementById('iq-base-fee-subtotal').textContent,
-                stdItems: [],
-                extraItems: [],
-                sumStandard: document.getElementById('iq-sum-standard').textContent,
-                sumExtra: document.getElementById('iq-sum-extra').textContent,
-                sumGrand: document.getElementById('iq-sum-grand').textContent,
-                timestamp: new Date().toLocaleString('zh-TW')
-            };
-
-            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(row => {
-                record.stdItems.push({
-                    name: row.querySelector('.iq-name').value,
-                    qty: row.querySelector('.iq-qty').value,
-                    price: row.querySelector('.iq-price').value,
-                    subtotal: row.querySelector('.iq-row-subtotal').textContent,
-                    note: row.querySelector('.iq-note').value
-                });
-            });
-
-            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(row => {
-                record.extraItems.push({
-                    name: row.querySelector('.iq-name').value,
-                    qty: row.querySelector('.iq-qty').value,
-                    price: row.querySelector('.iq-price').value,
-                    subtotal: row.querySelector('.iq-row-subtotal').textContent,
-                    note: row.querySelector('.iq-note').value
-                });
-            });
-
+            const clientName = document.getElementById('iq-client-name').value.trim(); if(!clientName) { alert("請填寫客戶姓名或案名！"); return; }
+            const record = { id: editingIqId || new Date().getTime().toString(), clientName: clientName, clientPhone: document.getElementById('iq-client-phone').value.trim(), clientAddress: document.getElementById('iq-client-address').value.trim(), clientDate: document.getElementById('iq-client-date').value, clientTaxId: document.getElementById('iq-client-taxid').value.trim(), baseFeeQty: document.getElementById('iq-base-fee-qty').textContent, baseFeeSubtotal: document.getElementById('iq-base-fee-subtotal').textContent, stdItems: [], extraItems: [], sumStandard: document.getElementById('iq-sum-standard').textContent, sumExtra: document.getElementById('iq-sum-extra').textContent, sumGrand: document.getElementById('iq-sum-grand').textContent, timestamp: new Date().toLocaleString('zh-TW') };
+            document.querySelectorAll('#iq-std-tbody .iq-dynamic-row').forEach(row => { record.stdItems.push({ name: row.querySelector('.iq-name').value, qty: row.querySelector('.iq-qty').value, price: row.querySelector('.iq-price').value, subtotal: row.querySelector('.iq-row-subtotal').textContent, note: row.querySelector('.iq-note').value }); });
+            document.querySelectorAll('#iq-extra-tbody .iq-dynamic-row').forEach(row => { record.extraItems.push({ name: row.querySelector('.iq-name').value, qty: row.querySelector('.iq-qty').value, price: row.querySelector('.iq-price').value, subtotal: row.querySelector('.iq-row-subtotal').textContent, note: row.querySelector('.iq-note').value }); });
             let history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
-            if (editingIqId) {
-                const idx = history.findIndex(r => r.id === editingIqId);
-                if (idx > -1) { history[idx] = record; }
-                alert("✅ 修改已成功儲存！");
-            } else {
-                history.unshift(record);
-                alert("✅ 安裝代工報價單已成功儲存至歷史紀錄！");
-            }
-            
-            localStorage.setItem('install_quotes_history', JSON.stringify(history));
-            resetIqForm();
+            if (editingIqId) { const idx = history.findIndex(r => r.id === editingIqId); if (idx > -1) { history[idx] = record; } alert("✅ 修改已成功儲存！"); } else { history.unshift(record); alert("✅ 安裝代工報價單已成功儲存至歷史紀錄！"); }
+            localStorage.setItem('install_quotes_history', JSON.stringify(history)); resetIqForm();
         };
 
         window.resetIqForm = function() {
-            editingIqId = null;
-            document.getElementById('iq-client-name').value = '';
-            document.getElementById('iq-client-phone').value = '';
-            document.getElementById('iq-client-address').value = '台南市';
-            document.getElementById('iq-client-date').value = getTodayString();
-            document.getElementById('iq-client-taxid').value = '';
-            
-            document.getElementById('iq-std-tbody').innerHTML = `
-                <tr style="background-color: #fffaf0;">
-                    <td>1</td><td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td>
-                    <td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td><td>$1,250</td><td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td>
-                    <td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td><td>-</td>
-                </tr>`;
-            document.getElementById('iq-extra-tbody').innerHTML = '';
-            
-            document.getElementById('btn-save-iq').innerText = "💾 儲存報價資料";
-            document.getElementById('btn-save-iq').style.backgroundColor = "";
-            document.getElementById('btn-cancel-iq').style.display = "none";
-            
-            reindexIqRows();
-            calculateInstallTotals();
+            editingIqId = null; document.getElementById('iq-client-name').value = ''; document.getElementById('iq-client-phone').value = ''; document.getElementById('iq-client-address').value = '台南市'; document.getElementById('iq-client-date').value = getTodayString(); document.getElementById('iq-client-taxid').value = '';
+            document.getElementById('iq-std-tbody').innerHTML = `<tr style="background-color: #fffaf0;"><td>1</td><td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td><td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td><td>$1,250</td><td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td><td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td><td>-</td></tr>`;
+            document.getElementById('iq-extra-tbody').innerHTML = ''; document.getElementById('btn-save-iq').innerText = "💾 儲存報價資料"; document.getElementById('btn-save-iq').style.backgroundColor = ""; document.getElementById('btn-cancel-iq').style.display = "none"; reindexIqRows(); calculateInstallTotals();
         };
 
-        window.cancelIqEdit = function() {
-            if(!confirm("確定要取消修改嗎？未儲存的變更將消失。")) return;
-            resetIqForm();
-        };
+        window.cancelIqEdit = function() { if(!confirm("確定要取消修改嗎？未儲存的變更將消失。")) return; resetIqForm(); };
 
         window.openIqHistoryLightbox = function() {
-            const history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
-            const listDiv = document.getElementById('iq-lightbox-list');
-            listDiv.innerHTML = '';
-            
+            const history = JSON.parse(localStorage.getItem('install_quotes_history')) || []; const listDiv = document.getElementById('iq-lightbox-list'); listDiv.innerHTML = '';
             if(history.length === 0) { alert("目前沒有代工報價紀錄！"); return; }
-            
-            history.forEach(record => {
-                listDiv.innerHTML += `
-                    <div class="history-item-simplified" style="border-left: 3px solid #0ea5e9;">
-                        <div class="hist-top-line">
-                            <span class="hist-client-title">👤 客戶：${record.clientName}</span>
-                            <span style="font-size:12px; color:#0ea5e9; font-weight:bold;">📅 報價日期：${record.clientDate}</span>
-                        </div>
-                        <div class="hist-info-line">📍 <strong>地址：</strong>${record.clientAddress}</div>
-                        <div class="hist-info-line" style="margin-top:4px; font-weight:bold; color:var(--danger);">💰 總報價金額：$${record.sumGrand}</div>
-                        <div class="hist-actions-bar">
-                            <button class="btn-tag row-edit-btn" onclick="loadIqRecordForEdit('${record.id}')">✏️ 載入修改</button>
-                            <button class="btn-tag row-delete-btn" onclick="deleteIqRecord('${record.id}', '${record.clientName}')">❌ 刪除</button>
-                        </div>
-                    </div>
-                `;
-            });
+            history.forEach(record => { listDiv.innerHTML += `<div class="history-item-simplified" style="border-left: 3px solid #0ea5e9;"><div class="hist-top-line"><span class="hist-client-title">👤 客戶：${record.clientName}</span><span style="font-size:12px; color:#0ea5e9; font-weight:bold;">📅 報價日期：${record.clientDate}</span></div><div class="hist-info-line">📍 <strong>地址：</strong>${record.clientAddress}</div><div class="hist-info-line" style="margin-top:4px; font-weight:bold; color:var(--danger);">💰 總報價金額：$${record.sumGrand}</div><div class="hist-actions-bar"><button class="btn-tag row-edit-btn" onclick="loadIqRecordForEdit('${record.id}')">✏️ 載入修改</button><button class="btn-tag row-delete-btn" onclick="deleteIqRecord('${record.id}', '${record.clientName}')">❌ 刪除</button></div></div>`; });
             document.getElementById('iq-history-lightbox').style.display = 'flex';
         };
 
-        window.closeIqHistoryLightbox = function() {
-            document.getElementById('iq-history-lightbox').style.display = 'none';
-        };
+        window.closeIqHistoryLightbox = function() { document.getElementById('iq-history-lightbox').style.display = 'none'; };
 
         window.loadIqRecordForEdit = function(id) {
-            const history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
-            const record = history.find(r => r.id === id);
-            if(!record) return;
-            
-            editingIqId = id;
-            document.getElementById('iq-client-name').value = record.clientName || '';
-            document.getElementById('iq-client-phone').value = record.clientPhone || '';
-            document.getElementById('iq-client-address').value = record.clientAddress || '';
-            document.getElementById('iq-client-date').value = record.clientDate || getTodayString();
-            document.getElementById('iq-client-taxid').value = record.clientTaxId || '';
-            
-            document.getElementById('iq-std-tbody').innerHTML = `
-                <tr style="background-color: #fffaf0;">
-                    <td>1</td><td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td>
-                    <td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td><td>$1,250</td><td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td>
-                    <td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td><td>-</td>
-                </tr>`;
+            const history = JSON.parse(localStorage.getItem('install_quotes_history')) || []; const record = history.find(r => r.id === id); if(!record) return; editingIqId = id;
+            document.getElementById('iq-client-name').value = record.clientName || ''; document.getElementById('iq-client-phone').value = record.clientPhone || ''; document.getElementById('iq-client-address').value = record.clientAddress || ''; document.getElementById('iq-client-date').value = record.clientDate || getTodayString(); document.getElementById('iq-client-taxid').value = record.clientTaxId || '';
+            document.getElementById('iq-std-tbody').innerHTML = `<tr style="background-color: #fffaf0;"><td>1</td><td class="text-left" style="font-weight:bold; color:var(--slate-800);">基本出勤費<br><small style="color:var(--slate-500); font-weight:normal;">單次到府基本工資</small></td><td><span id="iq-base-fee-qty" style="font-weight:bold;">0</span></td><td>$1,250</td><td style="color:var(--danger); font-weight:bold;">$<span id="iq-base-fee-subtotal">0</span></td><td><input type="text" style="background:transparent; border:none;" placeholder="自動計算差額" readonly></td><td>-</td></tr>`;
             document.getElementById('iq-extra-tbody').innerHTML = '';
-            
-            record.stdItems.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = `iq-dynamic-row iq-std-item`;
-                tr.innerHTML = `
-                    <td></td>
-                    <td><input type="text" class="text-left-input iq-name" value="${item.name}"></td>
-                    <td><input type="number" class="iq-qty" min="0" value="${item.qty}" placeholder="填數量" oninput="calculateInstallTotals()"></td>
-                    <td><input type="number" class="iq-price" value="${item.price}" oninput="calculateInstallTotals()"></td>
-                    <td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">${item.subtotal}</span></td>
-                    <td><input type="text" class="iq-note" placeholder="" value="${item.note}"></td>
-                    <td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>
-                `;
-                document.getElementById('iq-std-tbody').appendChild(tr);
-            });
-            
-            record.extraItems.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = `iq-dynamic-row iq-extra-item`;
-                tr.innerHTML = `
-                    <td></td>
-                    <td><input type="text" class="text-left-input iq-name" value="${item.name}"></td>
-                    <td><input type="number" class="iq-qty" min="0" value="${item.qty}" placeholder="填數量" oninput="calculateInstallTotals()"></td>
-                    <td><input type="number" class="iq-price" value="${item.price}" oninput="calculateInstallTotals()"></td>
-                    <td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">${item.subtotal}</span></td>
-                    <td><input type="text" class="iq-note" placeholder="" value="${item.note}"></td>
-                    <td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>
-                `;
-                document.getElementById('iq-extra-tbody').appendChild(tr);
-            });
-            
-            reindexIqRows();
-            calculateInstallTotals();
-            
-            document.getElementById('btn-save-iq').innerText = "✅ 更新報價資料";
-            document.getElementById('btn-save-iq').style.backgroundColor = "var(--success)";
-            document.getElementById('btn-cancel-iq').style.display = "block";
-            
-            closeIqHistoryLightbox();
+            record.stdItems.forEach(item => { const tr = document.createElement('tr'); tr.className = `iq-dynamic-row iq-std-item`; tr.innerHTML = `<td></td><td><input type="text" class="text-left-input iq-name" value="${item.name}"></td><td><input type="number" class="iq-qty" min="0" value="${item.qty}" placeholder="填數量" oninput="calculateInstallTotals()"></td><td><input type="number" class="iq-price" value="${item.price}" oninput="calculateInstallTotals()"></td><td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">${item.subtotal}</span></td><td><input type="text" class="iq-note" placeholder="" value="${item.note}"></td><td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>`; document.getElementById('iq-std-tbody').appendChild(tr); });
+            record.extraItems.forEach(item => { const tr = document.createElement('tr'); tr.className = `iq-dynamic-row iq-extra-item`; tr.innerHTML = `<td></td><td><input type="text" class="text-left-input iq-name" value="${item.name}"></td><td><input type="number" class="iq-qty" min="0" value="${item.qty}" placeholder="填數量" oninput="calculateInstallTotals()"></td><td><input type="number" class="iq-price" value="${item.price}" oninput="calculateInstallTotals()"></td><td style="font-weight:bold; color:var(--slate-800);">$<span class="iq-row-subtotal">${item.subtotal}</span></td><td><input type="text" class="iq-note" placeholder="" value="${item.note}"></td><td><button class="iq-delete-btn" onclick="removeIqRow(this)">刪除</button></td>`; document.getElementById('iq-extra-tbody').appendChild(tr); });
+            reindexIqRows(); calculateInstallTotals(); document.getElementById('btn-save-iq').innerText = "✅ 更新報價資料"; document.getElementById('btn-save-iq').style.backgroundColor = "var(--success)"; document.getElementById('btn-cancel-iq').style.display = "block"; closeIqHistoryLightbox();
         };
 
         window.deleteIqRecord = function(id, name) {
             if (!confirm(` ⚠️ 確定要永久刪除【 ${name} 】的報價紀錄嗎？\n刪除後將無法復原！`)) return;
-            let history = JSON.parse(localStorage.getItem('install_quotes_history')) || [];
-            history = history.filter(r => r.id !== id);
-            localStorage.setItem('install_quotes_history', JSON.stringify(history));
-            
-            if (editingIqId === id) resetIqForm();
-            openIqHistoryLightbox(); // 重新整理燈箱畫面
+            let history = JSON.parse(localStorage.getItem('install_quotes_history')) || []; history = history.filter(r => r.id !== id); localStorage.setItem('install_quotes_history', JSON.stringify(history));
+            if (editingIqId === id) resetIqForm(); openIqHistoryLightbox(); 
         };
 
         window.exportInstallPdf = function() {
-            const clientName = document.getElementById('iq-client-name').value || '未填寫';
-            const clientPhone = document.getElementById('iq-client-phone').value || '未填寫';
-            const clientAddress = document.getElementById('iq-client-address').value || '未填寫';
-            const clientDate = document.getElementById('iq-client-date').value || getTodayString();
-            const clientTaxId = document.getElementById('iq-client-taxid').value || '無';
-            
-            let tableRowsHtml = `
-                <tr><td style="text-align:center;">1</td><td><strong>基本出勤費</strong><br><span style="font-size:11px; color:#64748b;">單次到府基本工資</span></td><td style="text-align:center;">${document.getElementById('iq-base-fee-qty').textContent} 趟</td><td style="text-align:right;">$1,250</td><td style="text-align:right; font-weight:bold;">$${document.getElementById('iq-base-fee-subtotal').textContent}</td><td></td></tr>
-            `;
-            document.querySelectorAll('#install-quote-content .iq-dynamic-row').forEach(row => {
-                const idx = row.cells[0].innerText; const name = row.querySelector('.iq-name').value; const qty = row.querySelector('.iq-qty').value || 0; const price = row.querySelector('.iq-price').value || 0; const sub = row.querySelector('.iq-row-subtotal').textContent; const note = row.querySelector('.iq-note').value;
-                tableRowsHtml += `<tr><td style="text-align:center;">${idx}</td><td>${name}</td><td style="text-align:center;">${qty}</td><td style="text-align:right;">$${price}</td><td style="text-align:right; font-weight:bold;">$${sub}</td><td>${note}</td></tr>`;
-            });
+            const clientName = document.getElementById('iq-client-name').value || '未填寫'; const clientPhone = document.getElementById('iq-client-phone').value || '未填寫'; const clientAddress = document.getElementById('iq-client-address').value || '未填寫'; const clientDate = document.getElementById('iq-client-date').value || getTodayString(); const clientTaxId = document.getElementById('iq-client-taxid').value || '無';
+            let tableRowsHtml = `<tr><td style="text-align:center;">1</td><td><strong>基本出勤費</strong><br><span style="font-size:11px; color:#64748b;">單次到府基本工資</span></td><td style="text-align:center;">${document.getElementById('iq-base-fee-qty').textContent} 趟</td><td style="text-align:right;">$1,250</td><td style="text-align:right; font-weight:bold;">$${document.getElementById('iq-base-fee-subtotal').textContent}</td><td></td></tr>`;
+            document.querySelectorAll('#install-quote-content .iq-dynamic-row').forEach(row => { const idx = row.cells[0].innerText; const name = row.querySelector('.iq-name').value; const qty = row.querySelector('.iq-qty').value || 0; const price = row.querySelector('.iq-price').value || 0; const sub = row.querySelector('.iq-row-subtotal').textContent; const note = row.querySelector('.iq-note').value; tableRowsHtml += `<tr><td style="text-align:center;">${idx}</td><td>${name}</td><td style="text-align:center;">${qty}</td><td style="text-align:right;">$${price}</td><td style="text-align:right; font-weight:bold;">$${sub}</td><td>${note}</td></tr>`; });
             const grandTotal = document.getElementById('iq-sum-grand').textContent;
-
-            const pdfHtml = `
-            <!DOCTYPE html><html><head><meta charset="UTF-8"><title>安裝代工報價單_${clientName}</title>
-                <style>
-                    @page { size: A4; margin: 15mm; } body { font-family: "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; line-height: 1.5; font-size: 13px; }
-                    .header { display: flex; justify-content: space-between; border-bottom: 2px solid #0ea5e9; padding-bottom: 15px; margin-bottom: 20px; } .header-left h1 { margin: 0; color: #0369a1; font-size: 24px; } .header-left p { margin: 4px 0 0 0; color: #64748b; font-size: 12px; }
-                    .master-box { background: #f0f9ff; border: 1px solid #bae6fd; padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; } .master-box h3 { margin: 0 0 8px 0; color: #0369a1; font-size: 14px; border-bottom: 1px dashed #7dd3fc; padding-bottom: 4px; }
-                    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } .info-table td { padding: 6px 10px; border: 1px solid #e2e8f0; } .info-label { background: #f8fafc; font-weight: bold; width: 15%; text-align: right; color: #475569; }
-                    .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } .items-table th { background: #0ea5e9; color: white; padding: 8px; text-align: center; border: 1px solid #0284c7; } .items-table td { padding: 8px; border: 1px solid #cbd5e1; } .items-table tr:nth-child(even) { background: #f8fafc; }
-                    .totals { text-align: right; font-size: 18px; font-weight: bold; padding: 10px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; color: #ef4444; margin-bottom: 20px; }
-                    .terms { font-size: 12px; color: #475569; background: #fefce8; padding: 12px; border: 1px solid #fde047; border-radius: 6px; }
-                    .sign-box { margin-top: 40px; display: flex; justify-content: space-between; } .sign-line { width: 200px; border-bottom: 1px solid #1e293b; padding-bottom: 5px; text-align: center; }
-                    @media print { .no-print { display: none; } }
-                </style>
-            </head><body>
-                <div class="no-print" style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #0ea5e9; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button></div>
-                <div class="header"><div class="header-left"><h1>望美窗簾 - 安裝代工報價單</h1><p>台南市南區健康路一段335號</p></div><div class="header-right"><p style="margin:0; font-weight:bold;">單據日期：${clientDate}</p></div></div>
-                <div class="master-box"><h3>👨‍🔧 專業服務師傅</h3><p style="margin:0; color:#075985;"><strong>姓名：</strong>劉育聖 ｜ <strong>LINE ID：</strong>poloem7 ｜ <strong>手機：</strong>0985286257 ｜ <strong>市話：</strong>06-2613210</p></div>
-                <table class="info-table"><tr><td class="info-label">客戶姓名</td><td>${clientName}</td><td class="info-label">聯絡電話</td><td>${clientPhone}</td></tr><tr><td class="info-label">案場地址</td><td colspan="3">${clientAddress}</td></tr><tr><td class="info-label">統一編號</td><td>${clientTaxId}</td><td class="info-label">報價日期</td><td>${clientDate}</td></tr></table>
-                <table class="items-table"><thead><tr><th width="8%">項次</th><th width="32%">項目與規格說明</th><th width="10%">數量</th><th width="15%">單價</th><th width="15%">小計</th><th width="20%">備註/空間位置</th></tr></thead><tbody>${tableRowsHtml}</tbody></table>
-                <div class="totals">預估總計金額：NT$ ${grandTotal}</div>
-                <div class="terms"><strong style="color:#b45309;">服務條款與備註事項：</strong><br>1. 本案設有單趟最低出勤費 NT$ 1,250，若未達將以此計收。<br>2. 自備窗簾請確認配件齊全，若因缺件致無法完工仍需收費。<br>3. 完工驗收無誤後請現金或現場轉帳結清。</div>
-                <div class="sign-box"><div><div style="font-size:12px; color:#64748b; margin-bottom: 25px;">客戶確認簽名：</div><div class="sign-line"></div></div><div><div style="font-size:12px; color:#64748b; margin-bottom: 25px; text-align:right;">確認日期：</div><div class="sign-line">年　　　月　　　日</div></div></div>
-            </body></html>`;
+            const pdfHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>安裝代工報價單_${clientName}</title><style>@page { size: A4; margin: 15mm; } body { font-family: "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; line-height: 1.5; font-size: 13px; } .header { display: flex; justify-content: space-between; border-bottom: 2px solid #0ea5e9; padding-bottom: 15px; margin-bottom: 20px; } .header-left h1 { margin: 0; color: #0369a1; font-size: 24px; } .header-left p { margin: 4px 0 0 0; color: #64748b; font-size: 12px; } .master-box { background: #f0f9ff; border: 1px solid #bae6fd; padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; } .master-box h3 { margin: 0 0 8px 0; color: #0369a1; font-size: 14px; border-bottom: 1px dashed #7dd3fc; padding-bottom: 4px; } .info-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } .info-table td { padding: 6px 10px; border: 1px solid #e2e8f0; } .info-label { background: #f8fafc; font-weight: bold; width: 15%; text-align: right; color: #475569; } .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } .items-table th { background: #0ea5e9; color: white; padding: 8px; text-align: center; border: 1px solid #0284c7; } .items-table td { padding: 8px; border: 1px solid #cbd5e1; } .items-table tr:nth-child(even) { background: #f8fafc; } .totals { text-align: right; font-size: 18px; font-weight: bold; padding: 10px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; color: #ef4444; margin-bottom: 20px; } .terms { font-size: 12px; color: #475569; background: #fefce8; padding: 12px; border: 1px solid #fde047; border-radius: 6px; } .sign-box { margin-top: 40px; display: flex; justify-content: space-between; } .sign-line { width: 200px; border-bottom: 1px solid #1e293b; padding-bottom: 5px; text-align: center; } @media print { .no-print { display: none; } } </style></head><body><div class="no-print" style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #0ea5e9; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button></div><div class="header"><div class="header-left"><h1>望美窗簾 - 安裝代工報價單</h1><p>台南市南區健康路一段335號</p></div><div class="header-right"><p style="margin:0; font-weight:bold;">單據日期：${clientDate}</p></div></div><div class="master-box"><h3>👨‍🔧 專業服務師傅</h3><p style="margin:0; color:#075985;"><strong>姓名：</strong>劉育聖 ｜ <strong>LINE ID：</strong>poloem7 ｜ <strong>手機：</strong>0985286257 ｜ <strong>市話：</strong>06-2613210</p></div><table class="info-table"><tr><td class="info-label">客戶姓名</td><td>${clientName}</td><td class="info-label">聯絡電話</td><td>${clientPhone}</td></tr><tr><td class="info-label">案場地址</td><td colspan="3">${clientAddress}</td></tr><tr><td class="info-label">統一編號</td><td>${clientTaxId}</td><td class="info-label">報價日期</td><td>${clientDate}</td></tr></table><table class="items-table"><thead><tr><th width="8%">項次</th><th width="32%">項目與規格說明</th><th width="10%">數量</th><th width="15%">單價</th><th width="15%">小計</th><th width="20%">備註/空間位置</th></tr></thead><tbody>${tableRowsHtml}</tbody></table><div class="totals">預估總計金額：NT$ ${grandTotal}</div><div class="terms"><strong style="color:#b45309;">服務條款與備註事項：</strong><br>1. 本案設有單趟最低出勤費 NT$ 1,250，若未達將以此計收。<br>2. 自備窗簾請確認配件齊全，若因缺件致無法完工仍需收費。<br>3. 完工驗收無誤後請現金或現場轉帳結清。</div><div class="sign-box"><div><div style="font-size:12px; color:#64748b; margin-bottom: 25px;">客戶確認簽名：</div><div class="sign-line"></div></div><div><div style="font-size:12px; color:#64748b; margin-bottom: 25px; text-align:right;">確認日期：</div><div class="sign-line">年　　　月　　　日</div></div></div></body></html>`;
             const printWindow = window.open("", "_blank"); printWindow.document.write(pdfHtml); printWindow.document.close();
         };
 
-        // ================= 原有主系統的函數保留 =================
-        function compressImage(file, maxWidth = 1000, maxHeight = 1000, quality = 0.6) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader(); reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image(); img.src = event.target.result;
-                    img.onload = () => {
-                        let width = img.width; let height = img.height;
-                        if (width > height) { if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; } } 
-                        else { if (height > maxHeight) { width = Math.round((width * maxHeight) / height); height = maxHeight; } }
-                        const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', quality));
-                    };
-                    img.onerror = (err) => reject(err);
-                };
-                reader.onerror = (err) => reject(err);
-            });
-        }
-
-               window.handlePhotoChange = async function(input, windowIdx) {
-            const file = input.files[0]; if (!file) return;
-            const clientName = document.getElementById('client-name').value.trim() || "未命名";
-            const card = input.closest('.window-card'); 
-            const previewWrap = card.querySelector('.photo-preview-wrap');
-            
-            try {
-                previewWrap.innerHTML = `<span style="color:#2563eb; font-weight:bold;">⏳ 照片壓縮與上傳雲端中，請稍候...</span>`;
-                const compressedBase64 = await compressImage(file);
-                const payload = { base64: compressedBase64, clientName: clientName, windowIndex: windowIdx };
-                
-                // 🚀 升級使用 google.script.run 原生隧道，無視所有瀏覽器阻擋
-                google.script.run
-                    .withSuccessHandler(function(resData) {
-                        if (resData.status === 'success' && resData.url) {
-                            input.setAttribute('data-photo-url', resData.url);
-                            previewWrap.innerHTML = `<span style="color:#10b981; font-weight:bold;">✅ 已成功上傳</span> <a href="${resData.url}" target="_blank" style="color:#2563eb; font-weight:bold; text-decoration:underline;">🔗開啟雲端照片</a> <button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除</button>`;
-                        } else { 
-                            previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 後台回傳錯誤：${resData.message}</span>`;
-                            input.value = '';
-                        }
-                    })
-                    .withFailureHandler(function(error) {
-                        previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 網路連線錯誤：${error.message}</span>`;
-                        input.value = '';
-                    })
-                    .uploadPhotoRPC(payload);
-                    
-            } catch (err) {
-                const errorMsg = err.message || "手機記憶體崩潰或網路逾時，請重試！";
-                previewWrap.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 處理失敗：${errorMsg}</span>`; 
-                input.value = '';
-            }
-        };
-
-
-        window.clearPhoto = function(btn) {
-            const card = btn.closest('.window-card'); const fileInput = card.querySelector('.w-photo-file');
-            if (fileInput) { fileInput.value = ''; fileInput.removeAttribute('data-photo-url'); }
-            const previewWrap = card.querySelector('.photo-preview-wrap'); if (previewWrap) previewWrap.innerHTML = '';
-        };
-
         window.addWindowItem = function() {
-            windowCount++;
-            const windowList = document.getElementById('window-list');
-            const newCard = document.createElement('div');
+            windowCount++; const windowList = document.getElementById('window-list'); const newCard = document.createElement('div');
             newCard.className = 'window-card'; newCard.setAttribute('data-window-index', windowCount);
             const deleteBtnHtml = windowCount === 1 ? '' : `<button type="button" class="delete-btn" onclick="removeWindowCard(this)"> ❌  刪除</button>`;
-            newCard.innerHTML = `
-                <div class="window-header"><div class="window-title"> 🪟  窗戶 ${windowCount}</div>${deleteBtnHtml}</div>
-                <div class="form-group"><label> 📍  丈量位置：</label><input type="text" class="w-location" placeholder="例如：主臥、客廳、小孩房"></div>
-                <div class="options-group"><div class="options-title">開法選項：</div><div class="checkbox-container"><label class="checkbox-item"><input type="checkbox" class="w-type" value="雙開"> 雙開</label><label class="checkbox-item"><input type="checkbox" class="w-type" value="單開"> 單開</label><label class="checkbox-item"><input type="checkbox" class="w-type" value="右拉"> 右拉</label><label class="checkbox-item"><input type="checkbox" class="w-type" value="左拉"> 左拉</label></div></div>
-                <div class="options-group"><div class="options-title">安裝環境：</div><div class="checkbox-container"><label class="checkbox-item"><input type="checkbox" class="w-env" value="壁架"> 壁架</label><label class="checkbox-item"><input type="checkbox" class="w-env" value="天木"> 天木</label><label class="checkbox-item"><input type="checkbox" class="w-env" value="框內"> 框內</label></div></div>
-                <div class="form-group"><label> 📦  窗簾盒深度 (盒深 cm)：</label><input type="text" class="w-depth" placeholder="例如：15"></div>
-                <div class="photo-upload-zone"><label> 📸  現場照片 (將獨立上傳 Drive 雲端資料夾)：</label><input type="file" class="w-photo-file" accept="image/*" onchange="handlePhotoChange(this, ${windowCount})"><div class="photo-preview-wrap"></div></div>
-                <div class="options-title"> 📐  尺寸丈量 (cm)：</div>
-                <div class="t-chart-container">
-                    <div class="t-chart">
-                        <div class="t-line-horizontal"></div><div class="t-line-vertical"></div>
-                        <input type="text" class="t-input t-out-top" placeholder="上框外高"><input type="text" class="t-input t-out-top-sub" placeholder="上框(註)"><input type="text" class="t-input t-win-width" placeholder="窗戶本身寬" style="border-color: var(--primary); font-weight: bold;">
-                        <input type="text" class="t-input t-out-left" placeholder="左牆寬"><input type="text" class="t-input t-out-left-sub" placeholder="左牆(註)"><input type="text" class="t-input t-out-right" placeholder="右牆寬"><input type="text" class="t-input t-out-right-sub" placeholder="右牆(註)">
-                        <input type="text" class="t-input t-win-height" placeholder="窗戶本身高" style="border-color: var(--primary); font-weight: bold;"><input type="text" class="t-input t-out-bottom" placeholder="下框外高"><input type="text" class="t-input t-out-bottom-sub" placeholder="下框(註)">
-                    </div>
-                </div>
-                <div class="form-group"><label> 📝  窗簾盒備註 / 其他特殊狀況：</label><input type="text" class="w-note" placeholder="例如：特殊狀況備註"></div>
-            `;
-            windowList.appendChild(newCard);
-            if(windowCount > 1) { newCard.scrollIntoView({ behavior: 'smooth' }); }
-            return newCard;
+            newCard.innerHTML = `<div class="window-header"><div class="window-title"> 🪟  窗戶 ${windowCount}</div>${deleteBtnHtml}</div><div class="form-group"><label> 📍  丈量位置：</label><input type="text" class="w-location" placeholder="例如：主臥、客廳、小孩房"></div><div class="options-group"><div class="options-title">開法選項：</div><div class="checkbox-container"><label class="checkbox-item"><input type="checkbox" class="w-type" value="雙開"> 雙開</label><label class="checkbox-item"><input type="checkbox" class="w-type" value="單開"> 單開</label><label class="checkbox-item"><input type="checkbox" class="w-type" value="右拉"> 右拉</label><label class="checkbox-item"><input type="checkbox" class="w-type" value="左拉"> 左拉</label></div></div><div class="options-group"><div class="options-title">安裝環境：</div><div class="checkbox-container"><label class="checkbox-item"><input type="checkbox" class="w-env" value="壁架"> 壁架</label><label class="checkbox-item"><input type="checkbox" class="w-env" value="天木"> 天木</label><label class="checkbox-item"><input type="checkbox" class="w-env" value="框內"> 框內</label></div></div><div class="form-group"><label> 📦  窗簾盒深度 (盒深 cm)：</label><input type="text" class="w-depth" placeholder="例如：15"></div><div class="options-title"> 📐  尺寸丈量 (cm)：</div><div class="t-chart-container"><div class="t-chart"><div class="t-line-horizontal"></div><div class="t-line-vertical"></div><input type="text" class="t-input t-out-top" placeholder="上框外高"><input type="text" class="t-input t-out-top-sub" placeholder="上框(註)"><input type="text" class="t-input t-win-width" placeholder="窗戶本身寬" style="border-color: var(--primary); font-weight: bold;"><input type="text" class="t-input t-out-left" placeholder="左牆寬"><input type="text" class="t-input t-out-left-sub" placeholder="左牆(註)"><input type="text" class="t-input t-out-right" placeholder="右牆寬"><input type="text" class="t-input t-out-right-sub" placeholder="右牆(註)"><input type="text" class="t-input t-win-height" placeholder="窗戶本身高" style="border-color: var(--primary); font-weight: bold;"><input type="text" class="t-input t-out-bottom" placeholder="下框外高"><input type="text" class="t-input t-out-bottom-sub" placeholder="下框(註)"></div></div><div class="form-group"><label> 📝  窗簾盒備註 / 其他特殊狀況：</label><input type="text" class="w-note" placeholder="例如：特殊狀況備註"></div>`;
+            windowList.appendChild(newCard); if(windowCount > 1) { newCard.scrollIntoView({ behavior: 'smooth' }); } return newCard;
         };
 
         window.removeWindowCard = function(btn) { btn.closest('.window-card').remove(); reindexWindows(); };
         function reindexWindows() {
             const cards = document.querySelectorAll('.window-card'); windowCount = 0;
-            cards.forEach((card) => {
-                windowCount++; card.setAttribute('data-window-index', windowCount);
-                card.querySelector('.window-title').innerHTML = ` 🪟  窗戶 ${windowCount}`;
-                const header = card.querySelector('.window-header'); let existingBtn = header.querySelector('.delete-btn');
-                if (windowCount === 1) { if (existingBtn) existingBtn.remove(); } 
-                else { if (!existingBtn) { const newBtn = document.createElement('button'); newBtn.type = 'button'; newBtn.className = 'delete-btn'; newBtn.onclick = function() { window.removeWindowCard(this); }; newBtn.innerHTML = ' ❌  刪除'; header.appendChild(newBtn); } }
-            });
+            cards.forEach((card) => { windowCount++; card.setAttribute('data-window-index', windowCount); card.querySelector('.window-title').innerHTML = ` 🪟  窗戶 ${windowCount}`; const header = card.querySelector('.window-header'); let existingBtn = header.querySelector('.delete-btn'); if (windowCount === 1) { if (existingBtn) existingBtn.remove(); } else { if (!existingBtn) { const newBtn = document.createElement('button'); newBtn.type = 'button'; newBtn.className = 'delete-btn'; newBtn.onclick = function() { window.removeWindowCard(this); }; newBtn.innerHTML = ' ❌  刪除'; header.appendChild(newBtn); } } });
         }
 
         function getLocalStorageData() { try { return JSON.parse(localStorage.getItem('curtain_measurements')) || []; } catch (e) { return []; } }
 
         window.loadRecordForEdit = function(recordId) {
             try {
-                const records = getLocalStorageData(); const record = records.find(r => r.id === recordId);
-                if (!record) { alert("找不到該筆資料！"); return; }
+                const records = getLocalStorageData(); const record = records.find(r => r.id === recordId); if (!record) { alert("找不到該筆資料！"); return; }
                 editingId = recordId; document.getElementById('main-header').innerText = "✏️ 正在修改丈量尺寸資料"; document.getElementById('btn-save-main').innerText = "✅ 更新並覆蓋尺寸 (雲端另存新版)"; document.getElementById('btn-save-main').style.backgroundColor = "var(--success)"; document.getElementById('btn-cancel-edit').style.setProperty('display', 'block', 'important');
                 document.getElementById('client-name').value = record.clientName || ''; document.getElementById('client-phone').value = record.clientPhone || ''; document.getElementById('client-address').value = record.clientAddress || ''; document.getElementById('client-date').value = record.measureDate || getTodayString(); document.getElementById('client-taxid').value = record.clientTaxId || '';
                 const windowList = document.getElementById('window-list'); windowList.innerHTML = ''; windowCount = 0;
@@ -910,11 +519,6 @@
                         const card = addWindowItem();
                         card.querySelector('.w-location').value = w.location || ''; card.querySelector('.w-depth').value = w.boxDepth || ''; card.querySelector('.w-note').value = w.note || '';
                         card.querySelector('.t-out-top').value = w.sizeOutTop || ''; card.querySelector('.t-out-top-sub').value = w.sizeOutTopSub || ''; card.querySelector('.t-out-bottom').value = w.sizeOutBottom || ''; card.querySelector('.t-out-bottom-sub').value = w.sizeOutBottomSub || ''; card.querySelector('.t-out-left').value = w.sizeOutLeft || ''; card.querySelector('.t-out-left-sub').value = w.sizeOutLeftSub || ''; card.querySelector('.t-out-right').value = w.sizeOutRight || ''; card.querySelector('.t-out-right-sub').value = w.sizeOutRightSub || ''; card.querySelector('.t-win-width').value = w.sizeWindowWidth || ''; card.querySelector('.t-win-height').value = w.sizeWindowHeight || '';
-                        if (w.photoUrl && w.photoUrl !== 'undefined') {
-                            const fileInput = card.querySelector('.w-photo-file'); if (fileInput) fileInput.setAttribute('data-photo-url', w.photoUrl);
-                            const previewWrap = card.querySelector('.photo-preview-wrap');
-                            if (previewWrap) { previewWrap.innerHTML = `<span style="color:#10b981; font-weight:bold;">✅ 留存照片：</span><a href="${w.photoUrl}" target="_blank" style="color:#2563eb; font-weight:bold; text-decoration:underline;">🔗開啟雲端照片</a><button type="button" class="btn-tag row-delete-btn" onclick="clearPhoto(this)">移除</button>`; }
-                        }
                         if (w.types) w.types.forEach(val => { const cb = card.querySelector(`.w-type[value="${val}"]`); if(cb) cb.checked = true; });
                         if (w.envs) w.envs.forEach(val => { const cb = card.querySelector(`.w-env[value="${val}"]`); if(cb) cb.checked = true; });
                     });
@@ -933,19 +537,11 @@
 
         window.saveDataToLocalStorage = function() {
             try {
-                const clientName = document.getElementById('client-name').value.trim();
-                if (!clientName) { alert('請輸入客戶姓名！'); return; }
-                const measureDate = document.getElementById('client-date').value || getTodayString();
-                const windowCards = document.querySelectorAll('.window-card');
-                const windowsData = [];
+                const clientName = document.getElementById('client-name').value.trim(); if (!clientName) { alert('請輸入客戶姓名！'); return; }
+                const measureDate = document.getElementById('client-date').value || getTodayString(); const windowCards = document.querySelectorAll('.window-card'); const windowsData = [];
                 windowCards.forEach((card, index) => {
-                    const types = []; card.querySelectorAll('.w-type:checked').forEach(cb => types.push(cb.value));
-                    const envs = []; card.querySelectorAll('.w-env:checked').forEach(cb => envs.push(cb.value));
-                    const fileInput = card.querySelector('.w-photo-file'); const photoUrl = fileInput ? (fileInput.getAttribute('data-photo-url') || '') : '';
-                    windowsData.push({
-                        itemNumber: index + 1, location: card.querySelector('.w-location').value.trim(), types: types, envs: envs, boxDepth: card.querySelector('.w-depth').value.trim(), photoUrl: photoUrl,
-                        sizeOutTop: card.querySelector('.t-out-top').value.trim(), sizeOutTopSub: card.querySelector('.t-out-top-sub').value.trim(), sizeOutBottom: card.querySelector('.t-out-bottom').value.trim(), sizeOutBottomSub: card.querySelector('.t-out-bottom-sub').value.trim(), sizeOutLeft: card.querySelector('.t-out-left').value.trim(), sizeOutLeftSub: card.querySelector('.t-out-left-sub').value.trim(), sizeOutRight: card.querySelector('.t-out-right').value.trim(), sizeOutRightSub: card.querySelector('.t-out-right-sub').value.trim(), sizeWindowWidth: card.querySelector('.t-win-width').value.trim(), sizeWindowHeight: card.querySelector('.t-win-height').value.trim(), note: card.querySelector('.w-note').value.trim()
-                    });
+                    const types = []; card.querySelectorAll('.w-type:checked').forEach(cb => types.push(cb.value)); const envs = []; card.querySelectorAll('.w-env:checked').forEach(cb => envs.push(cb.value));
+                    windowsData.push({ itemNumber: index + 1, location: card.querySelector('.w-location').value.trim(), types: types, envs: envs, boxDepth: card.querySelector('.w-depth').value.trim(), sizeOutTop: card.querySelector('.t-out-top').value.trim(), sizeOutTopSub: card.querySelector('.t-out-top-sub').value.trim(), sizeOutBottom: card.querySelector('.t-out-bottom').value.trim(), sizeOutBottomSub: card.querySelector('.t-out-bottom-sub').value.trim(), sizeOutLeft: card.querySelector('.t-out-left').value.trim(), sizeOutLeftSub: card.querySelector('.t-out-left-sub').value.trim(), sizeOutRight: card.querySelector('.t-out-right').value.trim(), sizeOutRightSub: card.querySelector('.t-out-right-sub').value.trim(), sizeWindowWidth: card.querySelector('.t-win-width').value.trim(), sizeWindowHeight: card.querySelector('.t-win-height').value.trim(), note: card.querySelector('.w-note').value.trim() });
                 });
                 const records = getLocalStorageData(); let currentRecord = null;
                 if (editingId) {
@@ -961,8 +557,9 @@
             } catch (fatalErr) { alert("儲存發生異常：" + fatalErr.message); }
         };
 
-               function syncRecordToGoogleDrive(record) {
+        function syncRecordToGoogleDrive(record) {
             const payload = { 
+                action: 'backup_data',
                 recordId: record.id, clientName: record.clientName || '', clientPhone: record.clientPhone || '', 
                 clientAddress: record.clientAddress || '', clientTaxId: record.clientTaxId || '', 
                 measureDate: record.measureDate || getTodayString(), timestamp: record.timestamp || new Date().toLocaleString('zh-TW'), 
@@ -970,93 +567,37 @@
                 fullPdfHtml: generateFullPdfHtml(record), pricePdfHtml: generatePricePdfHtml(record) 
             };
             
-            // 🚀 升級使用 google.script.run，穩定寫入試算表與產製 PDF
-            google.script.run
-                .withSuccessHandler(function(res) { console.log("備份成功", res); })
-                .withFailureHandler(function(err) { console.error("備份失敗", err); })
-                .backupDataRPC(payload);
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            })
+            .then(res => res.json())
+            .then(data => { console.log("雲端備份成功", data); })
+            .catch(err => { console.error("雲端備份失敗", err); });
         }
 
         window.openEstimateModal = function(recordId) {
-            const records = getLocalStorageData(); const record = records.find(r => r.id === recordId); if (!record) return;
-            currentEstimatingRecordId = recordId; document.getElementById('est-lightbox-title').innerText = `💰 【${record.clientName}】工程估價試算`;
-            const quoteWindows = (record.quoteData && record.quoteData.windows) ? record.quoteData.windows : [];
-            let windowsSectionsHtml = '';
+            const records = getLocalStorageData(); const record = records.find(r => r.id === recordId); if (!record) return; currentEstimatingRecordId = recordId; document.getElementById('est-lightbox-title').innerText = `💰 【${record.clientName}】工程估價試算`; const quoteWindows = (record.quoteData && record.quoteData.windows) ? record.quoteData.windows : []; let windowsSectionsHtml = '';
             record.windows.forEach((origW, idx) => {
                 const savedQ = quoteWindows[idx] || {}; const currentCalcWidth = savedQ.calcWidth !== undefined ? savedQ.calcWidth : (origW.sizeWindowWidth || ''); const currentCalcHeight = savedQ.calcHeight !== undefined ? savedQ.calcHeight : (origW.sizeWindowHeight || ''); const calcType = savedQ.calcType || 'traditional'; const pleatRate = savedQ.pleatRate !== undefined ? savedQ.pleatRate : '2'; const fabricWidth = savedQ.fabricWidth !== undefined ? savedQ.fabricWidth : '110'; const sewingPrice = savedQ.sewingPrice !== undefined ? savedQ.sewingPrice : '180'; const unitPrice = savedQ.unitPrice || ''; const hasTrack = savedQ.hasTrack !== undefined ? savedQ.hasTrack : true;
-                let fabricItems = savedQ.fabricItems; if (!fabricItems || !Array.isArray(fabricItems) || fabricItems.length === 0) { fabricItems = [{ note: savedQ.itemStyleNote || '', price: savedQ.itemPrice || '' }]; }
-                let itemsRowsHtml = '';
-                fabricItems.forEach((item, itemIdx) => {
-                    const deleteBtn = itemIdx === 0 ? '' : `<button type="button" class="btn-remove-item-row" onclick="removeFabricRow(this, ${idx})">❌</button>`;
-                    itemsRowsHtml += `<div class="fabric-item-row" data-item-idx="${itemIdx}"><div class="form-group" style="flex: 2; margin-bottom: 0;"><label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label><input type="text" class="c-note" value="${item.note || ''}" placeholder="例如：主布 ef40444、或紗簾"></div><div class="form-group" style="flex: 1; margin-bottom: 0;"><label style="font-size: 13px; color: #e67e22;">💵 此項金額 (元)：</label><input type="number" class="c-itemprice" value="${item.price || ''}" placeholder="金額" oninput="updateWindowTotal(${idx})"></div>${deleteBtn}</div>`;
-                });
-                windowsSectionsHtml += `
-                    <div class="est-window-panel" data-idx="${idx}">
-                        <div class="est-panel-header">🪟 窗戶項目 ${origW.itemNumber}：${origW.location || '未填位置'}</div>
-                        <div class="est-grid-layout">
-                            <div class="est-grid-left">
-                                <div class="t-locked-container">
-                                    <span class="t-locked-alert">🔒 初始丈量基準尺寸（已鎖定保護）</span>
-                                    <div class="t-chart-container" style="background:#f8fafc; padding:15px 0; margin:5px 0;">
-                                        <div style="position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; margin: 0 auto; transform: scale(0.85); transform-origin: top center;">
-                                            <div style="position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary);"></div><div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div>
-                                            <div class="t-locked-box" style="top: 5px; left: 127px;"><small>上框高</small><strong>${origW.sizeOutTop || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 38px; left: 127px;"><small>上框(註)</small><strong>${origW.sizeOutTopSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 75px; left: 127px;"><small style="color:var(--primary);">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: -10px;"><small>左牆寬</small><strong>${origW.sizeOutLeft || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: -10px;"><small>左牆(註)</small><strong>${origW.sizeOutLeftSub || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: 255px;"><small>右牆寬</small><strong>${origW.sizeOutRight || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: 255px;"><small>右牆(註)</small><strong>${origW.sizeOutRightSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 180px; left: 127px;"><small style="color:var(--primary);">窗本身高</small><strong>${origW.sizeWindowHeight || '0'}</strong></div><div class="t-locked-box" style="top: 235px; left: 127px;"><small>下框地</small><strong>${origW.sizeOutBottom || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 268px; left: 127px;"><small>下框(註)</small><strong>${origW.sizeOutBottomSub || '0'}</strong></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="est-grid-right">
-                                <div class="calc-form-container">
-                                    <div class="calc-title">📐 估價尺寸與金額試算</div>
-                                    <div class="calc-sub-grid"><div><label>估價寬度 (cm)：</label><input type="number" class="c-width" value="${currentCalcWidth}" oninput="runWindowFormula(${idx})"></div><div><label>估價高度 (cm)：</label><input type="number" class="c-height" value="${currentCalcHeight}" oninput="runWindowFormula(${idx})"></div><div><label>計算模式：</label><select class="c-type" onchange="toggleCalcFields(${idx}); runWindowFormula(${idx});"><option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布</option><option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布</option><option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數(捲簾等)</option><option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動金額</option></select></div></div>
-                                    <div class="calc-sub-grid dynamic-fields" id="dynamic-fields-${idx}">
-                                        <div class="f-pleat"><label>摺數倍率：</label><input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runWindowFormula(${idx})"></div>
-                                        <div class="f-fab-width"><label>布幅寬 (cm)：</label><input type="number" class="c-fabwidth" value="${fabricWidth}" oninput="runWindowFormula(${idx})"></div>
-                                        <div class="f-sewing"><label>車工單價 (元/幅)：</label><input type="number" class="c-sewingprice" value="${sewingPrice}" oninput="runWindowFormula(${idx})"></div>
-                                        <div><label class="c-price-label">單價 (元/尺 或 元/才)：</label><input type="number" class="c-unitprice" value="${unitPrice}" oninput="runWindowFormula(${idx})"></div>
-                                        <div class="f-track" style="display:flex; align-items:center; gap:8px; padding-top:22px;"><label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="checkbox" class="c-track" ${hasTrack ? 'checked' : ''} onchange="runWindowFormula(${idx})" style="width:18px; height:18px;">含一般軌 ($90/尺)</label></div>
-                                    </div>
-                                    <div class="calc-formula-result-box" id="calc-result-${idx}">正在計算中...</div>
-                                    <div class="fabric-items-container"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span style="font-size:13px; font-weight:bold; color:var(--slate-800);">布料與紗簾清單：</span><button type="button" class="btn-add-item-row" onclick="addFabricRow(${idx})">➕ 新增款式/布號列</button></div><div class="fabric-rows-wrapper" id="fabric-rows-${idx}">${itemsRowsHtml}</div><div style="text-align: right; font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 6px;">本窗總估價金額：$<span class="window-sum-display" id="window-sum-${idx}">0</span> 元</div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                let fabricItems = savedQ.fabricItems; if (!fabricItems || !Array.isArray(fabricItems) || fabricItems.length === 0) { fabricItems = [{ note: savedQ.itemStyleNote || '', price: savedQ.itemPrice || '' }]; } let itemsRowsHtml = '';
+                fabricItems.forEach((item, itemIdx) => { const deleteBtn = itemIdx === 0 ? '' : `<button type="button" class="btn-remove-item-row" onclick="removeFabricRow(this, ${idx})">❌</button>`; itemsRowsHtml += `<div class="fabric-item-row" data-item-idx="${itemIdx}"><div class="form-group" style="flex: 2; margin-bottom: 0;"><label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label><input type="text" class="c-note" value="${item.note || ''}" placeholder="例如：主布 ef40444、或紗簾"></div><div class="form-group" style="flex: 1; margin-bottom: 0;"><label style="font-size: 13px; color: #e67e22;">💵 此項金額 (元)：</label><input type="number" class="c-itemprice" value="${item.price || ''}" placeholder="金額" oninput="updateWindowTotal(${idx})"></div>${deleteBtn}</div>`; });
+                windowsSectionsHtml += `<div class="est-window-panel" data-idx="${idx}"><div class="est-panel-header">🪟 窗戶項目 ${origW.itemNumber}：${origW.location || '未填位置'}</div><div class="est-grid-layout"><div class="est-grid-left"><div class="t-locked-container"><span class="t-locked-alert">🔒 初始丈量基準尺寸（已鎖定保護）</span><div class="t-chart-container" style="background:#f8fafc; padding:15px 0; margin:5px 0;"><div style="position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; margin: 0 auto; transform: scale(0.85); transform-origin: top center;"><div style="position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary);"></div><div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div><div class="t-locked-box" style="top: 5px; left: 127px;"><small>上框高</small><strong>${origW.sizeOutTop || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 38px; left: 127px;"><small>上框(註)</small><strong>${origW.sizeOutTopSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 75px; left: 127px;"><small style="color:var(--primary);">窗本身寬</small><strong>${origW.sizeWindowWidth || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: -10px;"><small>左牆寬</small><strong>${origW.sizeOutLeft || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: -10px;"><small>左牆(註)</small><strong>${origW.sizeOutLeftSub || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: 255px;"><small>右牆寬</small><strong>${origW.sizeOutRight || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: 255px;"><small>右牆(註)</small><strong>${origW.sizeOutRightSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 180px; left: 127px;"><small style="color:var(--primary);">窗本身高</small><strong>${origW.sizeWindowHeight || '0'}</strong></div><div class="t-locked-box" style="top: 235px; left: 127px;"><small>下框地</small><strong>${origW.sizeOutBottom || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 268px; left: 127px;"><small>下框(註)</small><strong>${origW.sizeOutBottomSub || '0'}</strong></div></div></div></div></div><div class="est-grid-right"><div class="calc-form-container"><div class="calc-title">📐 估價尺寸與金額試算</div><div class="calc-sub-grid"><div><label>估價寬度 (cm)：</label><input type="number" class="c-width" value="${currentCalcWidth}" oninput="runWindowFormula(${idx})"></div><div><label>估價高度 (cm)：</label><input type="number" class="c-height" value="${currentCalcHeight}" oninput="runWindowFormula(${idx})"></div><div><label>計算模式：</label><select class="c-type" onchange="toggleCalcFields(${idx}); runWindowFormula(${idx});"><option value="traditional" ${calcType === 'traditional' ? 'selected' : ''}>傳統窗簾布</option><option value="seamless" ${calcType === 'seamless' ? 'selected' : ''}>無接縫布</option><option value="roller" ${calcType === 'roller' ? 'selected' : ''}>才數(捲簾等)</option><option value="manual" ${calcType === 'manual' ? 'selected' : ''}>純手動金額</option></select></div></div><div class="calc-sub-grid dynamic-fields" id="dynamic-fields-${idx}"><div class="f-pleat"><label>摺數倍率：</label><input type="number" step="0.1" class="c-pleat" value="${pleatRate}" oninput="runWindowFormula(${idx})"></div><div class="f-fab-width"><label>布幅寬 (cm)：</label><input type="number" class="c-fabwidth" value="${fabricWidth}" oninput="runWindowFormula(${idx})"></div><div class="f-sewing"><label>車工單價 (元/幅)：</label><input type="number" class="c-sewingprice" value="${sewingPrice}" oninput="runWindowFormula(${idx})"></div><div><label class="c-price-label">單價 (元/尺 或 元/才)：</label><input type="number" class="c-unitprice" value="${unitPrice}" oninput="runWindowFormula(${idx})"></div><div class="f-track" style="display:flex; align-items:center; gap:8px; padding-top:22px;"><label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="checkbox" class="c-track" ${hasTrack ? 'checked' : ''} onchange="runWindowFormula(${idx})" style="width:18px; height:18px;">含一般軌 ($90/尺)</label></div></div><div class="calc-formula-result-box" id="calc-result-${idx}">正在計算中...</div><div class="fabric-items-container"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span style="font-size:13px; font-weight:bold; color:var(--slate-800);">布料與紗簾清單：</span><button type="button" class="btn-add-item-row" onclick="addFabricRow(${idx})">➕ 新增款式/布號列</button></div><div class="fabric-rows-wrapper" id="fabric-rows-${idx}">${itemsRowsHtml}</div><div style="text-align: right; font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 6px;">本窗總估價金額：$<span class="window-sum-display" id="window-sum-${idx}">0</span> 元</div></div></div></div></div></div>`;
             });
             const qGeneral = record.quoteData || {}; const contentDiv = document.getElementById('estimate-lightbox-content');
-            contentDiv.innerHTML = `
-                ${windowsSectionsHtml}
-                <div class="client-info-card" style="background:#fff; margin-top:20px;">
-                    <div class="client-info-title"> 💰  全戶工程金額結算試算</div>
-                    <div class="form-row"><div class="form-group"><label>總估價金額 (元)：</label><input type="number" id="est-total-price" value="${qGeneral.totalPrice || ''}" oninput="calcEstimateTax(this, 'toTax')"></div><div class="form-group"><label>收取訂金 (元)：</label><input type="number" id="est-deposit" value="${qGeneral.deposit || ''}" oninput="updateEstimateBalance()"></div></div>
-                    <div class="form-row"><div class="form-group"><label>未稅金額 (元)：</label><input type="number" id="est-notax" value="${qGeneral.noTax || ''}" oninput="calcEstimateTax(this, 'toTax')"></div><div class="form-group"><label>含稅金額 (元)：</label><input type="number" id="est-withtax" value="${qGeneral.withTax || ''}" oninput="calcEstimateTax(this, 'toNoTax')"></div></div>
-                    <div style="font-size: 16px; font-weight: bold; color: var(--danger); margin-top: 10px; text-align: right;" id="est-balance-display">工程尾款預估：$0 元</div>
-                </div>
-            `;
-            record.windows.forEach((_, idx) => { toggleCalcFields(idx); runWindowFormula(idx); updateWindowTotal(idx); });
-            updateEstimateBalance(); document.getElementById('estimate-lightbox').style.display = 'flex';
+            contentDiv.innerHTML = `${windowsSectionsHtml}<div class="client-info-card" style="background:#fff; margin-top:20px;"><div class="client-info-title"> 💰  全戶工程金額結算試算</div><div class="form-row"><div class="form-group"><label>總估價金額 (元)：</label><input type="number" id="est-total-price" value="${qGeneral.totalPrice || ''}" oninput="calcEstimateTax(this, 'toTax')"></div><div class="form-group"><label>收取訂金 (元)：</label><input type="number" id="est-deposit" value="${qGeneral.deposit || ''}" oninput="updateEstimateBalance()"></div></div><div class="form-row"><div class="form-group"><label>未稅金額 (元)：</label><input type="number" id="est-notax" value="${qGeneral.noTax || ''}" oninput="calcEstimateTax(this, 'toTax')"></div><div class="form-group"><label>含稅金額 (元)：</label><input type="number" id="est-withtax" value="${qGeneral.withTax || ''}" oninput="calcEstimateTax(this, 'toNoTax')"></div></div><div style="font-size: 16px; font-weight: bold; color: var(--danger); margin-top: 10px; text-align: right;" id="est-balance-display">工程尾款預估：$0 元</div></div>`;
+            record.windows.forEach((_, idx) => { toggleCalcFields(idx); runWindowFormula(idx); updateWindowTotal(idx); }); updateEstimateBalance(); document.getElementById('estimate-lightbox').style.display = 'flex';
         };
 
-        window.addFabricRow = function(windowIdx) {
-            const wrapper = document.getElementById(`fabric-rows-${windowIdx}`); const newRow = document.createElement('div'); newRow.className = 'fabric-item-row';
-            newRow.innerHTML = `<div class="form-group" style="flex: 2; margin-bottom: 0;"><label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label><input type="text" class="c-note" placeholder="例如：紗簾布號或加購項"></div><div class="form-group" style="flex: 1; margin-bottom: 0;"><label style="font-size: 13px; color: #e67e22;">💵 此項金額 (元)：</label><input type="number" class="c-itemprice" placeholder="金額" oninput="updateWindowTotal(${windowIdx})"></div><button type="button" class="btn-remove-item-row" onclick="removeFabricRow(this, ${windowIdx})">❌</button>`;
-            wrapper.appendChild(newRow); updateWindowTotal(windowIdx);
-        };
+        window.addFabricRow = function(windowIdx) { const wrapper = document.getElementById(`fabric-rows-${windowIdx}`); const newRow = document.createElement('div'); newRow.className = 'fabric-item-row'; newRow.innerHTML = `<div class="form-group" style="flex: 2; margin-bottom: 0;"><label style="font-size: 13px;">🎨 款式型號 / 布號 / 備註：</label><input type="text" class="c-note" placeholder="例如：紗簾布號或加購項"></div><div class="form-group" style="flex: 1; margin-bottom: 0;"><label style="font-size: 13px; color: #e67e22;">💵 此項金額 (元)：</label><input type="number" class="c-itemprice" placeholder="金額" oninput="updateWindowTotal(${windowIdx})"></div><button type="button" class="btn-remove-item-row" onclick="removeFabricRow(this, ${windowIdx})">❌</button>`; wrapper.appendChild(newRow); updateWindowTotal(windowIdx); };
         window.removeFabricRow = function(btn, windowIdx) { btn.closest('.fabric-item-row').remove(); updateWindowTotal(windowIdx); };
-        window.updateWindowTotal = function(windowIdx) {
-            const wrapper = document.getElementById(`fabric-rows-${windowIdx}`); if(!wrapper) return; let total = 0;
-            wrapper.querySelectorAll('.c-itemprice').forEach(input => { const val = parseFloat(input.value); if (!isNaN(val)) total += val; });
-            const sumDisplay = document.getElementById(`window-sum-${windowIdx}`); if (sumDisplay) sumDisplay.innerText = total; sumTotalFromWindows();
-        };
+        window.updateWindowTotal = function(windowIdx) { const wrapper = document.getElementById(`fabric-rows-${windowIdx}`); if(!wrapper) return; let total = 0; wrapper.querySelectorAll('.c-itemprice').forEach(input => { const val = parseFloat(input.value); if (!isNaN(val)) total += val; }); const sumDisplay = document.getElementById(`window-sum-${windowIdx}`); if (sumDisplay) sumDisplay.innerText = total; sumTotalFromWindows(); };
 
         window.toggleCalcFields = function(idx) {
             const panel = document.querySelector(`.est-window-panel[data-idx="${idx}"]`); if(!panel) return;
             const type = panel.querySelector('.c-type').value; const pleatDiv = panel.querySelector('.f-pleat'); const fabWidthDiv = panel.querySelector('.f-fab-width'); const sewingDiv = panel.querySelector('.f-sewing'); const trackDiv = panel.querySelector('.f-track'); const priceLabel = panel.querySelector('.c-price-label');
-            if(type === 'traditional') { if(pleatDiv) pleatDiv.style.display = 'block'; if(fabWidthDiv) fabWidthDiv.style.display = 'block'; if(sewingDiv) sewingDiv.style.display = 'block'; if(trackDiv) trackDiv.style.display = 'flex'; priceLabel.innerText = '布料單價 (元/尺)：'; } 
-            else if(type === 'seamless') { if(pleatDiv) pleatDiv.style.display = 'none'; if(fabWidthDiv) fabWidthDiv.style.display = 'none'; if(sewingDiv) sewingDiv.style.display = 'none'; if(trackDiv) trackDiv.style.display = 'flex'; priceLabel.innerText = '無接縫布單價 (元/尺)：'; } 
-            else if(type === 'roller') { if(pleatDiv) pleatDiv.style.display = 'none'; if(fabWidthDiv) fabWidthDiv.style.display = 'none'; if(sewingDiv) sewingDiv.style.display = 'none'; if(trackDiv) trackDiv.style.display = 'none'; priceLabel.innerText = '每才單價 (元/才)：'; } 
-            else { if(pleatDiv) pleatDiv.style.display = 'none'; if(fabWidthDiv) fabWidthDiv.style.display = 'none'; if(sewingDiv) sewingDiv.style.display = 'none'; if(trackDiv) trackDiv.style.display = 'none'; priceLabel.innerText = '單價：'; }
+            if(type === 'traditional') { if(pleatDiv) pleatDiv.style.display = 'block'; if(fabWidthDiv) fabWidthDiv.style.display = 'block'; if(sewingDiv) sewingDiv.style.display = 'block'; if(trackDiv) trackDiv.style.display = 'flex'; priceLabel.innerText = '布料單價 (元/尺)：'; } else if(type === 'seamless') { if(pleatDiv) pleatDiv.style.display = 'none'; if(fabWidthDiv) fabWidthDiv.style.display = 'none'; if(sewingDiv) sewingDiv.style.display = 'none'; if(trackDiv) trackDiv.style.display = 'flex'; priceLabel.innerText = '無接縫布單價 (元/尺)：'; } else if(type === 'roller') { if(pleatDiv) pleatDiv.style.display = 'none'; if(fabWidthDiv) fabWidthDiv.style.display = 'none'; if(sewingDiv) sewingDiv.style.display = 'none'; if(trackDiv) trackDiv.style.display = 'none'; priceLabel.innerText = '每才單價 (元/才)：'; } else { if(pleatDiv) pleatDiv.style.display = 'none'; if(fabWidthDiv) fabWidthDiv.style.display = 'none'; if(sewingDiv) sewingDiv.style.display = 'none'; if(trackDiv) trackDiv.style.display = 'none'; priceLabel.innerText = '單價：'; }
         };
 
         window.runWindowFormula = function(idx) {
@@ -1067,242 +608,87 @@
             if (width <= 0 || height <= 0) { resultBox.innerHTML = `⚠ 請輸入有效的寬度與高度以進行換算。`; resultBox.setAttribute('data-formula-html', ''); return; }
             let html = ''; let finalPrice = 0; const trackFeet = Math.ceil(width / 30.3); const rawTrackFee = trackFeet * 90; let trackFee = 0; let trackNoteHtml = '';
             if (hasTrack) { if (rawTrackFee < 500) { trackFee = 500; trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = $500 <span style="color:#ef4444; font-weight:bold;">〔原價$${rawTrackFee}不足基本價〕</span><br>`; } else { trackFee = rawTrackFee; trackNoteHtml = `• 一般軌道：${trackFeet} 尺 × $90 = <strong>$${trackFee} 元</strong><br>`; } } else { trackNoteHtml = `• 一般軌道：無<br>`; }
-            if (type === 'traditional') {
-                const panels = Math.ceil((width * pleat) / fabWidth); const sewingFee = panels * sewingPrice; const sewingHeightFeet = (height + 30.3) / 30.3; const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6); const fabricCost = totalFabricFeet * unitPrice; finalPrice = fabricCost + sewingFee + trackFee;
-                html = `<div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【傳統窗簾布算式拆解】</div>• 幅數計算：${width} cm × ${pleat}倍 ÷ ${fabWidth} cm = <strong>${panels} 幅</strong><br>• 車縫高度：(${height} cm + 30.3 cm) ÷ 30.3 = <strong>${sewingHeightFeet.toFixed(2)} 尺</strong><br>• 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>• 布料費用：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>• 總車工費用：${panels} 幅 × $${sewingPrice} = <strong>$${sewingFee} 元</strong><br>${trackNoteHtml}➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>`;
-            } else if (type === 'seamless') {
-                const widthInFeet = width / 30.3; const rawFeet = (widthInFeet * 2.3) + 0.6; const ceilFeet = Math.ceil(rawFeet); const diff = ceilFeet - rawFeet; const totalFabricFeet = (diff > 0 && diff <= 0.01) ? Math.floor(rawFeet) : ceilFeet; const fabricCost = totalFabricFeet * unitPrice; finalPrice = fabricCost + trackFee;
-                html = `<div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【無接縫布算式拆解】</div>• 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>• 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong> (未進位原始值: ${rawFeet.toFixed(3)})<br>• 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>${trackNoteHtml}➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>`;
-            } else if (type === 'roller') {
-                const totalCai = Math.round((width / 30.3) * (height / 30.3) * 10) / 10; finalPrice = Math.round(totalCai * unitPrice);
-                html = `<div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【才數算式拆解 (捲簾/百葉/調光)】</div>• 面積換算：(${width} ÷ 30.3) 尺 × (${height} ÷ 30.3) 尺 = <strong>${totalCai} 才</strong><br>• 金額總計：${totalCai} 才 × $${unitPrice} = <strong>$${finalPrice} 元</strong>`;
-            }
+            if (type === 'traditional') { const panels = Math.ceil((width * pleat) / fabWidth); const sewingFee = panels * sewingPrice; const sewingHeightFeet = (height + 30.3) / 30.3; const totalFabricFeet = Math.ceil((sewingHeightFeet * panels) + 0.6); const fabricCost = totalFabricFeet * unitPrice; finalPrice = fabricCost + sewingFee + trackFee; html = `<div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【傳統窗簾布算式拆解】</div>• 幅數計算：${width} cm × ${pleat}倍 ÷ ${fabWidth} cm = <strong>${panels} 幅</strong><br>• 車縫高度：(${height} cm + 30.3 cm) ÷ 30.3 = <strong>${sewingHeightFeet.toFixed(2)} 尺</strong><br>• 總耗布量：(${sewingHeightFeet.toFixed(2)} 尺 × ${panels} 幅) + 0.6 尺 = <strong>${totalFabricFeet} 尺</strong><br>• 布料費用：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>• 總車工費用：${panels} 幅 × $${sewingPrice} = <strong>$${sewingFee} 元</strong><br>${trackNoteHtml}➔ 此項試算合計：$${fabricCost} + $${sewingFee} + $${trackFee} = <strong>$${finalPrice} 元</strong>`; } 
+            else if (type === 'seamless') { const widthInFeet = width / 30.3; const rawFeet = (widthInFeet * 2.3) + 0.6; const ceilFeet = Math.ceil(rawFeet); const diff = ceilFeet - rawFeet; const totalFabricFeet = (diff > 0 && diff <= 0.01) ? Math.floor(rawFeet) : ceilFeet; const fabricCost = totalFabricFeet * unitPrice; finalPrice = fabricCost + trackFee; html = `<div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【無接縫布算式拆解】</div>• 窗戶寬度：${width} cm (${widthInFeet.toFixed(2)} 台尺)<br>• 總耗布量：(${widthInFeet.toFixed(2)} 尺 × 2.3倍) + 0.6 尺窗帶 = <strong>${totalFabricFeet} 尺</strong> (未進位原始值: ${rawFeet.toFixed(3)})<br>• 接縫布費：${totalFabricFeet} 尺 × $${unitPrice} = <strong>$${fabricCost} 元</strong><br>${trackNoteHtml}➔ 此項試算合計：$${fabricCost} + $${trackFee} = <strong>$${finalPrice} 元</strong>`; } 
+            else if (type === 'roller') { const totalCai = Math.round((width / 30.3) * (height / 30.3) * 10) / 10; finalPrice = Math.round(totalCai * unitPrice); html = `<div style="font-weight:bold; color:#6b21a8; margin-bottom:4px;">【才數算式拆解 (捲簾/百葉/調光)】</div>• 面積換算：(${width} ÷ 30.3) 尺 × (${height} ÷ 30.3) 尺 = <strong>${totalCai} 才</strong><br>• 金額總計：${totalCai} 才 × $${unitPrice} = <strong>$${finalPrice} 元</strong>`; }
             resultBox.innerHTML = html; resultBox.setAttribute('data-formula-html', html);
-            if (firstPriceInput && (firstPriceInput.value === '' || firstPriceInput.getAttribute('data-auto') === 'true')) { firstPriceInput.value = finalPrice; firstPriceInput.setAttribute('data-auto', 'true'); }
-            updateWindowTotal(idx);
+            if (firstPriceInput && (firstPriceInput.value === '' || firstPriceInput.getAttribute('data-auto') === 'true')) { firstPriceInput.value = finalPrice; firstPriceInput.setAttribute('data-auto', 'true'); } updateWindowTotal(idx);
         };
 
-        window.sumTotalFromWindows = function() {
-            let sum = 0; document.querySelectorAll('#estimate-lightbox-content .c-itemprice').forEach(input => { const val = parseFloat(input.value); if (!isNaN(val)) sum += val; });
-            const totalInput = document.getElementById('est-total-price'); totalInput.value = sum; calcEstimateTax(totalInput, 'toTax');
-        };
-
-        window.calcEstimateTax = function(element, direction) {
-            const val = parseFloat(element.value); const noTaxInput = document.getElementById('est-notax'); const withTaxInput = document.getElementById('est-withtax');
-            if (!element.value || isNaN(val)) { if (direction === 'toTax') withTaxInput.value = ''; if (direction === 'toNoTax') noTaxInput.value = ''; updateEstimateBalance(); return; }
-            if (direction === 'toTax') { withTaxInput.value = Math.round(val * 1.05); if(element.id === 'est-total-price') noTaxInput.value = val; } 
-            else if (direction === 'toNoTax') { noTaxInput.value = Math.round(val / 1.05); }
-            updateEstimateBalance();
-        };
-
-        window.updateEstimateBalance = function() {
-            const withTax = parseFloat(document.getElementById('est-withtax').value) || 0; const totalPrice = parseFloat(document.getElementById('est-total-price').value) || 0; const deposit = parseFloat(document.getElementById('est-deposit').value) || 0;
-            const balance = (withTax || totalPrice || 0) - deposit; const disp = document.getElementById('est-balance-display'); if (disp) disp.innerText = `工程尾款預估：$${balance} 元`;
-        };
+        window.sumTotalFromWindows = function() { let sum = 0; document.querySelectorAll('#estimate-lightbox-content .c-itemprice').forEach(input => { const val = parseFloat(input.value); if (!isNaN(val)) sum += val; }); const totalInput = document.getElementById('est-total-price'); totalInput.value = sum; calcEstimateTax(totalInput, 'toTax'); };
+        window.calcEstimateTax = function(element, direction) { const val = parseFloat(element.value); const noTaxInput = document.getElementById('est-notax'); const withTaxInput = document.getElementById('est-withtax'); if (!element.value || isNaN(val)) { if (direction === 'toTax') withTaxInput.value = ''; if (direction === 'toNoTax') noTaxInput.value = ''; updateEstimateBalance(); return; } if (direction === 'toTax') { withTaxInput.value = Math.round(val * 1.05); if(element.id === 'est-total-price') noTaxInput.value = val; } else if (direction === 'toNoTax') { noTaxInput.value = Math.round(val / 1.05); } updateEstimateBalance(); };
+        window.updateEstimateBalance = function() { const withTax = parseFloat(document.getElementById('est-withtax').value) || 0; const totalPrice = parseFloat(document.getElementById('est-total-price').value) || 0; const deposit = parseFloat(document.getElementById('est-deposit').value) || 0; const balance = (withTax || totalPrice || 0) - deposit; const disp = document.getElementById('est-balance-display'); if (disp) disp.innerText = `工程尾款預估：$${balance} 元`; };
 
         window.saveEstimateAndClose = function() {
-            if (!currentEstimatingRecordId) return; const records = getLocalStorageData(); const index = records.findIndex(r => r.id === currentEstimatingRecordId); if (index === -1) return;
-            const quoteWindows = [];
+            if (!currentEstimatingRecordId) return; const records = getLocalStorageData(); const index = records.findIndex(r => r.id === currentEstimatingRecordId); if (index === -1) return; const quoteWindows = [];
             document.querySelectorAll('#estimate-lightbox-content .est-window-panel').forEach(panel => {
-                const idx = parseInt(panel.getAttribute('data-idx')); const originalWindow = records[index].windows[idx] || {};
-                const fabricItems = []; let windowSum = 0;
+                const idx = parseInt(panel.getAttribute('data-idx')); const originalWindow = records[index].windows[idx] || {}; const fabricItems = []; let windowSum = 0;
                 panel.querySelectorAll('.fabric-item-row').forEach(row => { const note = row.querySelector('.c-note').value.trim(); const price = row.querySelector('.c-itemprice').value.trim(); if (price) windowSum += parseFloat(price) || 0; fabricItems.push({ note, price }); });
                 const resBox = document.getElementById(`calc-result-${idx}`);
-                quoteWindows.push({
-                    itemNumber: originalWindow.itemNumber || (idx + 1), location: originalWindow.location || '', types: originalWindow.types || [], envs: originalWindow.envs || [], boxDepth: originalWindow.boxDepth || '',
-                    calcWidth: panel.querySelector('.c-width').value.trim(), calcHeight: panel.querySelector('.c-height').value.trim(), calcType: panel.querySelector('.c-type').value, pleatRate: panel.querySelector('.c-pleat').value.trim(), fabricWidth: panel.querySelector('.c-fabwidth').value.trim(), sewingPrice: panel.querySelector('.c-sewingprice') ? panel.querySelector('.c-sewingprice').value.trim() : '180', unitPrice: panel.querySelector('.c-unitprice').value.trim(), hasTrack: panel.querySelector('.c-track').checked, fabricItems: fabricItems, formulaHtml: resBox ? (resBox.getAttribute('data-formula-html') || resBox.innerHTML) : '', itemPrice: windowSum
-                });
+                quoteWindows.push({ itemNumber: originalWindow.itemNumber || (idx + 1), location: originalWindow.location || '', types: originalWindow.types || [], envs: originalWindow.envs || [], boxDepth: originalWindow.boxDepth || '', calcWidth: panel.querySelector('.c-width').value.trim(), calcHeight: panel.querySelector('.c-height').value.trim(), calcType: panel.querySelector('.c-type').value, pleatRate: panel.querySelector('.c-pleat').value.trim(), fabricWidth: panel.querySelector('.c-fabwidth').value.trim(), sewingPrice: panel.querySelector('.c-sewingprice') ? panel.querySelector('.c-sewingprice').value.trim() : '180', unitPrice: panel.querySelector('.c-unitprice').value.trim(), hasTrack: panel.querySelector('.c-track').checked, fabricItems: fabricItems, formulaHtml: resBox ? (resBox.getAttribute('data-formula-html') || resBox.innerHTML) : '', itemPrice: windowSum });
             });
             records[index].quoteData = { windows: quoteWindows, totalPrice: document.getElementById('est-total-price').value.trim(), deposit: document.getElementById('est-deposit').value.trim(), noTax: document.getElementById('est-notax').value.trim(), withTax: document.getElementById('est-withtax').value.trim(), savedAt: new Date().toLocaleString('zh-TW') };
-            try { localStorage.setItem('curtain_measurements', JSON.stringify(records)); } catch (e) {}
-            alert('🎉 估價試算已成功儲存！已同步備份至 Google 雲端硬碟。'); syncRecordToGoogleDrive(records[index]); closeEstimateLightbox();
-            if(document.getElementById('history-lightbox').style.display === 'flex') openHistoryLightbox();
-            if(document.getElementById('search-input').value) searchData();
+            try { localStorage.setItem('curtain_measurements', JSON.stringify(records)); } catch (e) {} alert('🎉 估價試算已成功儲存！已同步備份至 Google 雲端硬碟。'); syncRecordToGoogleDrive(records[index]); closeEstimateLightbox(); if(document.getElementById('history-lightbox').style.display === 'flex') openHistoryLightbox(); if(document.getElementById('search-input').value) searchData();
         };
 
         window.closeEstimateLightbox = function() { document.getElementById('estimate-lightbox').style.display = 'none'; currentEstimatingRecordId = null; };
 
         function makeWindowDetailHtml(w) {
-            let photoDisplay = (w.photoUrl && w.photoUrl !== 'undefined') ? `<div style="margin-top: 12px; text-align: center;"><a href="${w.photoUrl}" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: #eff6ff; color: #1d4ed8; padding: 10px 16px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 14px; border: 1px solid #bfdbfe; width: 100%;">🖼️ 開啟檢視雲端現場照片</a></div>` : `<div style="margin-top: 12px; text-align: center; font-size: 13px; color: #94a3b8; background: #f8fafc; padding: 8px; border-radius: 6px; border: 1px dashed #cbd5e1;">📷 此窗戶未上傳照片</div>`;
-            return `
-                <div style="margin-top: 10px; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                    <strong style="color: #1e293b; font-size: 14px;"> 📍  位置：${w.location || '未填'}</strong> <span style="color:#64748b; font-size:13px;">(項目 ${w.itemNumber})</span><br>
-                    <div style="font-size: 13px; color: #475569; margin-top: 4px; margin-bottom: 8px;">開法：${w.types && w.types.length ? w.types.join(', ') : '未選'} | 安裝環境：${w.envs && w.envs.length ? w.envs.join(', ') : '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}</div>
-                    <div style="position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; margin: 10px auto; transform: scale(0.85); transform-origin: top center;">
-                        <div style="position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary);"></div><div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div>
-                        <div class="t-locked-box" style="top: 5px; left: 127px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 38px; left: 127px;"><small>上框(註)</small><strong>${w.sizeOutTopSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 75px; left: 127px;"><small style="color:var(--primary);">本身寬</small><strong style="color:var(--primary); font-weight:800;">${w.sizeWindowWidth || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: -10px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: -10px;"><small>左牆(註)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: 255px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: 255px;"><small>右牆(註)</small><strong>${w.sizeOutRightSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 180px; left: 127px;"><small style="color:var(--primary);">本身高</small><strong style="color:var(--primary); font-weight:800;">${w.sizeWindowHeight || '0'}</strong></div><div class="t-locked-box" style="top: 235px; left: 127px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 268px; left: 127px;"><small>下框(註)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div>
-                    </div>
-                    ${photoDisplay}
-                    ${w.note ? `<div style="margin-top: 10px; font-size: 13px; color: #b45309; background: #fef3c7; padding: 8px 10px; border-radius: 6px; border: 1px solid #fde68a;"> 📝 <strong>備註:</strong> ${w.note}</div>` : ''}
-                </div>
-            `;
+            return `<div style="margin-top: 10px; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;"><strong style="color: #1e293b; font-size: 14px;"> 📍  位置：${w.location || '未填'}</strong> <span style="color:#64748b; font-size:13px;">(項目 ${w.itemNumber})</span><br><div style="font-size: 13px; color: #475569; margin-top: 4px; margin-bottom: 8px;">開法：${w.types && w.types.length ? w.types.join(', ') : '未選'} | 安裝環境：${w.envs && w.envs.length ? w.envs.join(', ') : '未選'} | 盒深：${w.boxDepth ? w.boxDepth + ' cm' : '未填'}</div><div style="position: relative; width: 330px; height: 300px; background: #fff; border: 1px solid var(--slate-200); border-radius: 8px; margin: 10px auto; transform: scale(0.85); transform-origin: top center;"><div style="position: absolute; top: 120px; left: 35px; width: 250px; height: 2px; background-color: var(--primary);"></div><div style="position: absolute; top: 40px; left: 164px; width: 2px; height: 210px; background-color: var(--primary);"></div><div class="t-locked-box" style="top: 5px; left: 127px;"><small>上框高</small><strong>${w.sizeOutTop || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 38px; left: 127px;"><small>上框(註)</small><strong>${w.sizeOutTopSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 75px; left: 127px;"><small style="color:var(--primary);">本身寬</small><strong style="color:var(--primary); font-weight:800;">${w.sizeWindowWidth || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: -10px;"><small>左牆寬</small><strong>${w.sizeOutLeft || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: -10px;"><small>左牆(註)</small><strong>${w.sizeOutLeftSub || '0'}</strong></div><div class="t-locked-box" style="top: 100px; left: 255px;"><small>右牆寬</small><strong>${w.sizeOutRight || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 138px; left: 255px;"><small>右牆(註)</small><strong>${w.sizeOutRightSub || '0'}</strong></div><div class="t-locked-box highlight" style="border-color:var(--primary); top: 180px; left: 127px;"><small style="color:var(--primary);">本身高</small><strong style="color:var(--primary); font-weight:800;">${w.sizeWindowHeight || '0'}</strong></div><div class="t-locked-box" style="top: 235px; left: 127px;"><small>下框地</small><strong>${w.sizeOutBottom || '0'}</strong></div><div class="t-locked-box" style="border-style:dashed; top: 268px; left: 127px;"><small>下框(註)</small><strong>${w.sizeOutBottomSub || '0'}</strong></div></div>${w.note ? `<div style="margin-top: 10px; font-size: 13px; color: #b45309; background: #fef3c7; padding: 8px 10px; border-radius: 6px; border: 1px solid #fde68a;"> 📝 <strong>備註:</strong> ${w.note}</div>` : ''}</div>`;
         }
 
         function makeClientDetailsHtml(record, uniqueId) {
             const q = record.quoteData || {}; const finalTotal = parseInt(q.withTax) || parseInt(q.totalPrice) || 0;
-            return `
-                <div class="history-client-details" id="details-${uniqueId}">
-                    <strong>📞 聯絡電話：</strong>${record.clientPhone || '未填'}<br>
-                    <strong>🪪 統一編號：</strong>${record.clientTaxId || '未填'}<br>
-                    <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #cbd5e1; line-height: 1.5; color: var(--slate-800);">
-                        💰 估價金額：$${q.totalPrice || 0} 元 | 💵 收取訂金：$${q.deposit || 0} 元<br>
-                        📊 未稅價格：$${q.noTax || 0} 元 | 📈 含稅價格：$${q.withTax || 0} 元<br>
-                        🚨 <span style="color:var(--danger); font-weight:bold;">工程尾款結算：$${finalTotal - (q.deposit || 0)} 元</span>
-                        ${q.savedAt ? `<div style="font-size:11px; color:#8b5cf6;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#d97706;">⚠️ 尚未建立詳細估價試算</div>'}
-                    </div>
-                </div>
-            `;
+            return `<div class="history-client-details" id="details-${uniqueId}"><strong>📞 聯絡電話：</strong>${record.clientPhone || '未填'}<br><strong>🪪 統一編號：</strong>${record.clientTaxId || '未填'}<br><div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #cbd5e1; line-height: 1.5; color: var(--slate-800);">💰 估價金額：$${q.totalPrice || 0} 元 | 💵 收取訂金：$${q.deposit || 0} 元<br>📊 未稅價格：$${q.noTax || 0} 元 | 📈 含稅價格：$${q.withTax || 0} 元<br>🚨 <span style="color:var(--danger); font-weight:bold;">工程尾款結算：$${finalTotal - (q.deposit || 0)} 元</span>${q.savedAt ? `<div style="font-size:11px; color:#8b5cf6;">⏱ 估價更新時間：${q.savedAt}</div>` : '<div style="font-size:11px; color:#d97706;">⚠️ 尚未建立詳細估價試算</div>'}</div></div>`;
         }
 
-        window.toggleDetailsSection = function(uniqueId, btn) {
-            const target = document.getElementById('details-' + uniqueId); const wTarget = document.getElementById('windows-' + uniqueId); if (!target) return;
-            if (target.style.display === 'block') { target.style.display = 'none'; if(wTarget) wTarget.style.display = 'none'; btn.innerText = '展開詳情'; btn.style.backgroundColor = 'var(--slate-600)'; } 
-            else { target.style.display = 'block'; if(wTarget) wTarget.style.display = 'block'; btn.innerText = '收合詳情'; btn.style.backgroundColor = 'var(--slate-800)'; }
-        };
-
-        window.deleteSingleRecord = function(recordId, clientName, elementIdToId) {
-            if (!confirm(` ⚠️ 確定要永久刪除【 ${clientName} 】的本機丈量紀錄嗎？\n此操作刪除後將無法復原！`)) return;
-            let records = getLocalStorageData().filter(r => r.id !== recordId); localStorage.setItem('curtain_measurements', JSON.stringify(records));
-            const targetDom = document.getElementById(elementIdToId); if (targetDom) targetDom.remove(); if (editingId === recordId) resetForm();
-        };
+        window.toggleDetailsSection = function(uniqueId, btn) { const target = document.getElementById('details-' + uniqueId); const wTarget = document.getElementById('windows-' + uniqueId); if (!target) return; if (target.style.display === 'block') { target.style.display = 'none'; if(wTarget) wTarget.style.display = 'none'; btn.innerText = '展開詳情'; btn.style.backgroundColor = 'var(--slate-600)'; } else { target.style.display = 'block'; if(wTarget) wTarget.style.display = 'block'; btn.innerText = '收合詳情'; btn.style.backgroundColor = 'var(--slate-800)'; } };
+        window.deleteSingleRecord = function(recordId, clientName, elementIdToId) { if (!confirm(` ⚠️ 確定要永久刪除【 ${clientName} 】的本機丈量紀錄嗎？\n此操作刪除後將無法復原！`)) return; let records = getLocalStorageData().filter(r => r.id !== recordId); localStorage.setItem('curtain_measurements', JSON.stringify(records)); const targetDom = document.getElementById(elementIdToId); if (targetDom) targetDom.remove(); if (editingId === recordId) resetForm(); };
 
         function renderSimplifiedHistoryItem(record, isLightbox = false) {
-            const prefix = isLightbox ? 'lightbox-' : 'search-'; const domId = prefix + 'item-' + record.id; const uniqueId = prefix + record.id;
-            let windowsHtml = ''; if (record.windows && Array.isArray(record.windows)) { record.windows.forEach(w => { windowsHtml += makeWindowDetailHtml(w); }); }
-            return `
-                <div class="history-item-simplified" id="${domId}">
-                    <div class="hist-top-line"><span class="hist-client-title">👤 客戶：${record.clientName}</span><span style="font-size:12px; color:var(--primary); font-weight:bold;">📅 丈量日期：${record.measureDate || '未填'}</span></div>
-                    <div class="hist-info-line">📍 <strong>施工地址：</strong>${record.clientAddress || '未填'}</div>
-                    <div class="hist-actions-bar">
-                        <button class="btn-tag toggle-btn" onclick="toggleDetailsSection('${uniqueId}', this)">展開詳情</button>
-                        <button class="btn-tag estimate-btn" onclick="openEstimateModal('${record.id}')">💰 估價</button>
-                        <button class="btn-tag row-edit-btn" onclick="loadRecordForEdit('${record.id}')">✏️ 尺寸</button>
-                        <button class="btn-tag pdf-btn" title="含T-Chart與尺寸" onclick="exportPDFWithTChart('${record.id}')">📥 完整報價</button>
-                        <button class="btn-tag pdf-price-only-btn" title="純金額無任何尺寸" onclick="exportPDFPriceOnly('${record.id}')">📄 純金額報價</button>
-                        <button class="btn-tag row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button>
-                    </div>
-                    ${makeClientDetailsHtml(record, uniqueId)}
-                    <div id="windows-${uniqueId}" style="display:none;">${windowsHtml}</div>
-                </div>
-            `;
+            const prefix = isLightbox ? 'lightbox-' : 'search-'; const domId = prefix + 'item-' + record.id; const uniqueId = prefix + record.id; let windowsHtml = ''; if (record.windows && Array.isArray(record.windows)) { record.windows.forEach(w => { windowsHtml += makeWindowDetailHtml(w); }); }
+            return `<div class="history-item-simplified" id="${domId}"><div class="hist-top-line"><span class="hist-client-title">👤 客戶：${record.clientName}</span><span style="font-size:12px; color:var(--primary); font-weight:bold;">📅 丈量日期：${record.measureDate || '未填'}</span></div><div class="hist-info-line">📍 <strong>施工地址：</strong>${record.clientAddress || '未填'}</div><div class="hist-actions-bar"><button class="btn-tag toggle-btn" onclick="toggleDetailsSection('${uniqueId}', this)">展開詳情</button><button class="btn-tag estimate-btn" onclick="openEstimateModal('${record.id}')">💰 估價</button><button class="btn-tag row-edit-btn" onclick="loadRecordForEdit('${record.id}')">✏️ 尺寸</button><button class="btn-tag pdf-btn" title="含T-Chart與尺寸" onclick="exportPDFWithTChart('${record.id}')">📥 完整報價</button><button class="btn-tag pdf-price-only-btn" title="純金額無任何尺寸" onclick="exportPDFPriceOnly('${record.id}')">📄 純金額報價</button><button class="btn-tag row-delete-btn" onclick="deleteSingleRecord('${record.id}', '${record.clientName}', '${domId}')">❌ 刪除</button></div>${makeClientDetailsHtml(record, uniqueId)}<div id="windows-${uniqueId}" style="display:none;">${windowsHtml}</div></div>`;
         }
 
-        window.searchData = function() {
-            const queryText = document.getElementById('search-input').value.trim().toLowerCase(); const resultsDiv = document.getElementById('search-results'); resultsDiv.innerHTML = ''; if(!queryText) return;
-            getLocalStorageData().forEach((record) => { if ((record.clientName || '').toLowerCase().includes(queryText) || (record.clientAddress || '').toLowerCase().includes(queryText)) { resultsDiv.innerHTML += renderSimplifiedHistoryItem(record, false); } });
-        };
-
-        window.openHistoryLightbox = function() {
-            const records = getLocalStorageData(); const listDiv = document.getElementById('lightbox-list'); listDiv.innerHTML = '';
-            if(records.length === 0) { alert("目前沒有丈量紀錄！"); return; }
-            records.forEach(record => { listDiv.innerHTML += renderSimplifiedHistoryItem(record, true); }); document.getElementById('history-lightbox').style.display = 'flex';
-        };
-
+        window.searchData = function() { const queryText = document.getElementById('search-input').value.trim().toLowerCase(); const resultsDiv = document.getElementById('search-results'); resultsDiv.innerHTML = ''; if(!queryText) return; getLocalStorageData().forEach((record) => { if ((record.clientName || '').toLowerCase().includes(queryText) || (record.clientAddress || '').toLowerCase().includes(queryText)) { resultsDiv.innerHTML += renderSimplifiedHistoryItem(record, false); } }); };
+        window.openHistoryLightbox = function() { const records = getLocalStorageData(); const listDiv = document.getElementById('lightbox-list'); listDiv.innerHTML = ''; if(records.length === 0) { alert("目前沒有丈量紀錄！"); return; } records.forEach(record => { listDiv.innerHTML += renderSimplifiedHistoryItem(record, true); }); document.getElementById('history-lightbox').style.display = 'flex'; };
         window.closeHistoryLightbox = function() { document.getElementById('history-lightbox').style.display = 'none'; };
 
         function generateFullPdfHtml(record) {
-            const q = record.quoteData || {}; const price = parseInt(q.totalPrice) || 0; const deposit = parseInt(q.deposit) || 0; const noTax = parseInt(q.noTax) || 0; const withTax = parseInt(q.withTax) || 0; const finalTotal = withTax || price || 0; const balance = finalTotal - deposit;
-            let windowsPrintHtml = "";
+            const q = record.quoteData || {}; const price = parseInt(q.totalPrice) || 0; const deposit = parseInt(q.deposit) || 0; const noTax = parseInt(q.noTax) || 0; const withTax = parseInt(q.withTax) || 0; const finalTotal = withTax || price || 0; const balance = finalTotal - deposit; let windowsPrintHtml = "";
             if (record.windows && Array.isArray(record.windows)) {
                 record.windows.forEach((w, wIdx) => {
                     const qItem = (q.windows && q.windows[wIdx]) ? q.windows[wIdx] : {}; const typeStr = (w.types || []).join(', ').trim() || '未選'; const envStr = (w.envs || []).join(', ').trim() || '未選'; const depthStr = w.boxDepth ? w.boxDepth.trim() + ' cm' : '未填'; const itemPriceDisplay = qItem.itemPrice ? `$${qItem.itemPrice} 元` : (price ? '包含於總額' : '未估價');
-                    let formulaHtml = qItem.formulaHtml || ''; let items = qItem.fabricItems; if (!items || !Array.isArray(items) || items.length === 0) { items = [{ note: qItem.itemStyleNote || '依現場約定規劃', price: qItem.itemPrice || '' }]; }
-                    let itemsHtml = '<div style="margin-top:14px; border-top:1px dashed #cbd5e1; padding-top:10px;">';
-                    items.forEach((it, i) => {
-                        const rowPrice = it.price ? `$${it.price} 元` : itemPriceDisplay;
-                        itemsHtml += `<div style="margin-bottom:10px;"><div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px;"><span style="font-size:14px; color:#1e293b; font-weight:bold;">🎨 項目 ${i + 1}：${it.note || '標準規劃'}</span><span style="font-size:14px; font-weight:bold; color:#ea580c;">此項金額：${rowPrice}</span></div>${ (i === 0 && formulaHtml) ? `<div style="margin-top:6px; font-size:12px; color:#581c87; background:#faf5ff; border:1px solid #e9d5ff; border-left:4px solid #8b5cf6; padding:10px 14px; border-radius:6px; line-height:1.7;">${formulaHtml}</div>` : '' }</div>`;
-                    });
-                    itemsHtml += '</div>';
-                    windowsPrintHtml += `
-                        <div class="pdf-window-box">
-                            <div class="pdf-window-header"><span>🪟 窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】</span><span class="header-price-tag">本窗總金額：${itemPriceDisplay}</span></div>
-                            <div class="pdf-main-layout">
-                                <div class="pdf-chart-layout">
-                                    <div class="pdf-t-chart">
-                                        <div class="pdf-t-line-horizontal"></div><div class="pdf-t-line-vertical"></div>
-                                        <div class="pdf-t-value pdf-v-top"><small>上框高</small><br><strong>${w.sizeOutTop || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-top-sub"><small>上框(註)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-width" style="border-color: #1e3a8a;"><small>窗本身寬</small><br><span class="highlight-blue">${w.sizeWindowWidth || '0'}</span></div>
-                                        <div class="pdf-t-value pdf-v-left"><small>左牆寬</small><br><strong>${w.sizeOutLeft || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-left-sub"><small>左牆(註)</small><br><strong>${w.sizeOutLeftSub || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-right"><small>右牆寬</small><br><strong>${w.sizeOutRight || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-right-sub"><small>右牆(註)</small><br><strong>${w.sizeOutRightSub || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-height" style="border-color: #1e3a8a;"><small>窗本身高</small><br><span class="highlight-blue">${w.sizeWindowHeight || '0'}</span></div>
-                                        <div class="pdf-t-value pdf-v-bottom"><small>下框地</small><br><strong>${w.sizeOutBottom || '0'}</strong></div>
-                                        <div class="pdf-t-value pdf-v-bottom-sub"><small>下框(註)</small><br><strong>${w.sizeOutBottomSub || '0'}</strong></div>
-                                    </div>
-                                </div>
-                                <div class="pdf-meta-info-right-panel">
-                                    <div class="meta-row-column price-card"><div class="meta-column-title">本窗估價總額</div><div class="meta-price-val">${itemPriceDisplay}</div></div>
-                                    <div class="meta-row-column"><div class="meta-column-title">開法選項</div><div class="meta-column-val">${typeStr}</div></div>
-                                    <div class="meta-row-column"><div class="meta-column-title">安裝環境</div><div class="meta-column-val">${envStr}</div></div>
-                                    <div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div class="meta-column-val">${depthStr}</div></div>
-                                </div>
-                            </div>
-                            ${itemsHtml}
-                            ${w.photoUrl && w.photoUrl !== 'undefined' ? `<div class="pdf-w-note" style="border-color:#bfdbfe; background:#eff6ff;"> 📸 <strong>雲端照片連結：</strong><a href="${w.photoUrl}" target="_blank" style="color:#2563eb;">點此檢視照片</a></div>` : ''}
-                            ${w.note ? `<div class="pdf-w-note"> 📝 <strong>丈量備註：</strong>${w.note}</div>` : ''}
-                        </div>
-                    `;
+                    let formulaHtml = qItem.formulaHtml || ''; let items = qItem.fabricItems; if (!items || !Array.isArray(items) || items.length === 0) { items = [{ note: qItem.itemStyleNote || '依現場約定規劃', price: qItem.itemPrice || '' }]; } let itemsHtml = '<div style="margin-top:14px; border-top:1px dashed #cbd5e1; padding-top:10px;">';
+                    items.forEach((it, i) => { const rowPrice = it.price ? `$${it.price} 元` : itemPriceDisplay; itemsHtml += `<div style="margin-bottom:10px;"><div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px;"><span style="font-size:14px; color:#1e293b; font-weight:bold;">🎨 項目 ${i + 1}：${it.note || '標準規劃'}</span><span style="font-size:14px; font-weight:bold; color:#ea580c;">此項金額：${rowPrice}</span></div>${ (i === 0 && formulaHtml) ? `<div style="margin-top:6px; font-size:12px; color:#581c87; background:#faf5ff; border:1px solid #e9d5ff; border-left:4px solid #8b5cf6; padding:10px 14px; border-radius:6px; line-height:1.7;">${formulaHtml}</div>` : '' }</div>`; }); itemsHtml += '</div>';
+                    windowsPrintHtml += `<div class="pdf-window-box"><div class="pdf-window-header"><span>🪟 窗戶項目 ${w.itemNumber}：【 ${w.location || '未填位置'} 】</span><span class="header-price-tag">本窗總金額：${itemPriceDisplay}</span></div><div class="pdf-main-layout"><div class="pdf-chart-layout"><div class="pdf-t-chart"><div class="pdf-t-line-horizontal"></div><div class="pdf-t-line-vertical"></div><div class="pdf-t-value pdf-v-top"><small>上框高</small><br><strong>${w.sizeOutTop || '0'}</strong></div><div class="pdf-t-value pdf-v-top-sub"><small>上框(註)</small><br><strong>${w.sizeOutTopSub || '0'}</strong></div><div class="pdf-t-value pdf-v-width" style="border-color: #1e3a8a;"><small>窗本身寬</small><br><span class="highlight-blue">${w.sizeWindowWidth || '0'}</span></div><div class="pdf-t-value pdf-v-left"><small>左牆寬</small><br><strong>${w.sizeOutLeft || '0'}</strong></div><div class="pdf-t-value pdf-v-left-sub"><small>左牆(註)</small><br><strong>${w.sizeOutLeftSub || '0'}</strong></div><div class="pdf-t-value pdf-v-right"><small>右牆寬</small><br><strong>${w.sizeOutRight || '0'}</strong></div><div class="pdf-t-value pdf-v-right-sub"><small>右牆(註)</small><br><strong>${w.sizeOutRightSub || '0'}</strong></div><div class="pdf-t-value pdf-v-height" style="border-color: #1e3a8a;"><small>窗本身高</small><br><span class="highlight-blue">${w.sizeWindowHeight || '0'}</span></div><div class="pdf-t-value pdf-v-bottom"><small>下框地</small><br><strong>${w.sizeOutBottom || '0'}</strong></div><div class="pdf-t-value pdf-v-bottom-sub"><small>下框(註)</small><br><strong>${w.sizeOutBottomSub || '0'}</strong></div></div></div><div class="pdf-meta-info-right-panel"><div class="meta-row-column price-card"><div class="meta-column-title">本窗估價總額</div><div class="meta-price-val">${itemPriceDisplay}</div></div><div class="meta-row-column"><div class="meta-column-title">開法選項</div><div class="meta-column-val">${typeStr}</div></div><div class="meta-row-column"><div class="meta-column-title">安裝環境</div><div class="meta-column-val">${envStr}</div></div><div class="meta-row-column"><div class="meta-column-title">窗簾盒深</div><div class="meta-column-val">${depthStr}</div></div></div></div>${itemsHtml}${w.note ? `<div class="pdf-w-note"> 📝 <strong>丈量備註：</strong>${w.note}</div>` : ''}</div>`;
                 });
             }
-            return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>估價確認單_${record.clientName}</title><style>@page { size: A4; margin: 15mm; } body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; } .pdf-header { text-align: center; border-bottom: 3px double #1e3a8a; padding-bottom: 12px; margin-bottom: 20px; } .pdf-header h1 { margin: 6px 0 0 0; color: #1e3a8a; font-size: 24px; } .brand-sub { font-size: 13px; color: #64748b; letter-spacing: 2px; } .pdf-section-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #1e3a8a; padding-left: 8px; margin-top: 20px; color: #1e3a8a; } .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; } .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; } .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 22px; page-break-inside: avoid; } .pdf-window-header { display: flex; justify-content: space-between; font-size: 15px; font-weight: bold; background: #1e3a8a; color: white; padding: 7px 14px; border-radius: 6px; margin-bottom: 12px; } .header-price-tag { background: #ffffff; color: #1e3a8a; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; } .pdf-main-layout { display: flex; gap: 12px; align-items: stretch; } .pdf-chart-layout { flex: 1; display: flex; justify-content: center; align-items: center; background: #f8fafc; border-radius: 6px; border: 1px solid #cbd5e1; } .pdf-t-chart { position: relative; width: 380px; height: 350px; } .pdf-t-line-horizontal { position: absolute; top: 135px; left: 25px; width: 330px; height: 3px; background-color: #1e3a8a; } .pdf-t-line-vertical { position: absolute; top: 30px; left: 188px; width: 3px; height: 285px; background-color: #1e3a8a; } .pdf-t-value { position: absolute; width: 95px; text-align: center; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; padding: 2px 0; } .pdf-t-value small { font-size: 10px; font-weight: bold; color: #64748b; } .pdf-t-value strong, .pdf-t-value .highlight-blue { font-size: 15px; font-weight: 800; } .pdf-v-top { top: 5px; left: 142px; } .pdf-v-top-sub { top: 48px; left: 142px; border-style: dashed; } .pdf-v-width { top: 92px; left: 142px; } .pdf-v-left { top: 115px; left: -15px; } .pdf-v-left-sub { top: 160px; left: -15px; border-style: dashed; } .pdf-v-right { top: 115px; left: 295px; } .pdf-v-right-sub { top: 160px; left: 295px; border-style: dashed; } .pdf-v-height { top: 205px; left: 142px; } .pdf-v-bottom { top: 268px; left: 142px; } .pdf-v-bottom-sub { top: 312px; left: 142px; border-style: dashed; } .pdf-meta-info-right-panel { width: 140px; display: flex; flex-direction: column; gap: 6px; } .meta-row-column { flex: 1; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 4px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: center; } .price-card { background: #eff6ff; border-color: #bfdbfe; } .meta-column-title { font-weight: bold; color: #64748b; font-size: 11px; border-bottom: 1px dashed #cbd5e1; width: 100%; } .meta-column-val { font-size: 13px; font-weight: bold; color: #1e293b; } .meta-price-val { font-size: 14px; font-weight: 800; color: #ea580c; } .highlight-blue { color: #1e3a8a; font-weight: 800; } .price-alert { color: #dc2626; font-weight: bold; } .pdf-w-note { margin-top: 8px; font-size: 13px; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; } @media print { .no-print { display: none; } } </style></head>
-                    <body>
-                        <div class="no-print" style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #1e3a8a; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button></div>
-                        <div class="pdf-header"><div class="brand-sub">WANG-MEI CURTAIN DESIGN</div><h1>望美窗簾 - 現場丈量與估價確認單</h1><p style="font-size:12px; color:#64748b; margin-top:4px;">丈量日期：${record.measureDate || '未填'} ｜ 單據時間：${record.timestamp || ''}</p></div>
-                        <div class="pdf-section-title">客戶基本資料</div>
-                        <table class="pdf-table"><tr><td width="50%"><strong>客戶姓名：</strong>${record.clientName}</td><td width="50%"><strong>聯絡電話：</strong>${record.clientPhone || '未填'}</td></tr><tr><td colspan="2"><strong>施工地址：</strong>${record.clientAddress || '未填'}</td></tr><tr><td width="50%"><strong>統一編號：</strong>${record.clientTaxId || '未填'}</td><td width="50%"><strong>丈量日期：</strong>${record.measureDate || '未填'}</td></tr></table>
-                        <div class="pdf-section-title">財務與工程總覽</div>
-                        <table class="pdf-table"><tr><td width="33%"><strong>估價總額：</strong>$${price} 元</td><td width="33%"><strong>未稅金額：</strong>$${noTax} 元</td><td width="34%"><strong>含稅總額：</strong>$${withTax} 元</td></tr><tr><td><strong>已收訂金：</strong>$${deposit} 元</td><td colspan="2"><strong>工程尾款結算：</strong><span class="price-alert">$${balance} 元</span></td></tr></table>
-                        <div class="pdf-section-title">各窗詳細資訊</div>${windowsPrintHtml}
-                    </body></html>`;
+            return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>估價確認單_${record.clientName}</title><style>@page { size: A4; margin: 15mm; } body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; } .pdf-header { text-align: center; border-bottom: 3px double #1e3a8a; padding-bottom: 12px; margin-bottom: 20px; } .pdf-header h1 { margin: 6px 0 0 0; color: #1e3a8a; font-size: 24px; } .brand-sub { font-size: 13px; color: #64748b; letter-spacing: 2px; } .pdf-section-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; border-left: 5px solid #1e3a8a; padding-left: 8px; margin-top: 20px; color: #1e3a8a; } .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; } .pdf-table td { padding: 8px 12px; border: 1px solid #cbd5e1; } .pdf-window-box { border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 22px; page-break-inside: avoid; } .pdf-window-header { display: flex; justify-content: space-between; font-size: 15px; font-weight: bold; background: #1e3a8a; color: white; padding: 7px 14px; border-radius: 6px; margin-bottom: 12px; } .header-price-tag { background: #ffffff; color: #1e3a8a; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; } .pdf-main-layout { display: flex; gap: 12px; align-items: stretch; } .pdf-chart-layout { flex: 1; display: flex; justify-content: center; align-items: center; background: #f8fafc; border-radius: 6px; border: 1px solid #cbd5e1; } .pdf-t-chart { position: relative; width: 380px; height: 350px; } .pdf-t-line-horizontal { position: absolute; top: 135px; left: 25px; width: 330px; height: 3px; background-color: #1e3a8a; } .pdf-t-line-vertical { position: absolute; top: 30px; left: 188px; width: 3px; height: 285px; background-color: #1e3a8a; } .pdf-t-value { position: absolute; width: 95px; text-align: center; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; padding: 2px 0; } .pdf-t-value small { font-size: 10px; font-weight: bold; color: #64748b; } .pdf-t-value strong, .pdf-t-value .highlight-blue { font-size: 15px; font-weight: 800; } .pdf-v-top { top: 5px; left: 142px; } .pdf-v-top-sub { top: 48px; left: 142px; border-style: dashed; } .pdf-v-width { top: 92px; left: 142px; } .pdf-v-left { top: 115px; left: -15px; } .pdf-v-left-sub { top: 160px; left: -15px; border-style: dashed; } .pdf-v-right { top: 115px; left: 295px; } .pdf-v-right-sub { top: 160px; left: 295px; border-style: dashed; } .pdf-v-height { top: 205px; left: 142px; } .pdf-v-bottom { top: 268px; left: 142px; } .pdf-v-bottom-sub { top: 312px; left: 142px; border-style: dashed; } .pdf-meta-info-right-panel { width: 140px; display: flex; flex-direction: column; gap: 6px; } .meta-row-column { flex: 1; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 4px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: center; } .price-card { background: #eff6ff; border-color: #bfdbfe; } .meta-column-title { font-weight: bold; color: #64748b; font-size: 11px; border-bottom: 1px dashed #cbd5e1; width: 100%; } .meta-column-val { font-size: 13px; font-weight: bold; color: #1e293b; } .meta-price-val { font-size: 14px; font-weight: 800; color: #ea580c; } .highlight-blue { color: #1e3a8a; font-weight: 800; } .price-alert { color: #dc2626; font-weight: bold; } .pdf-w-note { margin-top: 8px; font-size: 13px; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; } @media print { .no-print { display: none; } } </style></head><body><div class="no-print" style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #1e3a8a; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button></div><div class="pdf-header"><div class="brand-sub">WANG-MEI CURTAIN DESIGN</div><h1>望美窗簾 - 現場丈量與估價確認單</h1><p style="font-size:12px; color:#64748b; margin-top:4px;">丈量日期：${record.measureDate || '未填'} ｜ 單據時間：${record.timestamp || ''}</p></div><div class="pdf-section-title">客戶基本資料</div><table class="pdf-table"><tr><td width="50%"><strong>客戶姓名：</strong>${record.clientName}</td><td width="50%"><strong>聯絡電話：</strong>${record.clientPhone || '未填'}</td></tr><tr><td colspan="2"><strong>施工地址：</strong>${record.clientAddress || '未填'}</td></tr><tr><td width="50%"><strong>統一編號：</strong>${record.clientTaxId || '未填'}</td><td width="50%"><strong>丈量日期：</strong>${record.measureDate || '未填'}</td></tr></table><div class="pdf-section-title">財務與工程總覽</div><table class="pdf-table"><tr><td width="33%"><strong>估價總額：</strong>$${price} 元</td><td width="33%"><strong>未稅金額：</strong>$${noTax} 元</td><td width="34%"><strong>含稅總額：</strong>$${withTax} 元</td></tr><tr><td><strong>已收訂金：</strong>$${deposit} 元</td><td colspan="2"><strong>工程尾款結算：</strong><span class="price-alert">$${balance} 元</span></td></tr></table><div class="pdf-section-title">各窗詳細資訊</div>${windowsPrintHtml}</body></html>`;
         }
 
         function generatePricePdfHtml(record) {
-            const q = record.quoteData || {}; const price = parseInt(q.totalPrice) || 0; const deposit = parseInt(q.deposit) || 0; const noTax = parseInt(q.noTax) || 0; const withTax = parseInt(q.withTax) || 0; const finalTotal = withTax || price || 0; const balance = finalTotal - deposit;
-            let tableRowsHtml = ""; let itemCount = 0;
+            const q = record.quoteData || {}; const price = parseInt(q.totalPrice) || 0; const deposit = parseInt(q.deposit) || 0; const noTax = parseInt(q.noTax) || 0; const withTax = parseInt(q.withTax) || 0; const finalTotal = withTax || price || 0; const balance = finalTotal - deposit; let tableRowsHtml = ""; let itemCount = 0;
             if (record.windows && Array.isArray(record.windows)) {
                 record.windows.forEach((w, i) => {
                     const qItem = (q.windows && q.windows[i]) ? q.windows[i] : {}; const typeStr = (w.types || []).join(', ') || '標準開法'; const envStr = (w.envs || []).join(', ') || '標準環境'; const items = qItem.fabricItems || (qItem.itemStyleNote ? [{ note: qItem.itemStyleNote, price: qItem.itemPrice }] : [{ note: '依現場規劃', price: '' }]);
-                    items.forEach((it, subIdx) => {
-                        itemCount++; const isFirst = subIdx === 0; const rowPrice = it.price ? `$${it.price}` : (isFirst && qItem.itemPrice ? `$${qItem.itemPrice}` : '包含於總價');
-                        tableRowsHtml += `<tr><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${itemCount}</td><td><strong>${w.location || '窗戶項目'}</strong></td><td>${it.note || '專業布藝款式規劃'}</td><td style="color: #64748b;">${typeStr} / ${envStr}</td><td style="text-align: right; font-weight: bold; color: #1e3a8a;">${rowPrice}</td></tr>`;
-                    });
+                    items.forEach((it, subIdx) => { itemCount++; const isFirst = subIdx === 0; const rowPrice = it.price ? `$${it.price}` : (isFirst && qItem.itemPrice ? `$${qItem.itemPrice}` : '包含於總價'); tableRowsHtml += `<tr><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${itemCount}</td><td><strong>${w.location || '窗戶項目'}</strong></td><td>${it.note || '專業布藝款式規劃'}</td><td style="color: #64748b;">${typeStr} / ${envStr}</td><td style="text-align: right; font-weight: bold; color: #1e3a8a;">${rowPrice}</td></tr>`; });
                 });
             }
-            return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>工程報價單_${record.clientName}</title><style>@page { size: A4; margin: 15mm; } body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; line-height: 1.5; } .invoice-card { width: 100%; border: 1px solid #cbd5e1; position: relative; } .pattern-strip { background: repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #ffffff 10px, #ffffff 20px); height: 18px; border-bottom: 2px solid #1e3a8a; } .header-main { display: flex; justify-content: space-between; align-items: center; padding: 24px 30px; border-bottom: 1px solid #e2e8f0; } .logo-text-title { font-size: 26px; font-weight: 800; color: #1e293b; letter-spacing: 4px; border-top: 2px solid #1e293b; border-bottom: 2px solid #1e293b; padding: 4px 16px; display: inline-block; } .doc-title-block { text-align: right; } .doc-main-title { font-size: 28px; font-weight: 900; color: #1e3a8a; letter-spacing: 2px; } .doc-sub-text { font-size: 13px; color: #64748b; } .info-grid { display: flex; padding: 20px 30px; gap: 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; } .info-col { flex: 1; } .col-header-bar { font-size: 13px; font-weight: 800; color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 4px; margin-bottom: 10px; } .info-item { font-size: 13px; margin-bottom: 5px; display: flex; } .info-label { color: #64748b; width: 80px; font-weight: 600; } .info-value { color: #1e293b; font-weight: 700; flex: 1; } .total-due-bar { background: #f1f5f9; color: #1e3a8a; padding: 10px 16px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; } .total-due-title { font-size: 13px; font-weight: 800; } .total-due-num { font-size: 20px; font-weight: 900; } .table-wrap { padding: 24px 30px; } .invoice-table { width: 100%; border-collapse: collapse; } .invoice-table th { background: #f1f5f9; color: #1e3a8a; font-size: 13px; padding: 10px; border-bottom: 2px solid #1e3a8a; border-top: 1px solid #cbd5e1; text-align: left; } .invoice-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; } .footer-flex { display: flex; border-top: 2px solid #1e3a8a; background: #f8fafc; } .footer-left { flex: 1.2; padding: 20px 30px; border-right: 1px solid #e2e8f0; font-size: 12px; color: #64748b; } .footer-right { flex: 1; padding: 20px 30px; } .calc-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; } .calc-row-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 900; color: #1e3a8a; border-top: 2px solid #1e3a8a; padding-top: 10px; margin-top: 8px; } .sign-section { display: flex; justify-content: space-between; align-items: flex-end; padding: 20px 30px 24px; border-top: 1px solid #e2e8f0; } .stamp-space { font-size: 12px; color: #64748b; } .sign-box { text-align: center; width: 180px; border-bottom: 1px solid #1e293b; padding-bottom: 4px; font-size: 14px; } @media print { .no-print { display: none; } } </style></head>
-                    <body>
-                        <div class="no-print" style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #1e3a8a; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button></div>
-                        <div class="invoice-card">
-                            <div class="pattern-strip"></div><div class="header-main"><div class="brand-logo-frame"><div class="logo-text-title">望美窗簾</div><div style="font-size: 11px; color: #64748b; margin-top: 4px;">客製化窗簾 ‧ 壁紙 ‧ 地磚工程規劃</div></div><div class="doc-title-block"><div class="doc-main-title">工程估價報價單</div><div class="doc-sub-text">開立日期：${record.measureDate || getTodayString()}</div></div></div>
-                            <div class="info-grid"><div class="info-col"><div class="col-header-bar">客戶資訊</div><div class="info-item"><span class="info-label">客戶姓名：</span><span class="info-value">${record.clientName}</span></div><div class="info-item"><span class="info-label">聯絡電話：</span><span class="info-value">${record.clientPhone || '未提供'}</span></div><div class="info-item"><span class="info-label">施工地址：</span><span class="info-value">${record.clientAddress || '未提供'}</span></div></div><div class="info-col"><div class="col-header-bar">報價總結</div><div class="info-item"><span class="info-label">丈量日期：</span><span class="info-value">${record.measureDate || '依約定'}</span></div><div class="total-due-bar"><span class="total-due-title">工程結算總額</span><span class="total-due-num">$${finalTotal.toLocaleString()} 元</span></div></div></div>
-                            <div class="table-wrap"><table class="invoice-table"><thead><tr><th style="width: 10%; text-align: center;">項次</th><th style="width: 25%;">空間位置</th><th style="width: 40%;">規劃款式與布號型號</th><th style="width: 25%; text-align: right;">報價金額</th></tr></thead><tbody>${tableRowsHtml}</tbody></table></div>
-                            <div class="footer-flex"><div class="footer-left"><strong style="color: #1e3a8a;">約定條款與付款說明：</strong><br>1. 本報價單所列各項產品規格、布料花色均經現場丈量確認。<br>2. 確認訂製後敬請支付訂金，尾款於施工完工驗收無誤後結清。</div><div class="footer-right"><div class="calc-row"><span>估價金額：</span><strong>$${price.toLocaleString()} 元</strong></div><div class="calc-row"><span>已收訂金：</span><strong style="color: #10b981;">-$${deposit.toLocaleString()} 元</strong></div><div class="calc-row-total"><span>完工應付尾款：</span><span style="color: #dc2626;">$${balance.toLocaleString()} 元</span></div></div></div>
-                            <div class="sign-section"><div class="stamp-space">望美窗簾設計工程 ‧ 現場品質保證</div><div><div style="font-size: 12px; color: #64748b; margin-bottom: 25px; text-align: center;">客戶確認簽名</div><div class="sign-box"></div></div></div>
-                        </div>
-                    </body></html>`;
+            return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>工程報價單_${record.clientName}</title><style>@page { size: A4; margin: 15mm; } body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; color: #1e293b; max-width: 190mm; margin: 0 auto; line-height: 1.5; } .invoice-card { width: 100%; border: 1px solid #cbd5e1; position: relative; } .pattern-strip { background: repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #ffffff 10px, #ffffff 20px); height: 18px; border-bottom: 2px solid #1e3a8a; } .header-main { display: flex; justify-content: space-between; align-items: center; padding: 24px 30px; border-bottom: 1px solid #e2e8f0; } .logo-text-title { font-size: 26px; font-weight: 800; color: #1e293b; letter-spacing: 4px; border-top: 2px solid #1e293b; border-bottom: 2px solid #1e293b; padding: 4px 16px; display: inline-block; } .doc-title-block { text-align: right; } .doc-main-title { font-size: 28px; font-weight: 900; color: #1e3a8a; letter-spacing: 2px; } .doc-sub-text { font-size: 13px; color: #64748b; } .info-grid { display: flex; padding: 20px 30px; gap: 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; } .info-col { flex: 1; } .col-header-bar { font-size: 13px; font-weight: 800; color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 4px; margin-bottom: 10px; } .info-item { font-size: 13px; margin-bottom: 5px; display: flex; } .info-label { color: #64748b; width: 80px; font-weight: 600; } .info-value { color: #1e293b; font-weight: 700; flex: 1; } .total-due-bar { background: #f1f5f9; color: #1e3a8a; padding: 10px 16px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; } .total-due-title { font-size: 13px; font-weight: 800; } .total-due-num { font-size: 20px; font-weight: 900; } .table-wrap { padding: 24px 30px; } .invoice-table { width: 100%; border-collapse: collapse; } .invoice-table th { background: #f1f5f9; color: #1e3a8a; font-size: 13px; padding: 10px; border-bottom: 2px solid #1e3a8a; border-top: 1px solid #cbd5e1; text-align: left; } .invoice-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; } .footer-flex { display: flex; border-top: 2px solid #1e3a8a; background: #f8fafc; } .footer-left { flex: 1.2; padding: 20px 30px; border-right: 1px solid #e2e8f0; font-size: 12px; color: #64748b; } .footer-right { flex: 1; padding: 20px 30px; } .calc-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; } .calc-row-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 900; color: #1e3a8a; border-top: 2px solid #1e3a8a; padding-top: 10px; margin-top: 8px; } .sign-section { display: flex; justify-content: space-between; align-items: flex-end; padding: 20px 30px 24px; border-top: 1px solid #e2e8f0; } .stamp-space { font-size: 12px; color: #64748b; } .sign-box { text-align: center; width: 180px; border-bottom: 1px solid #1e293b; padding-bottom: 4px; font-size: 14px; } @media print { .no-print { display: none; } } </style></head><body><div class="no-print" style="text-align: right; margin-bottom: 15px;"><button onclick="window.print()" style="background: #0ea5e9; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">🖨 啟動列印</button></div><div class="invoice-card"><div class="pattern-strip"></div><div class="header-main"><div class="brand-logo-frame"><div class="logo-text-title">望美窗簾</div><div style="font-size: 11px; color: #64748b; margin-top: 4px;">客製化窗簾 ‧ 壁紙 ‧ 地磚工程規劃</div></div><div class="doc-title-block"><div class="doc-main-title">工程估價報價單</div><div class="doc-sub-text">開立日期：${record.measureDate || getTodayString()}</div></div></div><div class="info-grid"><div class="info-col"><div class="col-header-bar">客戶資訊</div><div class="info-item"><span class="info-label">客戶姓名：</span><span class="info-value">${record.clientName}</span></div><div class="info-item"><span class="info-label">聯絡電話：</span><span class="info-value">${record.clientPhone || '未提供'}</span></div><div class="info-item"><span class="info-label">施工地址：</span><span class="info-value">${record.clientAddress || '未提供'}</span></div></div><div class="info-col"><div class="col-header-bar">報價總結</div><div class="info-item"><span class="info-label">丈量日期：</span><span class="info-value">${record.measureDate || '依約定'}</span></div><div class="total-due-bar"><span class="total-due-title">工程結算總額</span><span class="total-due-num">$${finalTotal.toLocaleString()} 元</span></div></div></div><div class="table-wrap"><table class="invoice-table"><thead><tr><th style="width: 10%; text-align: center;">項次</th><th style="width: 25%;">空間位置</th><th style="width: 40%;">規劃款式與布號型號</th><th style="width: 25%; text-align: right;">報價金額</th></tr></thead><tbody>${tableRowsHtml}</tbody></table></div><div class="footer-flex"><div class="footer-left"><strong style="color: #1e3a8a;">約定條款與付款說明：</strong><br>1. 本報價單所列各項產品規格、布料花色均經現場丈量確認。<br>2. 確認訂製後敬請支付訂金，尾款於施工完工驗收無誤後結清。</div><div class="footer-right"><div class="calc-row"><span>估價金額：</span><strong>$${price.toLocaleString()} 元</strong></div><div class="calc-row"><span>已收訂金：</span><strong style="color: #10b981;">-$${deposit.toLocaleString()} 元</strong></div><div class="calc-row-total"><span>完工應付尾款：</span><span style="color: #dc2626;">$${balance.toLocaleString()} 元</span></div></div></div><div class="sign-section"><div class="stamp-space">望美窗簾設計工程 ‧ 現場品質保證</div><div><div style="font-size: 12px; color: #64748b; margin-bottom: 25px; text-align: center;">客戶確認簽名</div><div class="sign-box"></div></div></div></div></body></html>`;
         }
 
-        window.exportPDFWithTChart = function(recordId) {
-            const record = getLocalStorageData().find(r => r.id === recordId); if(!record) return;
-            const printWindow = window.open("", "_blank"); printWindow.document.write(generateFullPdfHtml(record)); printWindow.document.close();
-        };
-
-        window.exportPDFPriceOnly = function(recordId) {
-            const record = getLocalStorageData().find(r => r.id === recordId); if(!record) return;
-            const printWindow = window.open("", "_blank"); printWindow.document.write(generatePricePdfHtml(record)); printWindow.document.close();
-        };
+        window.exportPDFWithTChart = function(recordId) { const record = getLocalStorageData().find(r => r.id === recordId); if(!record) return; const printWindow = window.open("", "_blank"); printWindow.document.write(generateFullPdfHtml(record)); printWindow.document.close(); };
+        window.exportPDFPriceOnly = function(recordId) { const record = getLocalStorageData().find(r => r.id === recordId); if(!record) return; const printWindow = window.open("", "_blank"); printWindow.document.write(generatePricePdfHtml(record)); printWindow.document.close(); };
 
         document.addEventListener("DOMContentLoaded", function() {
             resetForm(); initIqSelects();
-            
-            // 若為登入狀態，檢查當前 hash 來載入正確頁面
             if (document.getElementById('auth-overlay').style.display === 'none') {
-                if(!window.location.hash) window.location.hash = 'main';
-                else window.dispatchEvent(new Event('hashchange'));
+                if(!window.location.hash) window.location.hash = 'main'; else window.dispatchEvent(new Event('hashchange'));
             }
         });
     </script>
 </body>
 </html>
+
 
